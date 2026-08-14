@@ -1,0 +1,87 @@
+.product-info-slide {
+  position: relative;
+}
+
+.product-info-slide-visual {
+  position: relative;
+  align-self: flex-end;
+  width: 777px;
+  max-width: 100%;
+}
+
+.product-info-slide .slide-content-image {
+  width: 777px;
+  height: 555px;
+  max-width: 100%;
+}
+
+.product-info-slide .slide-content-text {
+  align-self: flex-start;
+  text-align: left;
+}
+
+.product-info-slide .slide-content-text p {
+  font-family: "Libre Caslon Text", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: -0.09em;
+}
+
+.product-info-slide-home {
+  font-size: 24px;
+  color: #ffa047;
+  font-weight: 700;
+  letter-spacing: -0.1em;
+}
+
+.product-info-slide-caption {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: right;
+  margin-right: 10px;
+}
+
+.product-info-slide-caption p {
+  margin: 0;
+  line-height: 1.3;
+  font-family: "Libre Caslon Text", serif;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.1em;
+  font-size: 20px;
+}
+
+.product-info-slide-title {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate(-45%, -50%);
+  text-align: left;
+}
+
+.product-info-slide-title-main {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 128px;
+  line-height: 1;
+  letter-spacing: -0.1em;
+  color: #ffa047;
+}
+
+.product-info-slide-title-sub {
+  margin: -20px 0 0;
+  text-align: center;
+  font-family: "Libre Caslon Text", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 64px;
+  line-height: 1;
+  letter-spacing: -0.07em;
+  color: #ff620e;
+  filter: blur(1px);
+}

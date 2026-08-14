@@ -1,0 +1,38 @@
+.h1-heading {
+  font-family: var(--font-family-heading-italic);
+  font-style: italic;
+  font-size: var(--scale-h1-size);
+  line-height: var(--scale-h1-line-height);
+  color: var(--color-accent-coral);
+  margin: 0;
+}
+
+.h2-heading {
+  font-family: var(--font-family-heading-italic);
+  font-style: italic;
+  font-size: var(--scale-h2-size);
+  line-height: var(--scale-h2-line-height);
+  color: var(--color-accent-coral);
+  margin: 0;
+}
+
+.logo {
+  font-family: var(--font-family-logo-heavy);
+  color: var(--color-accent-cobalt);
+}
+
+.body-text {
+  margin: 0;
+  font-family: var(--font-family-body);
+  font-size: var(--scale-body-size);
+  line-height: var(--scale-body-line-height);
+  color: var(--color-text-dark);
+}
+
+.nav-item {
+  font-family: var(--font-family-body);
+  font-size: var(--scale-nav-size);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-dark);
+}

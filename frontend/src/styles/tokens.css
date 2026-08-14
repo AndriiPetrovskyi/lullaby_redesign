@@ -1,0 +1,30 @@
+:root {
+  /* Кольори */
+  --color-bg-light: #ffe8cf;
+  --color-accent-coral: #eb7c46;
+  --color-accent-cobalt: #ff620e;
+  --color-text-dark: #ff620e;
+
+  /* Шрифти */
+  --font-family-logo-heavy: "Gotham Black", sans-serif;
+  --font-family-heading-italic: "Libre Caslon Text", serif;
+  --font-family-body: "Inter", sans-serif;
+
+  /* Масштаб типографіки */
+  --scale-h1-size: 3rem;
+  --scale-h1-line-height: 1.2;
+  --scale-h2-size: 2.25rem;
+  --scale-h2-line-height: 1.3;
+  --scale-body-size: 1rem;
+  --scale-body-line-height: 1.6;
+  --scale-nav-size: 0.875rem;
+
+  /* Відступи */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 32px;
+
+  /* Layout */
+  --container-max-width: 1200px;
+}

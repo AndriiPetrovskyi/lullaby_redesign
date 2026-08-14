@@ -1,0 +1,80 @@
+.m-product-info-slide {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+.m-slide-bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.m-product-info-slide-tagline {
+  position: absolute;
+  top: var(--spacing-lg);
+  left: var(--spacing-md);
+  right: var(--spacing-md);
+  margin: 0;
+  text-align: center;
+  font-family: "Libre Caslon Text", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 16px;
+  color: #ffa047;
+}
+
+.m-product-info-slide-title {
+  position: absolute;
+  top: 55px;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+.m-product-info-slide-title-main {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 82px;
+  letter-spacing: -0.08em;
+  color: #ffa047;
+}
+
+.m-product-info-slide-title-sub {
+  position: relative;
+  top: 12px;
+  right: 6px;
+  font-family: "Libre Caslon Text", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 40px;
+  color: #ff620e;
+  letter-spacing: -0.08em;
+  filter: blur(1px);
+}
+
+.m-product-info-slide-caption {
+  position: absolute;
+  left: var(--spacing-md);
+  bottom: var(--spacing-lg);
+  max-width: 55%;
+  margin: 0;
+  text-align: left;
+  font-family: "Inter";
+  font-style: italic;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 1.2;
+  color: #ffa047;
+}
+
+.m-product-info-slide-home {
+  font-family: "Libre Caslon Text", serif;
+  font-style: italic;
+  font-weight: 700;
+  color: #ff620e;
+}
