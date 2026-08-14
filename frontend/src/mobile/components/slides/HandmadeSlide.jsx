@@ -1,13 +1,15 @@
-import productImage from '../../../assets/slider/1.jpg'
-import './Slide.css'
-import './HandmadeSlide.css'
+import productImage from "../../../assets/slider/1.jpg";
+import "./Slide.css";
+import "./HandmadeSlide.css";
 
 function HandmadeSlide() {
   return (
     <div className="m-slide-content m-handmade-slide">
       <img className="m-slide-bg-image" src={productImage} alt="Handmade" />
 
-      <p className="m-handmade-slide-tagline">Nothing perfect. Everything personal.</p>
+      <p className="m-handmade-slide-tagline">
+        Nothing perfect. Everything personal.
+      </p>
 
       <div className="m-handmade-slide-title">
         <p className="m-handmade-slide-title-script">Made by</p>
@@ -20,7 +22,7 @@ function HandmadeSlide() {
         every piece unique.
       </p>
     </div>
-  )
+  );
 }
 
-export default HandmadeSlide
+export default HandmadeSlide;
