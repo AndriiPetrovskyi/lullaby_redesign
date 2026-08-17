@@ -4,9 +4,20 @@
   overflow: hidden;
 }
 
+.m-handmade-slide-image {
+  position: absolute;
+  top: 45%;
+  left: 0;
+  width: 100%;
+  height: auto;
+  transform: translateY(-50%);
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
 .m-handmade-slide-tagline {
   position: absolute;
-  top: var(--spacing-lg);
+  top: 50px;
   left: var(--spacing-md);
   right: var(--spacing-md);
   margin: 0;
@@ -14,14 +25,15 @@
   font-family: "Libre Caslon Text", serif;
   font-style: italic;
   font-weight: 500;
-  font-size: 16px;
-  color: #ffa047;
+  font-size: 14px;
+  letter-spacing: -0.08em;
+  color: #ff620e;
 }
 
 .m-handmade-slide-title {
   position: absolute;
   right: var(--spacing-md);
-  top: 55%;
+  top: 61%;
   text-align: right;
 }
 
@@ -63,14 +75,14 @@
 .m-handmade-slide-caption {
   position: absolute;
   left: var(--spacing-md);
-  max-width: 230px;
-  bottom: var(--spacing-lg);
+  max-width: 90%;
+  bottom: 75px;
   margin: 0;
   text-align: left;
   font-family: "Inter";
   font-style: italic;
   font-weight: 300;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 1.1;
   color: #ffa047;
 }

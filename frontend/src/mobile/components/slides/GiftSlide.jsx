@@ -1,9 +1,10 @@
-import productImage from '../../../assets/slider/1.jpg'
+import productImage from '../../../assets/box.jpg'
 import './Slide.css'
+import './GiftSlide.css'
 
 function GiftSlide() {
   return (
-    <div className="m-slide-content">
+    <div className="m-slide-content m-gift-slide">
       <div className="m-slide-content-text">
         <p className="body-text">The best gifts say what words can't.</p>
       </div>

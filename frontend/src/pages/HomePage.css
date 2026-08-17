@@ -2,3 +2,43 @@
   display: flex;
   justify-content: center;
 }
+
+.home-sections {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.home-section {
+  position: relative;
+  width: 977px;
+  max-width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-section--first {
+  height: calc(100vh - var(--nav-height, 108px));
+}
+
+.home-section-inner {
+  position: relative;
+  width: 100%;
+  height: 70%;
+}
+
+.m-home-sections {
+  display: flex;
+  flex-direction: column;
+}
+
+.m-home-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+

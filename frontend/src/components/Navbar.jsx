@@ -1,35 +1,81 @@
-import { NavLink } from 'react-router-dom'
-import './Navbar.css'
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { NavLink } from "react-router-dom";
+import "./Navbar.css";
 
 const links = [
-  { to: '/', label: 'Home' },
-  { to: '/products', label: 'Products' },
-  { to: '/about', label: 'About us' },
-  { to: '/contact', label: 'Contact us' },
-]
+  { to: "/", label: "Home" },
+  { to: "/products", label: "Products" },
+  { to: "/about", label: "About us" },
+  { to: "/contact", label: "Contact us" },
+];
+
+const listVariants = {
+  hidden: { clipPath: "circle(0% at calc(100% - 32px) 32px)" },
+  visible: {
+    clipPath: "circle(150% at calc(100% - 32px) 32px)",
+    transition: { duration: 1, ease: [0.65, 0, 0.35, 1] },
+  },
+  exit: {
+    clipPath: "circle(0% at calc(100% - 32px) 32px)",
+    transition: { duration: 1, ease: [0.65, 0, 0.35, 1] },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: 0.15 + i * 0.06, duration: 0.3 },
+  }),
+  exit: { opacity: 0, y: 16, transition: { duration: 0.15 } },
+};
 
 function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <nav className="navbar">
-      <div className="container navbar-inner">
-        <ul className="navbar-list">
-          {links.map((link) => (
-            <li key={link.to}>
-              <NavLink
-                to={link.to}
-                className={({ isActive }) =>
-                  isActive ? 'nav-item navbar-link navbar-link--active' : 'nav-item navbar-link'
-                }
-                end={link.to === '/'}
-              >
-                {link.label}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <button
+        type="button"
+        className={
+          isOpen ? "navbar-toggle navbar-toggle--open" : "navbar-toggle"
+        }
+        aria-expanded={isOpen}
+        aria-label="Меню"
+        onClick={() => setIsOpen((open) => !open)}>
+        <span />
+        <span />
+        <span />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.ul
+            className="navbar-list"
+            variants={listVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit">
+            {links.map((link, i) => (
+              <motion.li key={link.to} custom={i} variants={itemVariants}>
+                <NavLink
+                  to={link.to}
+                  className={({ isActive }) =>
+                    isActive ? "navbar-link navbar-link--active" : "navbar-link"
+                  }
+                  end={link.to === "/"}
+                  onClick={() => setIsOpen(false)}>
+                  {link.label}
+                </NavLink>
+              </motion.li>
+            ))}
+          </motion.ul>
+        )}
+      </AnimatePresence>
     </nav>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

@@ -9,6 +9,7 @@
 .slide-content-image {
   background: var(--color-accent-coral);
   opacity: 0.15;
+  overflow: hidden;
 }
 
 .slide-content-image:has(img) {

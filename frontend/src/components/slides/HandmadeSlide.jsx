@@ -1,4 +1,6 @@
-import productImage from '../../assets/slider/1.jpg'
+import { motion } from 'framer-motion'
+import productImage from '../../assets/handmade.jpg'
+import { fadeInUp, scaleDown } from '../../utils/scrollAnimation.js'
 import './Slide.css'
 import './HandmadeSlide.css'
 
@@ -6,22 +8,28 @@ function HandmadeSlide() {
   return (
     <div className="slide-content handmade-slide">
       <div className="slide-content-text">
-        <p className="body-text">Nothing perfect. Everything personal.</p>
+        <motion.p className="body-text" {...fadeInUp()}>
+          Nothing perfect. Everything personal.
+        </motion.p>
       </div>
       <div className="handmade-slide-visual">
         <div className="slide-content-image">
-          <img src={productImage} alt="Handmade" />
+          <motion.img src={productImage} alt="Handmade" {...scaleDown()} />
         </div>
         <div className="handmade-slide-title">
-          <p className="handmade-slide-title-script">Made by hand</p>
-          <p className="handmade-slide-title-bold">made to feel</p>
+          <motion.p className="handmade-slide-title-script" {...fadeInUp()}>
+            Made by hand
+          </motion.p>
+          <motion.p className="handmade-slide-title-bold" {...fadeInUp(0.1)}>
+            made to feel
+          </motion.p>
         </div>
       </div>
       <div className="handmade-slide-caption">
-        <p className="body-text">
+        <motion.p className="body-text" {...fadeInUp(0.2)}>
           Small imperfections, soft variations, and the touch of the maker make
           every piece unique.
-        </p>
+        </motion.p>
       </div>
     </div>
   )

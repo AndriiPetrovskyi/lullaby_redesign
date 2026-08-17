@@ -1,11 +1,11 @@
-import productImage from "../../../assets/slider/1.jpg";
+import productImage from "../../../assets/handmade.jpg";
 import "./Slide.css";
 import "./HandmadeSlide.css";
 
 function HandmadeSlide() {
   return (
     <div className="m-slide-content m-handmade-slide">
-      <img className="m-slide-bg-image" src={productImage} alt="Handmade" />
+      <img className="m-handmade-slide-image" src={productImage} alt="Handmade" />
 
       <p className="m-handmade-slide-tagline">
         Nothing perfect. Everything personal.

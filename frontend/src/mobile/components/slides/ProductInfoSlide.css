@@ -16,7 +16,7 @@
 
 .m-product-info-slide-tagline {
   position: absolute;
-  top: var(--spacing-lg);
+  top: 100px;
   left: var(--spacing-md);
   right: var(--spacing-md);
   margin: 0;
@@ -30,7 +30,7 @@
 
 .m-product-info-slide-title {
   position: absolute;
-  top: 55px;
+  top: 115px;
   left: 0;
   right: 0;
   text-align: center;

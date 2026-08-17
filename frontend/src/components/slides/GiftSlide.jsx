@@ -1,4 +1,6 @@
+import { motion } from 'framer-motion'
 import productImage from '../../assets/slider/1.jpg'
+import { fadeInUp, scaleDown } from '../../utils/scrollAnimation.js'
 import './Slide.css'
 import './GiftSlide.css'
 
@@ -7,20 +9,31 @@ function GiftSlide() {
     <div className="slide-content gift-slide">
       <div className="gift-slide-row">
         <div className="gift-slide-title">
-          <p className="body-text gift-slide-tagline">The best gifts say what words can't.</p>
-          <p className="gift-slide-title-bold">A gift</p>
-          <p className="gift-slide-title-script">before</p>
-          <p className="gift-slide-title-bold gift-slide-title-bold--second">the gift</p>
+          <motion.p className="body-text gift-slide-tagline" {...fadeInUp()}>
+            The best gifts say what words can't.
+          </motion.p>
+          <motion.p className="gift-slide-title-bold" {...fadeInUp(0.1)}>
+            A gift
+          </motion.p>
+          <motion.p className="gift-slide-title-script" {...fadeInUp(0.2)}>
+            before
+          </motion.p>
+          <motion.p
+            className="gift-slide-title-bold gift-slide-title-bold--second"
+            {...fadeInUp(0.3)}
+          >
+            the gift
+          </motion.p>
         </div>
         <div className="slide-content-image">
-          <img src={productImage} alt="Подарунок" />
+          <motion.img src={productImage} alt="Подарунок" {...scaleDown()} />
         </div>
       </div>
       <div className="gift-slide-caption">
-        <p className="body-text">
+        <motion.p className="body-text" {...fadeInUp(0.4)}>
           Each candle arrives in a handcrafted keepsake box, created with the
           same care as what's inside.
-        </p>
+        </motion.p>
       </div>
     </div>
   )
