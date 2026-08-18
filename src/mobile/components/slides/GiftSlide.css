@@ -1,9 +1,22 @@
 .m-gift-slide .m-slide-content-image {
   width: calc(100% + var(--spacing-md) * 2);
   margin-inline: calc(var(--spacing-md) * -1);
+  margin-top: calc(var(--spacing-lg) * -1);
   background: var(--color-bg-light);
+  flex: none;
+  height: 70%;
 }
 
 .m-gift-slide .m-slide-content-image img {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  display: block;
+}
+
+.m-gift-slide .m-slide-content-image video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }

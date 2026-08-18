@@ -17,7 +17,8 @@
   opacity: 0.15;
 }
 
-.m-slide-content-image:has(img) {
+.m-slide-content-image:has(img),
+.m-slide-content-image:has(video) {
   opacity: 1;
 }
 

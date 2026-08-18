@@ -1,10 +1,6 @@
 .m-seeds-slide {
   gap: var(--spacing-sm);
-}
-
-.m-seeds-slide .m-slide-content-image {
-  width: calc(100% + var(--spacing-md) * 2);
-  margin-inline: calc(var(--spacing-md) * -1);
+  padding-inline: 0;
 }
 
 .m-seeds-slide-tagline {
@@ -12,16 +8,22 @@
   position: relative;
   top: -22px;
   margin: 0;
+  /* margin-right: var(--spacing-md); */
   font-family: "Libre Caslon Text", serif;
   font-style: italic;
   font-weight: 500;
   font-size: 14px;
   letter-spacing: -0.09em;
-  color: #ff620e;
+  background-color: #ff620e;
+  color: var(--color-bg-light);
+  padding: 6px 80px 6px 12px;
+  box-shadow: 9999px 0 0 0 #ff620e;
 }
 
 .m-seeds-slide-title {
   width: 100%;
+  padding-inline: var(--spacing-md);
+  box-sizing: border-box;
 }
 
 .m-seeds-slide-title--top {
@@ -80,6 +82,7 @@
   position: relative;
   top: -40px;
   margin: 0;
+  margin-left: var(--spacing-md);
   font-family: "Inter", serif;
   font-style: italic;
   font-weight: 500;
