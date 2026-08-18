@@ -1,0 +1,39 @@
+.product-card {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.product-card-image {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--color-bg-light);
+}
+
+.product-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.product-card-name {
+  margin: 16px 0 0;
+  padding-inline: var(--spacing-md);
+  font-family: var(--font-family-heading-italic);
+  font-style: italic;
+  font-weight: 700;
+  font-size: var(--scale-body-size);
+  color: var(--color-text-dark);
+}
+
+.product-card-price {
+  margin: 0;
+  padding-inline: var(--spacing-md);
+  font-family: var(--font-family-body);
+  font-size: var(--scale-body-size);
+  font-weight: 500;
+  color: var(--color-accent-cobalt);
+  font-style: italic;
+}

@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom'
+import './ProductCard.css'
 
 function ProductCard({ product }) {
   return (
-    <div>
-      <p className="body-text">{product.name}</p>
-      <Link to={`/products/${product.slug}`}>
-        <button type="button">Переглянути</button>
-      </Link>
-    </div>
+    <Link to={`/products/${product.id}`} className="product-card">
+      <div className="product-card-image">
+        <img src={product.image} alt={product.name} />
+      </div>
+      <p className="product-card-name">{product.name}</p>
+      <p className="product-card-price">{product.price} ₴</p>
+    </Link>
   )
 }
 
