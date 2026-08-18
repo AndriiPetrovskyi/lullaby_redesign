@@ -1,0 +1,93 @@
+.m-product-page .m-slider-slide img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  background: var(--color-bg-light);
+}
+
+.m-product-page-info {
+  padding: var(--spacing-md);
+}
+
+.m-product-page-name {
+  font-size: 24px;
+  letter-spacing: -0.08em;
+  font-style: italic;
+  line-height: 1;
+  font-weight: 500;
+  margin: 0 0 16px 0;
+}
+
+.m-product-page-price {
+  margin: var(--spacing-xs) 0 0;
+  font-family: var(--font-family-body);
+  font-size: var(--scale-body-size);
+  font-weight: 700;
+  color: var(--color-accent-cobalt);
+}
+
+.m-product-page-notes {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-sm) 0;
+  border-top: 1px solid var(--color-accent-coral);
+  border-bottom: 1px solid var(--color-accent-coral);
+}
+
+.m-product-page-notes-title {
+  margin: 0 0 var(--spacing-xs);
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  color: var(--color-accent-cobalt);
+}
+
+.m-product-page-notes-row {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: -0.03em;
+  color: var(--color-text-dark);
+}
+
+.m-product-page-notes-row span {
+  font-weight: 700;
+}
+
+.m-product-page-accordion {
+  margin-top: var(--spacing-md);
+}
+
+.m-product-page-accordion-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  color: var(--color-accent-cobalt);
+  cursor: pointer;
+}
+
+.m-product-page-accordion-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.m-product-page-description {
+  margin-top: var(--spacing-sm);
+  white-space: pre-line;
+  font-family: "inter";
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.4;
+  letter-spacing: -0.03em;
+}

@@ -87,9 +87,10 @@
 
 .m-gift-slide-caption {
   position: absolute;
-  top: calc(70% + 206px * var(--mobile-scale));
+  /* top: calc(70% + 206px * var(--mobile-scale)); */
   left: var(--spacing-md);
   right: var(--spacing-md);
+  bottom: 16px;
   margin: 0;
   font-family: "Inter", sans-serif;
   font-weight: 500;

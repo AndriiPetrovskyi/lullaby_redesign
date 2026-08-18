@@ -24,7 +24,7 @@
   font-family: var(--font-family-heading-italic);
   font-style: italic;
   font-weight: 700;
-  font-size: var(--scale-body-size);
+  font-size: 24px;
   color: var(--color-text-dark);
 }
 

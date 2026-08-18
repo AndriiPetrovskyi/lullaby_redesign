@@ -16,7 +16,7 @@
 
 .m-product-info-slide-tagline {
   position: absolute;
-  top: 100px;
+  top: calc(100px * var(--mobile-scale));
   left: var(--spacing-md);
   right: var(--spacing-md);
   margin: 0;
@@ -24,13 +24,13 @@
   font-family: "Libre Caslon Text", serif;
   font-style: italic;
   font-weight: 500;
-  font-size: 16px;
+  font-size: calc(16px * var(--mobile-scale));
   color: #ffa047;
 }
 
 .m-product-info-slide-title {
   position: absolute;
-  top: 115px;
+  top: calc(115px * var(--mobile-scale));
   left: 0;
   right: 0;
   text-align: center;
@@ -39,19 +39,19 @@
 .m-product-info-slide-title-main {
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: 82px;
+  font-size: calc(82px * var(--mobile-scale));
   letter-spacing: -0.08em;
   color: #ffa047;
 }
 
 .m-product-info-slide-title-sub {
   position: relative;
-  top: 12px;
-  right: 6px;
+  top: calc(12px * var(--mobile-scale));
+  right: calc(6px * var(--mobile-scale));
   font-family: "Libre Caslon Text", serif;
   font-style: italic;
   font-weight: 500;
-  font-size: 40px;
+  font-size: calc(40px * var(--mobile-scale));
   color: #ff620e;
   letter-spacing: -0.08em;
   filter: blur(1px);
@@ -67,7 +67,7 @@
   font-family: "Inter";
   font-style: italic;
   font-weight: 300;
-  font-size: 20px;
+  font-size: calc(20px * var(--mobile-scale));
   line-height: 1.2;
   color: #ffa047;
 }

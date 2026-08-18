@@ -6,18 +6,18 @@
 
 .m-handmade-slide-image {
   position: absolute;
-  top: 45%;
+  top: 14.2%;
   left: 0;
   width: 100%;
-  height: auto;
-  transform: translateY(-50%);
+  height: 61.6%;
+  object-fit: cover;
   -webkit-user-drag: none;
   user-select: none;
 }
 
 .m-handmade-slide-tagline {
   position: absolute;
-  top: 50px;
+  top: 2.5vh;
   left: var(--spacing-md);
   right: var(--spacing-md);
   margin: 0;
@@ -25,7 +25,7 @@
   font-family: "Libre Caslon Text", serif;
   font-style: italic;
   font-weight: 500;
-  font-size: 14px;
+  font-size: calc(14px * var(--mobile-scale));
   letter-spacing: -0.08em;
   color: #ff620e;
 }
@@ -48,17 +48,17 @@
   font-family: "Libre Caslon Text", serif;
   font-style: italic;
   font-weight: 400;
-  font-size: 72px;
+  font-size: calc(72px * var(--mobile-scale));
   letter-spacing: -0.08em;
   color: #ffa047;
 }
 
 .m-handmade-slide-title-bold {
-  padding-bottom: 6px;
+  padding-bottom: calc(6px * var(--mobile-scale));
   display: inline-block;
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: 64px;
+  font-size: calc(64px * var(--mobile-scale));
   color: #ffa047;
   letter-spacing: -0.08em;
 }
@@ -66,7 +66,7 @@
 .m-handmade-slide-title-bold2 {
   font-family: "Libre Caslon Text", serif;
   font-weight: 700;
-  font-size: 40px;
+  font-size: calc(40px * var(--mobile-scale));
   color: #ff620e;
   filter: blur(0.9px);
   letter-spacing: -0.08em;
@@ -76,13 +76,13 @@
   position: absolute;
   left: var(--spacing-md);
   max-width: 90%;
-  bottom: 75px;
+  bottom: calc(75px * var(--mobile-scale));
   margin: 0;
   text-align: left;
   font-family: "Inter";
   font-style: italic;
   font-weight: 300;
-  font-size: 16px;
+  font-size: calc(16px * var(--mobile-scale));
   line-height: 1.1;
   color: #ffa047;
 }
