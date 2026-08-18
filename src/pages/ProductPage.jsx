@@ -29,7 +29,9 @@ function ProductPage() {
         />
         <div className="m-product-page-info">
           <p className="m-product-page-name">{product.name}</p>
-          <p className="m-product-page-price">{product.price} $</p>
+          <button type="button" className="m-product-page-add-to-cart">
+            Add to cart · {product.price} $
+          </button>
 
           {product.fragranceNotes && (
             <div className="m-product-page-notes">
@@ -47,23 +49,35 @@ function ProductPage() {
           )}
 
           <div className="m-product-page-accordion">
+            <p
+              className={
+                isDescriptionOpen
+                  ? "body-text m-product-page-description"
+                  : "body-text m-product-page-description m-product-page-description--collapsed"
+              }
+            >
+              {product.description}
+            </p>
             <button
               type="button"
               className="m-product-page-accordion-toggle"
               aria-expanded={isDescriptionOpen}
               onClick={() => setIsDescriptionOpen((open) => !open)}
             >
-              Опис
-              <span className="m-product-page-accordion-icon">
-                {isDescriptionOpen ? "−" : "+"}
-              </span>
+              {isDescriptionOpen ? "Read less" : "Read more"}
             </button>
-            {isDescriptionOpen && (
-              <p className="body-text m-product-page-description">
-                {product.description}
-              </p>
-            )}
           </div>
+
+          {product.video && (
+            <video
+              className="m-product-page-video"
+              src={product.video}
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+          )}
         </div>
       </main>
     );

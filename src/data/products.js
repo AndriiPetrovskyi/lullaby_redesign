@@ -6,6 +6,8 @@ import flowerImage from "../assets/fl3.jpeg"
 import flowerImage2 from "../assets/fl1.PNG"
 import flowerImage3 from "../assets/fl2.PNG"
 import boxImage from "../assets/box.jpg"
+import processVideo from "../assets/process.mp4"
+import video2 from "../assets/video2.MP4"
 
 const products = [
   {
@@ -15,6 +17,7 @@ const products = [
     price: 590,
     image: handmadeImage,
     gallery: [handmadeImage, sliderImage, seedsImage],
+    video: processVideo,
   },
   {
     id: 2,
@@ -23,6 +26,7 @@ const products = [
     price: 640,
     image: sliderImage,
     gallery: [sliderImage, sliderImage2, boxImage],
+    video: video2,
   },
   {
     id: 3,
@@ -46,6 +50,7 @@ Inside every candle is a small surprise — a unique packet of seeds. Plant them
     price: 560,
     image: flowerImage,
     gallery: [flowerImage, flowerImage2, flowerImage3],
+    video: processVideo,
   },
   {
     id: 4,
@@ -54,6 +59,7 @@ Inside every candle is a small surprise — a unique packet of seeds. Plant them
     price: 720,
     image: boxImage,
     gallery: [boxImage, handmadeImage, sliderImage],
+    video: video2,
   },
 ]
 
