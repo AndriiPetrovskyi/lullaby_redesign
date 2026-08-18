@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import './ProductCard.css'
+import { Link } from "react-router-dom";
+import "./ProductCard.css";
 
 function ProductCard({ product }) {
   return (
@@ -8,9 +8,9 @@ function ProductCard({ product }) {
         <img src={product.image} alt={product.name} />
       </div>
       <p className="product-card-name">{product.name}</p>
-      <p className="product-card-price">{product.price} ₴</p>
+      <p className="product-card-price">{product.price} $</p>
     </Link>
-  )
+  );
 }
 
-export default ProductCard
+export default ProductCard;

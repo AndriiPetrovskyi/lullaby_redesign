@@ -19,7 +19,7 @@
 }
 
 .product-card-name {
-  margin: 16px 0 0;
+  margin: 10px 0 0;
   padding-inline: var(--spacing-md);
   font-family: var(--font-family-heading-italic);
   font-style: italic;

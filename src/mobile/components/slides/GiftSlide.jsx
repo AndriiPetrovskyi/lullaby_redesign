@@ -1,6 +1,6 @@
-import productVideo from '../../../assets/video2.MP4'
-import './Slide.css'
-import './GiftSlide.css'
+import productVideo from "../../../assets/video2.MP4";
+import "./Slide.css";
+import "./GiftSlide.css";
 
 function GiftSlide() {
   return (
@@ -9,13 +9,23 @@ function GiftSlide() {
         <video src={productVideo} autoPlay loop muted playsInline />
       </div>
       <div className="m-slide-content-text">
-        <p className="body-text">The best gifts say what words can't.</p>
+        <p className="body-text m-gift-slide-tagline">
+          The best gifts say what words can't.
+        </p>
+      </div>
+      <div className="m-gift-slide-title">
+        <p className="m-gift-slide-title-bold">A gift</p>
+        <p className="m-gift-slide-title-script">before</p>
+        <p className="m-gift-slide-title-bold-bottom">the gift</p>
       </div>
       <div className="m-slide-content-text">
-        <h2 className="h2-heading">A gift before the gift</h2>
+        <p className="body-text m-gift-slide-caption">
+          Each candle arrives in a handcrafted keepsake box, created with the
+          same care as what's inside.
+        </p>
       </div>
     </div>
-  )
+  );
 }
 
-export default GiftSlide
+export default GiftSlide;

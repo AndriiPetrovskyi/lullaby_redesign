@@ -1,6 +1,6 @@
 .products-grid {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg);
+  gap: 40px;
   /* margin-top: var(--spacing-lg); */
 }

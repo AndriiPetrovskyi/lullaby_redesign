@@ -1,4 +1,9 @@
 .m-slide-content {
+  /* Uniform scale factor vs. the 390x844 reference design used to hand-tune
+     the fixed px positions/font-sizes below. Multiply any such px value by
+     var(--mobile-scale) so it scales with the real viewport height instead
+     of only looking right at one device size. */
+  --mobile-scale: calc(100vh / 844px);
   display: flex;
   flex-direction: column;
   align-items: center;

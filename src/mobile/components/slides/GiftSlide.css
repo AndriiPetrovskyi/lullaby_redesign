@@ -1,3 +1,7 @@
+.m-gift-slide {
+  position: relative;
+}
+
 .m-gift-slide .m-slide-content-image {
   width: calc(100% + var(--spacing-md) * 2);
   margin-inline: calc(var(--spacing-md) * -1);
@@ -19,4 +23,81 @@
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.m-gift-slide-tagline {
+  position: absolute;
+  top: var(--spacing-lg);
+  left: var(--spacing-md);
+  right: var(--spacing-md);
+  z-index: 1;
+  margin: 0;
+  text-align: center;
+  font-family: "Libre Caslon Text", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: calc(16px * var(--mobile-scale));
+  color: #ffa047;
+}
+
+.m-gift-slide-title {
+  position: absolute;
+  top: calc(70% - 31px * var(--mobile-scale));
+  left: calc(55px * var(--mobile-scale));
+  display: flex;
+  flex-direction: column;
+}
+
+.m-gift-slide-title-script,
+.m-gift-slide-title-bold,
+.m-gift-slide-title-bold-bottom {
+  margin: 0;
+  line-height: 0.9;
+}
+
+.m-gift-slide-title-script {
+  font-family: "Libre Caslon Text", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: calc(36px * var(--mobile-scale));
+  filter: blur(0.9px);
+  letter-spacing: -0.08em;
+  color: #ffa047;
+  margin-left: calc(100px * var(--mobile-scale));
+}
+
+.m-gift-slide-title-bold {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: calc(72px * var(--mobile-scale));
+  letter-spacing: -0.05em;
+  color: #ff620e;
+}
+
+.m-gift-slide-title-bold-bottom {
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: calc(72px * var(--mobile-scale));
+  font-style: italic;
+  letter-spacing: -0.05em;
+  color: #ff620e;
+  margin-left: calc(60px * var(--mobile-scale));
+  margin-top: calc(-12px * var(--mobile-scale));
+}
+
+.m-gift-slide-caption {
+  position: absolute;
+  top: calc(70% + 206px * var(--mobile-scale));
+  left: var(--spacing-md);
+  right: var(--spacing-md);
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+  font-size: calc(16px * var(--mobile-scale));
+  color: #ffa047;
+  letter-spacing: -0.08em;
+  line-height: 1.6;
+  text-align: left;
+  width: 70%;
 }
