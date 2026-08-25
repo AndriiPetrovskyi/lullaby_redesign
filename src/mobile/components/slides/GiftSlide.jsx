@@ -1,4 +1,5 @@
 import productVideo from "../../../assets/video2.MP4";
+import MutableVideo from "../../../components/MutableVideo.jsx";
 import "./Slide.css";
 import "./GiftSlide.css";
 
@@ -6,7 +7,7 @@ function GiftSlide() {
   return (
     <div className="m-slide-content m-gift-slide">
       <div className="m-slide-content-image">
-        <video src={productVideo} autoPlay loop muted playsInline />
+        <MutableVideo src={productVideo} />
       </div>
       <div className="m-slide-content-text">
         <p className="body-text m-gift-slide-tagline">

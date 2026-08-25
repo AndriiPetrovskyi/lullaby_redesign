@@ -1,18 +1,12 @@
 import processVideo from "../../../assets/process.mp4";
+import MutableVideo from "../../../components/MutableVideo.jsx";
 import "./Slide.css";
 import "./ProductInfoSlide.css";
 
 function ProductInfoSlide() {
   return (
     <div className="m-slide-content m-product-info-slide">
-      <video
-        className="m-slide-bg-image"
-        src={processVideo}
-        autoPlay
-        loop
-        muted
-        playsInline
-      />
+      <MutableVideo className="m-slide-bg-image" src={processVideo} />
 
       <p className="m-product-info-slide-tagline">
         Some moments don't need words.
