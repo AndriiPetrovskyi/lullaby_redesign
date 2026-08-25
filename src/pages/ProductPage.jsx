@@ -4,9 +4,13 @@ import { useParams } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import products from "../data/products.js";
 import MutableVideo from "../components/MutableVideo.jsx";
+import Modal from "../components/Modal.jsx";
 import Slider from "../mobile/components/Slider.jsx";
 import vesselImage from "../assets/fl1.PNG";
 import "./ProductPage.css";
+
+const CONTACT_EMAIL = "hello@lullaby.com";
+const INSTAGRAM_HANDLE = "@lullaby.candles";
 
 const PRODUCT_INFO_SECTIONS = [
   {
@@ -27,6 +31,7 @@ function ProductPage() {
   const product = products.find((p) => String(p.id) === slug);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const [openInfoSections, setOpenInfoSections] = useState(() => new Set());
+  const [isDirectOrderModalOpen, setIsDirectOrderModalOpen] = useState(false);
 
   const toggleInfoSection = (index) => {
     setOpenInfoSections((prev) => {
@@ -58,9 +63,22 @@ function ProductPage() {
         />
         <div className="m-product-page-info">
           <p className="m-product-page-name">{product.name}</p>
-          <button type="button" className="m-product-page-add-to-cart">
-            Add to cart · {product.price} $
-          </button>
+          <p className="m-product-page-price">{product.price} $</p>
+          <div className="m-product-page-cta-row">
+            <a
+              href={product.etsyUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="m-product-page-buy-etsy">
+              Buy on Etsy
+            </a>
+            <button
+              type="button"
+              className="m-product-page-direct-order"
+              onClick={() => setIsDirectOrderModalOpen(true)}>
+              Direct Order
+            </button>
+          </div>
 
           {product.fragranceNotes && (
             <div className="m-product-page-notes">
@@ -161,6 +179,26 @@ function ProductPage() {
             />
           </div>
         </div>
+
+        <Modal
+          isOpen={isDirectOrderModalOpen}
+          onClose={() => setIsDirectOrderModalOpen(false)}>
+          <p className="modal-title">Prefer a direct order?</p>
+          <p className="body-text modal-text">
+            Secure your order directly through us. Reach out via Instagram or
+            Email, and we will quickly arrange your payment through PayPal or
+            Payoneer. We usually reply within a few hours to finalize your
+            handmade order.
+          </p>
+          <div className="modal-contacts">
+            <a href={`mailto:${CONTACT_EMAIL}`} className="modal-contact-link">
+              {CONTACT_EMAIL}
+            </a>
+            <span className="modal-contact-link modal-contact-link--static">
+              {INSTAGRAM_HANDLE}
+            </span>
+          </div>
+        </Modal>
       </main>
     );
   }

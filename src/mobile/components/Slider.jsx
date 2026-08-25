@@ -56,15 +56,6 @@ function Slider({ slides }) {
       </div>
 
       <div className="m-slider-controls">
-        <div className="m-slider-nav">
-          <button type="button" className="m-slider-nav-btn" onClick={goPrev}>
-            Prev
-          </button>
-          <span className="m-slider-nav-divider">/</span>
-          <button type="button" className="m-slider-nav-btn m-slider-nav-btn--next" onClick={goNext}>
-            Next
-          </button>
-        </div>
         <div className="m-slider-counter">
           {pad(index + 1)} / {pad(total)}
         </div>

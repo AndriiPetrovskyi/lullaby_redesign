@@ -18,6 +18,7 @@ const products = [
     image: handmadeImage,
     gallery: [handmadeImage, sliderImage, seedsImage],
     video: processVideo,
+    etsyUrl: "https://www.etsy.com",
   },
   {
     id: 2,
@@ -27,6 +28,7 @@ const products = [
     image: sliderImage,
     gallery: [sliderImage, sliderImage2, boxImage],
     video: video2,
+    etsyUrl: "https://www.etsy.com",
   },
   {
     id: 3,
@@ -51,6 +53,7 @@ Inside every candle is a small surprise — a unique packet of seeds. Plant them
     image: flowerImage,
     gallery: [flowerImage, flowerImage2, flowerImage3],
     video: processVideo,
+    etsyUrl: "https://www.etsy.com",
   },
   {
     id: 4,
@@ -60,6 +63,7 @@ Inside every candle is a small surprise — a unique packet of seeds. Plant them
     image: boxImage,
     gallery: [boxImage, handmadeImage, sliderImage],
     video: video2,
+    etsyUrl: "https://www.etsy.com",
   },
 ]
 
