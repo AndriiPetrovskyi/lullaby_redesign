@@ -5,6 +5,7 @@ import { useIsMobile } from "../hooks/useIsMobile.js";
 import products from "../data/products.js";
 import MutableVideo from "../components/MutableVideo.jsx";
 import Slider from "../mobile/components/Slider.jsx";
+import vesselImage from "../assets/fl1.PNG";
 import "./ProductPage.css";
 
 const PRODUCT_INFO_SECTIONS = [
@@ -78,11 +79,14 @@ function ProductPage() {
 
           <div className="m-product-page-accordion">
             <motion.div
-              className="m-product-page-description-wrap"
+              className={
+                isDescriptionOpen
+                  ? "m-product-page-description-wrap"
+                  : "m-product-page-description-wrap m-product-page-description-wrap--collapsed"
+              }
               initial={false}
               animate={{ height: isDescriptionOpen ? "auto" : 60 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-            >
+              transition={{ duration: 0.3, ease: "easeInOut" }}>
               <p className="body-text m-product-page-description">
                 {product.description}
               </p>
@@ -110,8 +114,7 @@ function ProductPage() {
                     <motion.span
                       className="m-product-page-faq-icon"
                       animate={{ rotate: isOpen ? 45 : 0 }}
-                      transition={{ duration: 0.25, ease: "easeInOut" }}
-                    >
+                      transition={{ duration: 0.25, ease: "easeInOut" }}>
                       +
                     </motion.span>
                   </button>
@@ -122,8 +125,7 @@ function ProductPage() {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                      >
+                        transition={{ duration: 0.3, ease: "easeInOut" }}>
                         <p className="body-text m-product-page-faq-content">
                           {section.content}
                         </p>
@@ -135,9 +137,29 @@ function ProductPage() {
             })}
           </div>
 
+          <p className="m-product-page-video-title">
+            Crafted, not mass-produced: art in every detail.
+          </p>
           {product.video && (
-            <MutableVideo className="m-product-page-video" src={product.video} />
+            <div className="m-product-page-video-frame">
+              <MutableVideo
+                className="m-product-page-video"
+                src={product.video}></MutableVideo>
+            </div>
           )}
+
+          <div className="m-product-page-vessel-section">
+            <p className="m-product-page-vessel-title">
+              Don't throw the vessel away.
+              <br />
+              Plant a flower in it.
+            </p>
+            <img
+              className="m-product-page-vessel-image"
+              src={vesselImage}
+              alt="Ваза зі свічки з квіткою"
+            />
+          </div>
         </div>
       </main>
     );

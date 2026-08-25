@@ -64,13 +64,13 @@
   font-weight: 700;
 }
 
-.m-product-page-accordion {
-  margin-top: var(--spacing-md);
-}
+/* .m-product-page-accordion {
+  margin-top: var(--spacing-sm);
+} */
 
 .m-product-page-accordion-toggle {
   display: block;
-  margin-top: var(--spacing-xs);
+  margin-top: calc(var(--spacing-xs) + 8px);
   padding: 0;
   border: none;
   background: none;
@@ -87,6 +87,19 @@
   overflow: hidden;
 }
 
+.m-product-page-description-wrap--collapsed {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black calc(100% - 8px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    black calc(100% - 8px),
+    transparent 100%
+  );
+}
+
 .m-product-page-description {
   margin: var(--spacing-sm) 0 0;
   white-space: pre-line;
@@ -98,7 +111,7 @@
 }
 
 .m-product-page-faq {
-  margin-top: var(--spacing-lg);
+  margin-top: var(--spacing-sm);
   border-top: 1px solid var(--color-accent-coral);
   border-bottom: 1px solid var(--color-accent-coral);
 }
@@ -140,13 +153,62 @@
   color: var(--color-text-dark);
 }
 
-.m-product-page .mutable-video-wrap {
+.m-product-page-video-section {
   margin-top: var(--spacing-lg);
+}
+
+.m-product-page-video-title {
+  /* margin: 0 0 var(--spacing-md); */
+  font-family: "Inter", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.3;
+  color: var(--color-accent-cobalt);
+  letter-spacing: -0.08em;
+}
+
+.m-product-page-video-frame {
+  width: calc(100% + var(--spacing-md) * 2);
+  margin-inline: calc(var(--spacing-md) * -1);
 }
 
 .m-product-page-video {
   display: block;
   width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.m-product-page-video-caption {
+  margin: var(--spacing-md) 0 0;
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-text-dark);
+  letter-spacing: -0.08em;
+}
+
+.m-product-page-vessel-section {
+  margin-top: var(--spacing-lg);
+}
+
+.m-product-page-vessel-title {
+  margin: 0 0 var(--spacing-md);
+  font-family: "Inter", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.3;
+  color: var(--color-accent-cobalt);
+  letter-spacing: -0.08em;
+}
+
+.m-product-page-vessel-image {
+  display: block;
+  width: calc(100% + var(--spacing-md) * 2);
+  margin-inline: calc(var(--spacing-md) * -1);
   aspect-ratio: 1 / 1;
   object-fit: cover;
 }
