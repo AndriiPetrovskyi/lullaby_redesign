@@ -33,20 +33,35 @@ export function useSectionScroll(sectionCount, { duration = 1600, enabled = true
 
     const currentIndex = () => Math.round(window.scrollY / window.innerHeight)
 
+    // Only the snapped section stack (index 0..sectionCount-1) is under our
+    // control. Once a wheel/key tick would move past its edges, let the
+    // browser scroll natively so content below the stack (e.g. the footer)
+    // stays reachable instead of being trapped by preventDefault().
     const handleWheel = (e) => {
+      if (isAnimatingRef.current) {
+        e.preventDefault()
+        return
+      }
+      const index = currentIndex()
+      if (index < 0 || index > sectionCount - 1) return
+      const target = index + (e.deltaY > 0 ? 1 : -1)
+      if (target < 0 || target > sectionCount - 1) return
       e.preventDefault()
-      if (isAnimatingRef.current) return
-      animateTo(currentIndex() + (e.deltaY > 0 ? 1 : -1))
+      animateTo(target)
     }
 
     const handleKeyDown = (e) => {
       if (isAnimatingRef.current) return
+      const index = currentIndex()
+      if (index < 0 || index > sectionCount - 1) return
       if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+        if (index >= sectionCount - 1) return
         e.preventDefault()
-        animateTo(currentIndex() + 1)
+        animateTo(index + 1)
       } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        if (index <= 0) return
         e.preventDefault()
-        animateTo(currentIndex() - 1)
+        animateTo(index - 1)
       }
     }
 

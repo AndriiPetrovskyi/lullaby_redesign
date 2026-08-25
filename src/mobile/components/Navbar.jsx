@@ -1,14 +1,8 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { NavLink } from 'react-router-dom'
+import navLinks from '../../data/navLinks.js'
 import './Navbar.css'
-
-const links = [
-  { to: '/', label: 'Home' },
-  { to: '/products', label: 'Products' },
-  { to: '/about', label: 'About us' },
-  { to: '/contact', label: 'Contact us' },
-]
 
 const listVariants = {
   hidden: { clipPath: 'circle(0% at calc(100% - 32px) 32px)' },
@@ -58,7 +52,7 @@ function Navbar() {
             animate="visible"
             exit="exit"
           >
-            {links.map((link, i) => (
+            {navLinks.map((link, i) => (
               <motion.li key={link.to} custom={i} variants={itemVariants}>
                 <NavLink
                   to={link.to}
