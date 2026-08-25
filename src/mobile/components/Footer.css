@@ -1,0 +1,107 @@
+.m-footer {
+  margin-top: 56px;
+  background: var(--color-accent-cobalt);
+  color: var(--color-bg-light);
+  padding: 0 var(--spacing-md) var(--spacing-md);
+  box-sizing: border-box;
+  text-align: center;
+  overflow: hidden;
+}
+
+.m-footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.m-footer-wordmark {
+  margin: 0;
+  margin-top: -6px;
+  margin-left: -17%;
+  font-family: "Inter", sans-serif;
+  font-weight: 800;
+  font-size: 96px;
+  line-height: 0.85;
+  letter-spacing: -0.06em;
+  color: var(--color-bg-light);
+}
+
+.m-footer-tagline {
+  margin-left: 55%;
+  font-family: "Libre Caslon Text", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 42px;
+  letter-spacing: -0.06em;
+  color: #ffa047;
+  filter: blur(1.2px);
+}
+
+.m-footer-links {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-top: var(--spacing-lg);
+  text-align: left;
+}
+
+.m-footer-nav ul,
+.m-footer-legal {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.m-footer-legal {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.m-footer-nav-link {
+  font-family: "Inter", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: -0.04em;
+  color: rgba(255, 232, 207, 0.55);
+  text-decoration: none;
+}
+
+.m-footer-legal-link {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+  color: var(--color-bg-light);
+  text-decoration: none;
+}
+
+.m-footer-socials {
+  list-style: none;
+  margin: var(--spacing-lg) 0 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-lg);
+}
+
+.m-footer-social-link {
+  display: flex;
+  color: var(--color-bg-light);
+}
+
+.m-footer-social-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.m-footer-copyright {
+  margin: var(--spacing-lg) 0 0;
+  font-family: "Inter", sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 232, 207, 0.5);
+}
