@@ -1,6 +1,6 @@
 .m-product-page .m-slider-slide img {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
   display: block;
   background: var(--color-bg-light);
@@ -200,7 +200,7 @@
 .m-product-page-video {
   display: block;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
 }
 
@@ -242,10 +242,16 @@
 }
 
 .m-product-page-closing-section {
+  box-sizing: border-box;
+  min-height: 40vh;
   margin-top: 48px;
   margin-bottom: 16px;
-  border-top: 1px solid var(--color-text-dark);
   padding-top: 32px;
+  padding-bottom: 32px;
+  border-top: 1px solid var(--color-text-dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .m-product-page-closing-text {
@@ -279,7 +285,7 @@
   display: block;
   width: calc(100% + var(--spacing-md) * 2);
   margin-inline: calc(var(--spacing-md) * -1);
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
 }
 

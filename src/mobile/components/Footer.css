@@ -1,5 +1,5 @@
 .m-footer {
-  margin-top: 56px;
+  /* margin-top: 56px; */
   background: var(--color-accent-cobalt);
   color: var(--color-bg-light);
   padding: 0 var(--spacing-md) var(--spacing-md);

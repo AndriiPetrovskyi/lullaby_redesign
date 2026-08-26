@@ -167,7 +167,8 @@ function ProductPage() {
               </div>
             )}
             <p className="m-product-page-video-caption">
-              Poured by hand, one candle at a time.
+              Poured by hand, one candle at a time — every pour a little
+              different from the last.
             </p>
           </div>
 
@@ -183,7 +184,8 @@ function ProductPage() {
               alt="Ваза зі свічки з квіткою"
             />
             <p className="m-product-page-vessel-caption">
-              Burn the candle. Keep the vessel. Grow something new.
+              Burn the candle, keep the vessel, and grow something new —
+              a small ritual that keeps on giving.
             </p>
           </div>
 
@@ -199,7 +201,8 @@ function ProductPage() {
               </div>
             )}
             <p className="m-product-page-gift-caption">
-              Ready to gift, straight out of the box.
+              Ready to gift, straight out of the box — no extra wrapping,
+              no last-minute run to the store.
             </p>
           </div>
 
