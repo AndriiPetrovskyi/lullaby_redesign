@@ -155,16 +155,21 @@ function ProductPage() {
             })}
           </div>
 
-          <p className="m-product-page-video-title">
-            Crafted, not mass-produced: art in every detail.
-          </p>
-          {product.video && (
-            <div className="m-product-page-video-frame">
-              <MutableVideo
-                className="m-product-page-video"
-                src={product.video}></MutableVideo>
-            </div>
-          )}
+          <div className="m-product-page-video-section">
+            <p className="m-product-page-video-title">
+              Crafted, not mass-produced: art in every detail.
+            </p>
+            {product.video && (
+              <div className="m-product-page-video-frame">
+                <MutableVideo
+                  className="m-product-page-video"
+                  src={product.video}></MutableVideo>
+              </div>
+            )}
+            <p className="m-product-page-video-caption">
+              Poured by hand, one candle at a time.
+            </p>
+          </div>
 
           <div className="m-product-page-vessel-section">
             <p className="m-product-page-vessel-title">
@@ -177,6 +182,9 @@ function ProductPage() {
               src={vesselImage}
               alt="Ваза зі свічки з квіткою"
             />
+            <p className="m-product-page-vessel-caption">
+              Burn the candle. Keep the vessel. Grow something new.
+            </p>
           </div>
 
           <div className="m-product-page-gift-section">
@@ -190,6 +198,9 @@ function ProductPage() {
                   src={product.video}></MutableVideo>
               </div>
             )}
+            <p className="m-product-page-gift-caption">
+              Ready to gift, straight out of the box.
+            </p>
           </div>
 
           <div className="m-product-page-closing-section">
