@@ -178,6 +178,42 @@ function ProductPage() {
               alt="Ваза зі свічки з квіткою"
             />
           </div>
+
+          <div className="m-product-page-gift-section">
+            <p className="m-product-page-gift-title">
+              The Perfect Frame. A Ready-to-Give Gift.
+            </p>
+            {product.video && (
+              <div className="m-product-page-video-frame">
+                <MutableVideo
+                  className="m-product-page-video"
+                  src={product.video}></MutableVideo>
+              </div>
+            )}
+          </div>
+
+          <div className="m-product-page-closing-section">
+            <p className="body-text m-product-page-closing-text">
+              From the first touch of raw material to the sprout that grows
+              from the seeds. We've created not just an object, but an
+              emotion—perfectly packaged and ready to be your ultimate gift.
+            </p>
+            <div className="m-product-page-cta-row">
+              <a
+                href={product.etsyUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="m-product-page-buy-etsy">
+                Buy on Etsy
+              </a>
+              <button
+                type="button"
+                className="m-product-page-direct-order"
+                onClick={() => setIsDirectOrderModalOpen(true)}>
+                Direct Order
+              </button>
+            </div>
+          </div>
         </div>
 
         <Modal
