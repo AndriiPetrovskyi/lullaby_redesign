@@ -42,3 +42,8 @@
   overflow: hidden;
 }
 
+.m-home-section--auto {
+  height: auto;
+  overflow: visible;
+}
+
