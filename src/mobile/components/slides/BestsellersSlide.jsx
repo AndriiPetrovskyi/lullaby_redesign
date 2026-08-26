@@ -4,7 +4,7 @@ import "./Slide.css";
 import "./BestsellersSlide.css";
 
 function BestsellersSlide() {
-  const bestsellers = products.slice(0, 4);
+  const bestsellers = products.slice(0, 2);
 
   return (
     <div className="m-slide-content m-bestsellers-slide">

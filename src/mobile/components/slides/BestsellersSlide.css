@@ -19,24 +19,26 @@
   font-family: "Libre Caslon Text", serif;
   font-style: italic;
   font-weight: 700;
-  font-size: calc(48px * var(--mobile-scale));
+  font-size: calc(55px * var(--mobile-scale));
   color: #ffa047;
 }
 
 .m-bestsellers-slide-title-bold {
-  margin-top: calc(2px * var(--mobile-scale));
   margin-left: calc(80px * var(--mobile-scale));
+  margin-top: -6px;
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: calc(48px * var(--mobile-scale));
+  letter-spacing: -0.08em;
+  font-size: calc(55px * var(--mobile-scale));
   color: var(--color-accent-cobalt);
 }
 
 .m-bestsellers-slide-grid {
-  width: 100%;
+  width: calc(100% + var(--spacing-md) * 2);
+  margin-inline: calc(var(--spacing-md) * -1);
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
   margin-bottom: 24px;
 }
 
