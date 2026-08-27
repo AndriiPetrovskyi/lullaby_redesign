@@ -3,7 +3,7 @@ import "./ProductCard.css";
 
 function ProductCard({ product }) {
   return (
-    <Link to={`/products/${product.id}`} className="product-card">
+    <Link to={`/products/${product.slug}`} className="product-card">
       <div className="product-card-image">
         <img src={product.image} alt={product.name} />
       </div>

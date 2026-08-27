@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import ProductCard from "../ProductCard.jsx";
-import products from "../../data/products.js";
+import { useProducts } from "../../hooks/useProducts.js";
 import { fadeInUp, riseUp } from "../../utils/scrollAnimation.js";
 import "./Slide.css";
 import "./BestsellersSlide.css";
 
 function BestsellersSlide() {
+  const { products } = useProducts();
   const bestsellers = products.slice(0, 4);
 
   return (

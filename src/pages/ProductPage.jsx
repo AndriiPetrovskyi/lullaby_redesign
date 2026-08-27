@@ -2,11 +2,13 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile.js";
-import products from "../data/products.js";
+import { useProduct } from "../hooks/useProducts.js";
 import MutableVideo from "../components/MutableVideo.jsx";
 import Modal from "../components/Modal.jsx";
 import Slider from "../mobile/components/Slider.jsx";
 import vesselImage from "../assets/fl1.PNG";
+import jarProcessVideo from "../assets/process.mp4";
+import boxProcessVideo from "../assets/video2.MP4";
 import "./ProductPage.css";
 
 const CONTACT_EMAIL = "hello@lullaby.com";
@@ -28,7 +30,7 @@ const PRODUCT_INFO_SECTIONS = [
 function ProductPage() {
   const { slug } = useParams();
   const isMobile = useIsMobile();
-  const product = products.find((p) => String(p.id) === slug);
+  const { product, isLoading, error } = useProduct(slug);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const [openInfoSections, setOpenInfoSections] = useState(() => new Set());
   const [isDirectOrderModalOpen, setIsDirectOrderModalOpen] = useState(false);
@@ -45,7 +47,15 @@ function ProductPage() {
     });
   };
 
-  if (!product) {
+  if (isLoading) {
+    return (
+      <main>
+        <p className="body-text">Завантаження товару…</p>
+      </main>
+    );
+  }
+
+  if (error || !product) {
     return (
       <main>
         <h1 className="h1-heading">Товар не знайдено</h1>
@@ -159,13 +169,11 @@ function ProductPage() {
             <p className="m-product-page-video-title">
               Crafted, not mass-produced: art in every detail.
             </p>
-            {product.video && (
-              <div className="m-product-page-video-frame">
-                <MutableVideo
-                  className="m-product-page-video"
-                  src={product.video}></MutableVideo>
-              </div>
-            )}
+            <div className="m-product-page-video-frame">
+              <MutableVideo
+                className="m-product-page-video"
+                src={jarProcessVideo}></MutableVideo>
+            </div>
             <p className="m-product-page-video-caption">
               Poured by hand, one candle at a time — every pour a little
               different from the last.
@@ -193,13 +201,11 @@ function ProductPage() {
             <p className="m-product-page-gift-title">
               The Perfect Frame. A Ready-to-Give Gift.
             </p>
-            {product.video && (
-              <div className="m-product-page-video-frame">
-                <MutableVideo
-                  className="m-product-page-video"
-                  src={product.video}></MutableVideo>
-              </div>
-            )}
+            <div className="m-product-page-video-frame">
+              <MutableVideo
+                className="m-product-page-video"
+                src={boxProcessVideo}></MutableVideo>
+            </div>
             <p className="m-product-page-gift-caption">
               Ready to gift, straight out of the box — no extra wrapping,
               no last-minute run to the store.
@@ -255,7 +261,7 @@ function ProductPage() {
 
   return (
     <main>
-      <h1 className="h1-heading">Товар {slug}</h1>
+      <h1 className="h1-heading">{product.name}</h1>
     </main>
   );
 }

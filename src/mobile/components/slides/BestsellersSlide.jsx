@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-import products from "../../../data/products.js";
+import { useProducts } from "../../../hooks/useProducts.js";
 import "./Slide.css";
 import "./BestsellersSlide.css";
 
 function BestsellersSlide() {
+  const { products } = useProducts();
   const bestsellers = products.slice(0, 2);
 
   return (
@@ -16,7 +17,7 @@ function BestsellersSlide() {
         {bestsellers.map((product) => (
           <Link
             key={product.id}
-            to={`/products/${product.id}`}
+            to={`/products/${product.slug}`}
             className="m-bestsellers-slide-item">
             <img src={product.image} alt={product.name} />
             <p className="m-bestsellers-slide-item-name">{product.name}</p>
