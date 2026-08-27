@@ -1,0 +1,49 @@
+.loading-screen {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  width: 100%;
+}
+
+.loading-screen-text {
+  font-family: var(--font-family-heading-italic);
+  font-style: italic;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  line-height: 1;
+  user-select: none;
+}
+
+.loading-screen-text--outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-accent-coral);
+  text-stroke: 1.5px var(--color-accent-coral);
+}
+
+.loading-screen-text--fill {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent-coral);
+  clip-path: inset(0 100% 0 0);
+  animation: loading-screen-fill 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes loading-screen-fill {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0% 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-screen-text--fill {
+    animation: none;
+    clip-path: inset(0 50% 0 0);
+  }
+}

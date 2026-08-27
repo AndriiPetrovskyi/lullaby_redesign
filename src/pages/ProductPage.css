@@ -264,6 +264,15 @@
   font-size: 18px;
 }
 
+.m-product-page-closing-text-emphasis {
+  display: block;
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  color: var(--color-accent-coral);
+  font-weight: 500;
+  font-style: italic;
+}
+
 .m-product-page-vessel-section {
   margin-top: var(--spacing-lg);
   padding-top: var(--spacing-lg);

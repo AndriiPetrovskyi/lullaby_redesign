@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import { useProduct } from "../hooks/useProducts.js";
+import LoadingScreen from "../components/LoadingScreen.jsx";
 import MutableVideo from "../components/MutableVideo.jsx";
 import Modal from "../components/Modal.jsx";
 import Slider from "../mobile/components/Slider.jsx";
@@ -50,7 +51,7 @@ function ProductPage() {
   if (isLoading) {
     return (
       <main>
-        <p className="body-text">Завантаження товару…</p>
+        <LoadingScreen />
       </main>
     );
   }
@@ -94,13 +95,13 @@ function ProductPage() {
             <div className="m-product-page-notes">
               <p className="m-product-page-notes-title">Fragrance Notes</p>
               <p className="m-product-page-notes-row">
-                <span>Top</span> {product.fragranceNotes.top}
+                <span>Top:</span> {product.fragranceNotes.top}
               </p>
               <p className="m-product-page-notes-row">
-                <span>Heart</span> {product.fragranceNotes.heart}
+                <span>Heart:</span> {product.fragranceNotes.heart}
               </p>
               <p className="m-product-page-notes-row">
-                <span>Base</span> {product.fragranceNotes.base}
+                <span>Base:</span> {product.fragranceNotes.base}
               </p>
             </div>
           )}
@@ -192,8 +193,8 @@ function ProductPage() {
               alt="Ваза зі свічки з квіткою"
             />
             <p className="m-product-page-vessel-caption">
-              Burn the candle, keep the vessel, and grow something new —
-              a small ritual that keeps on giving.
+              Burn the candle, keep the vessel, and grow something new — a small
+              ritual that keeps on giving.
             </p>
           </div>
 
@@ -207,16 +208,19 @@ function ProductPage() {
                 src={boxProcessVideo}></MutableVideo>
             </div>
             <p className="m-product-page-gift-caption">
-              Ready to gift, straight out of the box — no extra wrapping,
-              no last-minute run to the store.
+              Ready to gift, straight out of the box — no extra wrapping, no
+              last-minute run to the store.
             </p>
           </div>
 
           <div className="m-product-page-closing-section">
             <p className="body-text m-product-page-closing-text">
-              From the first touch of raw material to the sprout that grows
-              from the seeds. We've created not just an object, but an
-              emotion—perfectly packaged and ready to be your ultimate gift.
+              From the first touch of raw material to the sprout that grows from
+              the seeds.
+              <span className="m-product-page-closing-text-emphasis">
+                We've created not just an object, but an emotion—perfectly
+                packaged and ready to be your ultimate gift.
+              </span>
             </p>
             <div className="m-product-page-cta-row">
               <a

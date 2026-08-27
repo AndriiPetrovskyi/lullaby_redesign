@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import LoadingScreen from "../components/LoadingScreen.jsx";
 import ProductCard from "../components/ProductCard.jsx";
 import { useProducts } from "../hooks/useProducts.js";
 import { riseUp } from "../utils/scrollAnimation.js";
@@ -10,7 +11,7 @@ function ProductsPage() {
   if (isLoading) {
     return (
       <main>
-        <p className="body-text">Завантаження товарів…</p>
+        <LoadingScreen />
       </main>
     );
   }
