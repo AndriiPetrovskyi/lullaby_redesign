@@ -309,3 +309,407 @@
   color: var(--color-text-dark);
   letter-spacing: -0.08em;
 }
+
+/* ===================================================================
+   Desktop product page
+   =================================================================== */
+
+.d-product-page {
+  box-sizing: border-box;
+  /* pull the first section flush to the very top of the viewport,
+     under the (transparent) sticky navbar */
+  margin-top: calc((22px + var(--spacing-md) * 2) * -1);
+  padding-block: 0 96px;
+  /* full-bleed guard for the story sections; `clip` (not `hidden`)
+     keeps the sticky info panel working */
+  overflow-x: clip;
+}
+
+/* centred column for everything except the full-width story sections */
+.d-product-page-inner {
+  box-sizing: border-box;
+  max-width: var(--container-max-width);
+  margin-inline: auto;
+  padding-inline: 40px;
+}
+
+.d-product-page-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: start;
+}
+
+.d-product-page-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.d-product-page-gallery-stage {
+  position: relative;
+}
+
+.d-product-page-gallery-main {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  /* keep the main photo + thumbnails within one screen — no scrolling
+     needed to see the whole image or the thumbnail strip */
+  max-height: calc(100vh - 240px);
+  object-fit: cover;
+  background: var(--color-bg-light);
+}
+
+.d-product-page-gallery-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0 0 4px;
+  border: none;
+  background: rgba(255, 232, 207, 0.82);
+  color: var(--color-accent-cobalt);
+  font-family: var(--font-family-body);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.d-product-page-gallery-arrow:hover {
+  background: var(--color-bg-light);
+}
+
+.d-product-page-gallery-arrow--prev {
+  left: var(--spacing-md);
+}
+
+.d-product-page-gallery-arrow--next {
+  right: var(--spacing-md);
+}
+
+.d-product-page-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.d-product-page-thumb {
+  flex: 1 1 54px;
+  max-width: 99px;
+  padding: 0;
+  border: 2px solid transparent;
+  background: none;
+  cursor: pointer;
+  opacity: 0.55;
+  transition:
+    opacity 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.d-product-page-thumb:hover {
+  opacity: 1;
+}
+
+.d-product-page-thumb--active {
+  opacity: 1;
+  border-color: var(--color-accent-cobalt);
+}
+
+.d-product-page-thumb img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: var(--color-bg-light);
+}
+
+.d-product-page-info {
+  position: sticky;
+  top: var(--spacing-lg);
+  align-self: start;
+  padding-inline: clamp(32px, 5vw, 88px);
+}
+
+.d-product-page-name {
+  margin: 0 0 var(--spacing-md);
+  font-family: var(--font-family-heading-italic);
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(40px, 3vw, 50px);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  color: var(--color-accent-coral);
+}
+
+.d-product-page-price {
+  margin: 0 0 var(--spacing-md);
+  font-family: var(--font-family-body);
+  font-size: 22px;
+  font-weight: 800;
+  font-style: italic;
+  color: var(--color-accent-cobalt);
+}
+
+.d-product-page-cta-row {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+.d-product-page-buy-etsy,
+.d-product-page-direct-order {
+  flex: 1;
+  box-sizing: border-box;
+  padding: 16px var(--spacing-md);
+  font-family: var(--font-family-body);
+  font-size: var(--scale-body-size);
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.d-product-page-buy-etsy {
+  border: none;
+  background: #ffa047;
+  color: #ffe8cf;
+}
+
+.d-product-page-buy-etsy:hover {
+  opacity: 0.85;
+}
+
+.d-product-page-direct-order {
+  border: 2px solid var(--color-accent-cobalt);
+  background: transparent;
+  color: var(--color-accent-cobalt);
+}
+
+.d-product-page-direct-order:hover {
+  background: var(--color-accent-cobalt);
+  color: var(--color-bg-light);
+}
+
+.d-product-page-notes {
+  padding: var(--spacing-md) 0;
+  border-top: 1px solid var(--color-accent-coral);
+  border-bottom: 1px solid var(--color-accent-coral);
+}
+
+.d-product-page-notes-title {
+  margin: 0 0 var(--spacing-sm);
+  font-family: var(--font-family-body);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  color: var(--color-accent-cobalt);
+}
+
+.d-product-page-notes-row {
+  margin: 0;
+  font-family: var(--font-family-body);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.7;
+  letter-spacing: -0.03em;
+  color: var(--color-text-dark);
+}
+
+.d-product-page-notes-row span {
+  font-weight: 700;
+}
+
+.d-product-page-accordion {
+  padding: var(--spacing-md) 0;
+}
+
+.d-product-page-description-wrap {
+  overflow: hidden;
+}
+
+.d-product-page-description-wrap--collapsed {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black calc(100% - 12px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    black calc(100% - 12px),
+    transparent 100%
+  );
+}
+
+.d-product-page-description {
+  margin: 0;
+  white-space: pre-line;
+  font-family: var(--font-family-body);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: -0.03em;
+}
+
+.d-product-page-accordion-toggle {
+  display: block;
+  margin-top: var(--spacing-sm);
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--font-family-body);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  text-decoration: underline;
+  color: var(--color-accent-cobalt);
+  cursor: pointer;
+}
+
+.d-product-page-faq {
+  border-top: 1px solid var(--color-accent-coral);
+}
+
+.d-product-page-faq-item {
+  border-bottom: 1px solid var(--color-accent-coral);
+}
+
+.d-product-page-faq-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--spacing-md) 0;
+  border: none;
+  background: none;
+  font-family: var(--font-family-body);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  color: var(--color-accent-cobalt);
+  cursor: pointer;
+}
+
+.d-product-page-faq-icon {
+  display: inline-block;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--color-accent-cobalt);
+}
+
+.d-product-page-faq-content-wrap {
+  overflow: hidden;
+}
+
+.d-product-page-faq-content {
+  margin: 0;
+  padding-bottom: var(--spacing-md);
+  font-family: var(--font-family-body);
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: -0.03em;
+  color: var(--color-text-dark);
+}
+
+/* --- story sections --- */
+
+.d-product-page-story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: center;
+  margin-top: 0;
+}
+
+.d-product-page-top + .d-product-page-story {
+  margin-top: 96px;
+}
+
+.d-product-page-story-media {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--color-bg-light);
+  order: 2;
+}
+
+img.d-product-page-story-media {
+  display: block;
+  object-fit: cover;
+}
+
+.d-product-page-story--reverse .d-product-page-story-media {
+  order: 0;
+}
+
+.d-product-page-story-text {
+  padding-inline: clamp(24px, 5vw, 72px);
+}
+
+.d-product-page-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.d-product-page-story-title {
+  margin: 0 0 var(--spacing-md);
+  font-family: var(--font-family-heading-italic);
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(38px, 3.4vw, 52px);
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  color: var(--color-accent-cobalt);
+}
+
+.d-product-page-story-caption {
+  margin: 0;
+  font-family: var(--font-family-body);
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--color-text-dark);
+}
+
+.d-product-page-closing-section {
+  margin-top: 112px;
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-text-dark);
+  text-align: center;
+}
+
+.d-product-page-closing-text {
+  max-width: 720px;
+  margin: 0 auto var(--spacing-lg);
+  font-family: var(--font-family-heading-italic);
+  font-size: 20px;
+  line-height: 1.8;
+  color: var(--color-text-dark);
+}
+
+.d-product-page-closing-text-emphasis {
+  display: block;
+  margin-top: var(--spacing-md);
+  color: var(--color-accent-coral);
+  font-weight: 500;
+  font-style: italic;
+  font-size: 24px;
+  line-height: 1.4;
+}
+
+.d-product-page-cta-row--closing {
+  max-width: 420px;
+  margin: 0 auto;
+}

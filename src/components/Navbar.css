@@ -1,15 +1,21 @@
 .navbar {
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 20;
   width: 100%;
   box-sizing: border-box;
   padding: var(--spacing-md);
   display: flex;
   justify-content: flex-end;
+  /* the bar overlaps page content that scrolls beneath it — keep only
+     the burger (and the open menu) interactive, let the rest click through */
+  pointer-events: none;
 }
 
 .navbar-toggle {
   position: relative;
   z-index: 11;
+  pointer-events: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -49,6 +55,7 @@
   position: fixed;
   z-index: 10;
   inset: 0;
+  pointer-events: auto;
   list-style: none;
   margin: 0;
   padding: 88px var(--spacing-md) var(--spacing-lg);

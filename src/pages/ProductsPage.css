@@ -2,5 +2,16 @@
   display: flex;
   flex-direction: column;
   gap: 40px;
-  /* margin-top: var(--spacing-lg); */
+}
+
+@media (min-width: 768px) {
+  .products-grid {
+    box-sizing: border-box;
+    max-width: var(--container-max-width);
+    margin-inline: auto;
+    padding: var(--spacing-lg) 40px 96px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg) var(--spacing-md);
+  }
 }
