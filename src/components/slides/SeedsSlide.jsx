@@ -14,7 +14,7 @@ function SeedsSlide() {
       </div>
       <div className="seeds-slide-row">
         <div className="slide-content-image">
-          <motion.img src={productImage} alt="Насіння" {...scaleDown()} />
+          <motion.img src={productImage} alt="Seeds" {...scaleDown()} />
         </div>
         <div className="seeds-slide-title">
           <motion.p

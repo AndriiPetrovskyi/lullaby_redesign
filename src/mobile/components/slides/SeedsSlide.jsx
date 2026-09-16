@@ -17,7 +17,7 @@ function SeedsSlide() {
       </div>
 
       <div className="m-slide-content-image">
-        <img src={productImage} alt="Насіння" />
+        <img src={productImage} alt="Seeds" />
       </div>
 
       <div className="m-seeds-slide-title m-seeds-slide-title--bottom">

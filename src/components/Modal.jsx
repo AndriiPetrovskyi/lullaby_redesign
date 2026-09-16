@@ -32,7 +32,7 @@ function Modal({ isOpen, onClose, children }) {
             <button
               type="button"
               className="modal-close"
-              aria-label="Закрити"
+              aria-label="Close"
               onClick={onClose}>
               ×
             </button>

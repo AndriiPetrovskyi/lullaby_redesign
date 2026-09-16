@@ -26,7 +26,7 @@ function GiftSlide() {
           </motion.p>
         </div>
         <div className="slide-content-image">
-          <motion.img src={productImage} alt="Подарунок" {...scaleDown()} />
+          <motion.img src={productImage} alt="Gift" {...scaleDown()} />
         </div>
       </div>
       <div className="gift-slide-caption">

@@ -35,7 +35,7 @@ function Navbar() {
         type="button"
         className={isOpen ? 'm-navbar-toggle m-navbar-toggle--open' : 'm-navbar-toggle'}
         aria-expanded={isOpen}
-        aria-label="Меню"
+        aria-label="Menu"
         onClick={() => setIsOpen((open) => !open)}
       >
         <span />

@@ -4,7 +4,72 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Website</title>
+    <meta name="theme-color" content="#ffe8cf" />
+    <title>Lullaby — Handmade Scented Candles</title>
+
+    <!--
+      Everything below with data-seo-default is the fallback for the very
+      first paint and for crawlers that don't run JavaScript (Facebook/
+      Telegram/Twitter link-preview bots). react-helmet-async only APPENDS
+      its own tags — it doesn't remove these — so App.jsx deletes every
+      data-seo-default element in a one-time effect right after mount,
+      leaving exactly one, route-correct copy of each tag for anything that
+      does run JS. Keep this block in sync with src/components/Seo.jsx.
+    -->
+    <meta
+      data-seo-default
+      name="robots"
+      content="index, follow" />
+    <meta
+      data-seo-default
+      name="description"
+      content="Hand-poured scented candles in hand-glazed ceramic vessels. Every Lullaby candle hides a packet of seeds inside — plant them when the candle is done and give the vessel a second life." />
+    <link
+      data-seo-default
+      rel="canonical"
+      href="https://andriipetrovskyi.github.io/lullaby_redesign/" />
+
+    <meta data-seo-default property="og:type" content="website" />
+    <meta data-seo-default property="og:site_name" content="Lullaby" />
+    <meta data-seo-default property="og:title" content="Lullaby — Handmade Scented Candles" />
+    <meta
+      data-seo-default
+      property="og:description"
+      content="Hand-poured scented candles in hand-glazed ceramic vessels. Every Lullaby candle hides a packet of seeds inside — plant them when the candle is done and give the vessel a second life." />
+    <meta
+      data-seo-default
+      property="og:url"
+      content="https://andriipetrovskyi.github.io/lullaby_redesign/" />
+    <meta
+      data-seo-default
+      property="og:image"
+      content="https://api-production-38d4.up.railway.app/uploads/8d001142-743b-4f2c-aee0-e126d7d0127d/light-pink-1.jpg" />
+    <meta data-seo-default name="twitter:card" content="summary_large_image" />
+
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages: decodes the path that
+      // public/404.html re-encoded into the query string, then hands off
+      // to React Router before it mounts. No-op on hosts with real SPA
+      // fallback (Netlify) since this URL shape never occurs there.
+      // https://github.com/rafgraph/spa-github-pages
+      (function (l) {
+        if (l.search[1] === "/") {
+          var decoded = l.search
+            .slice(1)
+            .split("&")
+            .map(function (s) {
+              return s.replace(/~and~/g, "&");
+            })
+            .join("?");
+          window.history.replaceState(
+            null,
+            null,
+            l.pathname.slice(0, -1) + decoded + l.hash,
+          );
+        }
+      })(window.location);
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- Gotham Black — платний шрифт, недоступний через Google Fonts.
@@ -64,6 +129,7 @@
     </style>
   </head>
   <body>
+    <noscript>This site needs JavaScript enabled to work.</noscript>
     <div id="root">
       <div class="boot-loader" aria-hidden="true">
         <span class="boot-loader-text boot-loader-text--outline">Lullaby</span>

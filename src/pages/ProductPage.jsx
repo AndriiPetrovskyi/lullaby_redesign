@@ -6,7 +6,10 @@ import { useProduct } from "../hooks/useProducts.js";
 import LoadingScreen from "../components/LoadingScreen.jsx";
 import MutableVideo from "../components/MutableVideo.jsx";
 import Modal from "../components/Modal.jsx";
+import Seo from "../components/Seo.jsx";
 import Slider from "../mobile/components/Slider.jsx";
+import { DEFAULT_OG_IMAGE, absoluteUrl } from "../config/seo.js";
+import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
 import vesselImage from "../assets/fl1.PNG";
 import jarProcessVideo from "../assets/process.mp4";
 import boxProcessVideo from "../assets/video2.MP4";
@@ -63,15 +66,33 @@ function ProductPage() {
 
   if (error || !product) {
     return (
-      <main>
-        <h1 className="h1-heading">Товар не знайдено</h1>
-      </main>
+      <>
+        <Seo title="Product Not Found" path={`/products/${slug}`} noindex />
+        <main>
+          <h1 className="h1-heading">Product Not Found</h1>
+        </main>
+      </>
     );
   }
+
+  const productSeo = (
+    <Seo
+      title={product.name}
+      description={toMetaDescription(product.description)}
+      path={`/products/${product.slug}`}
+      image={product.image ?? DEFAULT_OG_IMAGE}
+      type="product"
+      jsonLd={buildProductJsonLd(
+        product,
+        absoluteUrl(`/products/${product.slug}`),
+      )}
+    />
+  );
 
   if (isMobile) {
     return (
       <main className="m-product-page">
+        {productSeo}
         <Slider
           slides={product.gallery.map((src, i) => (
             <img key={i} src={src} alt={`${product.name} ${i + 1}`} />
@@ -79,7 +100,7 @@ function ProductPage() {
         />
         <div className="m-product-page-info">
           <p className="m-product-page-name">{product.name}</p>
-          <p className="m-product-page-price">{product.price} $</p>
+          <p className="m-product-page-price">${product.price}</p>
           <div className="m-product-page-cta-row">
             <a
               href={product.etsyUrl}
@@ -195,7 +216,7 @@ function ProductPage() {
             <img
               className="m-product-page-vessel-image"
               src={vesselImage}
-              alt="Ваза зі свічки з квіткою"
+              alt="Candle vessel replanted with a flower"
             />
             <p className="m-product-page-vessel-caption">
               Burn the candle, keep the vessel, and grow something new — a small
@@ -274,6 +295,7 @@ function ProductPage() {
 
   return (
     <main className="d-product-page">
+      {productSeo}
       <div className="d-product-page-top">
           <div className="d-product-page-gallery">
           <div className="d-product-page-gallery-stage">
@@ -296,7 +318,7 @@ function ProductPage() {
                       i === 0 ? galleryImages.length - 1 : i - 1,
                     )
                   }
-                  aria-label="Попереднє фото">
+                  aria-label="Previous photo">
                   ‹
                 </button>
                 <button
@@ -307,7 +329,7 @@ function ProductPage() {
                       i === galleryImages.length - 1 ? 0 : i + 1,
                     )
                   }
-                  aria-label="Наступне фото">
+                  aria-label="Next photo">
                   ›
                 </button>
               </>
@@ -325,7 +347,7 @@ function ProductPage() {
                       : "d-product-page-thumb"
                   }
                   onClick={() => setActiveImage(i)}
-                  aria-label={`${product.name} — фото ${i + 1}`}>
+                  aria-label={`${product.name} — photo ${i + 1}`}>
                   <img src={src} alt={`${product.name} ${i + 1}`} />
                 </button>
               ))}
@@ -335,7 +357,7 @@ function ProductPage() {
 
         <div className="d-product-page-info">
           <h1 className="d-product-page-name">{product.name}</h1>
-          <p className="d-product-page-price">{product.price} $</p>
+          <p className="d-product-page-price">${product.price}</p>
 
           <div className="d-product-page-cta-row">
             <a
@@ -451,7 +473,7 @@ function ProductPage() {
         <img
           className="d-product-page-story-media d-product-page-vessel-image"
           src={vesselImage}
-          alt="Ваза зі свічки з квіткою"
+          alt="Candle vessel replanted with a flower"
         />
         <div className="d-product-page-story-text">
           <p className="d-product-page-story-title">

@@ -29,7 +29,7 @@ function MutableVideo({ src, className, ...videoProps }) {
         type="button"
         className="mutable-video-mute"
         onClick={toggleMute}
-        aria-label={isMuted ? 'Увімкнути звук' : 'Вимкнути звук'}
+        aria-label={isMuted ? 'Unmute' : 'Mute'}
       >
         {isMuted ? '🔇' : '🔊'}
       </button>

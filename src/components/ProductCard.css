@@ -6,34 +6,148 @@
 }
 
 .product-card-image {
+  position: relative;
   aspect-ratio: 1 / 1;
   overflow: hidden;
   background: var(--color-bg-light);
 }
 
-.product-card-image img {
+.product-card-image-primary,
+.product-card-image-hover {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  transition:
+    opacity 0.35s ease,
+    transform 0.5s ease;
+}
+
+.product-card-image-hover {
+  opacity: 0;
+}
+
+.product-card:hover .product-card-image-primary,
+.product-card:hover .product-card-image-hover {
+  transform: scale(1.04);
+}
+
+.product-card:hover .product-card-image-hover {
+  opacity: 1;
+}
+
+.product-card-seed-badge {
+  position: absolute;
+  top: var(--spacing-sm);
+  left: var(--spacing-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 232, 207, 0.85);
+  font-size: 14px;
+  line-height: 1;
+}
+
+.product-card-stock-badge {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  padding: 4px var(--spacing-sm);
+  border-radius: 999px;
+  background: var(--color-accent-cobalt);
+  color: var(--color-bg-light);
+  font-family: var(--font-family-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .product-card-name {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  min-height: calc(24px * 1.15 * 2);
   margin: 10px 0 0;
   padding-inline: var(--spacing-md);
   font-family: var(--font-family-heading-italic);
   font-style: italic;
   font-weight: 700;
   font-size: 24px;
+  line-height: 1.15;
   color: var(--color-text-dark);
 }
 
+.product-card-scent {
+  min-height: 1.4em;
+  margin: 4px 0 0;
+  padding-inline: var(--spacing-md);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--font-family-body);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--color-accent-coral);
+}
+
 .product-card-price {
-  margin: 0;
+  margin: 6px 0 0;
   padding-inline: var(--spacing-md);
   font-family: var(--font-family-body);
   font-size: var(--scale-body-size);
-  font-weight: 500;
+  font-weight: 700;
   color: var(--color-accent-cobalt);
   font-style: italic;
+}
+
+/* ------------------------------------------------------------------ */
+/* loading skeleton — mirrors .product-card's box structure so the grid
+   doesn't jump when real cards swap in */
+
+.product-card-skeleton-image {
+  aspect-ratio: 1 / 1;
+  background: var(--color-accent-coral);
+  opacity: 0.15;
+  animation: product-card-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.product-card-skeleton-line {
+  height: 16px;
+  margin: 10px var(--spacing-md) 0;
+  background: var(--color-accent-coral);
+  opacity: 0.15;
+  animation: product-card-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.product-card-skeleton-line--name {
+  width: 70%;
+  height: 22px;
+}
+
+.product-card-skeleton-line--scent {
+  width: 45%;
+  height: 12px;
+}
+
+.product-card-skeleton-line--price {
+  width: 30%;
+}
+
+@keyframes product-card-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.22;
+  }
 }

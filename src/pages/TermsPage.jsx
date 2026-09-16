@@ -1,8 +1,17 @@
+import Seo from "../components/Seo.jsx";
+
 function TermsPage() {
   return (
-    <main>
-      <h1 className="h1-heading">Terms & Conditions</h1>
-    </main>
+    <>
+      <Seo
+        title="Terms & Conditions"
+        description="Lullaby's terms and conditions — shipping, orders, and use of this site."
+        path="/terms"
+      />
+      <main>
+        <h1 className="h1-heading">Terms & Conditions</h1>
+      </main>
+    </>
   )
 }
 

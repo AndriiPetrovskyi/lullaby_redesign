@@ -14,7 +14,7 @@ function ProductInfoSlide() {
       </div>
       <div className="product-info-slide-visual">
         <div className="slide-content-image">
-          <motion.img src={productImage} alt="Товар" {...scaleDown()} />
+          <motion.img src={productImage} alt="Product" {...scaleDown()} />
         </div>
         <div className="product-info-slide-title">
           <motion.p className="product-info-slide-title-main" {...fadeInUp()}>

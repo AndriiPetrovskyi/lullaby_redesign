@@ -37,7 +37,7 @@ function Navbar() {
           isOpen ? "navbar-toggle navbar-toggle--open" : "navbar-toggle"
         }
         aria-expanded={isOpen}
-        aria-label="Меню"
+        aria-label="Menu"
         onClick={() => setIsOpen((open) => !open)}>
         <span />
         <span />

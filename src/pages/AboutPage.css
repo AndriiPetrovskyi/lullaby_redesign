@@ -1,0 +1,135 @@
+.about-page {
+  box-sizing: border-box;
+  padding-bottom: 96px;
+  /* full-bleed guard for the story sections; `clip` (not `hidden`) so
+     nothing else on the page breaks if it ever needs to be sticky */
+  overflow-x: clip;
+}
+
+.about-page-inner {
+  box-sizing: border-box;
+  max-width: var(--container-max-width);
+  margin-inline: auto;
+  padding-inline: var(--spacing-md);
+}
+
+.about-page-title {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding-top: var(--spacing-lg);
+  line-height: 0.9;
+}
+
+.about-page-title-script {
+  font-family: var(--font-family-heading-italic);
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(48px, 11vw, 96px);
+  letter-spacing: -0.06em;
+  color: var(--color-accent-cobalt);
+}
+
+.about-page-title-bold {
+  padding-bottom: 0.08em;
+  font-family: var(--font-family-body);
+  font-weight: 700;
+  font-size: clamp(40px, 9.5vw, 80px);
+  letter-spacing: -0.06em;
+  color: #ffa047;
+  margin-left: 130px;
+}
+
+.about-page-story {
+  display: flex;
+  flex-direction: column;
+  margin-top: 56px;
+}
+
+.about-page-story-media {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: var(--color-bg-light);
+}
+
+.about-page-story-text {
+  padding: var(--spacing-lg) var(--spacing-md) 0;
+}
+
+.about-page-story-paragraph {
+  margin: 0 0 var(--spacing-md);
+}
+
+.about-page-story-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.about-page-closing {
+  margin-top: 96px;
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-text-dark);
+  text-align: center;
+}
+
+.about-page-closing-text {
+  margin: 0 0 var(--spacing-lg);
+  font-family: var(--font-family-heading-italic);
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(32px, 5vw, 44px);
+  color: var(--color-accent-coral);
+}
+
+.about-page-cta {
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 16px 32px;
+  background: #ffa047;
+  color: #ffe8cf;
+  text-decoration: none;
+  font-family: var(--font-family-body);
+  font-size: var(--scale-body-size);
+  font-weight: 700;
+  transition: opacity 0.2s ease;
+}
+
+.about-page-cta:hover {
+  opacity: 0.85;
+}
+
+@media (min-width: 768px) {
+  .about-page-inner {
+    padding-inline: 40px;
+  }
+
+  .about-page-story {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    align-items: center;
+    margin-top: 0;
+    margin-inline: calc(50% - 50vw);
+  }
+
+  .about-page-inner + .about-page-story {
+    margin-top: 96px;
+  }
+
+  .about-page-story-media {
+    order: 2;
+  }
+
+  .about-page-story--reverse .about-page-story-media {
+    order: 0;
+  }
+
+  .about-page-story-text {
+    padding: 0 clamp(32px, 5vw, 80px);
+  }
+
+  .about-page-closing-text {
+    font-size: clamp(36px, 3.2vw, 48px);
+  }
+}

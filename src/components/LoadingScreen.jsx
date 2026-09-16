@@ -2,7 +2,7 @@ import "./LoadingScreen.css";
 
 function LoadingScreen() {
   return (
-    <div className="loading-screen" role="status" aria-label="Завантаження">
+    <div className="loading-screen" role="status" aria-label="Loading">
       <span className="loading-screen-text loading-screen-text--outline" aria-hidden="true">
         Lullaby
       </span>
