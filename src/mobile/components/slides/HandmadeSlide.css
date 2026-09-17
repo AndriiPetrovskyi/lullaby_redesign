@@ -68,7 +68,6 @@
   font-weight: 700;
   font-size: calc(40px * var(--mobile-scale));
   color: #ff620e;
-  filter: blur(0.9px);
   letter-spacing: -0.08em;
 }
 

@@ -47,10 +47,10 @@ function HomePage() {
             <MobileBestsellersSlide />
           </section>
           <section className="m-home-section">
-            <MobileHandmadeSlide />
+            <MobileSeedsSlide />
           </section>
           <section className="m-home-section">
-            <MobileSeedsSlide />
+            <MobileHandmadeSlide />
           </section>
           <section className="m-home-section">
             <MobileGiftSlide />
@@ -79,12 +79,12 @@ function HomePage() {
         </section>
         <section className="home-section">
           <AnimatedSection className="home-section-inner" direction={-1}>
-            <HandmadeSlide />
+            <SeedsSlide />
           </AnimatedSection>
         </section>
         <section className="home-section">
           <AnimatedSection className="home-section-inner" direction={-1}>
-            <SeedsSlide />
+            <HandmadeSlide />
           </AnimatedSection>
         </section>
         <section className="home-section">

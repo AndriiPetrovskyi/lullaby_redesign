@@ -9,14 +9,9 @@ function GiftSlide() {
       <div className="m-slide-content-image">
         <MutableVideo src={productVideo} />
       </div>
-      <div className="m-slide-content-text">
-        <p className="body-text m-gift-slide-tagline">
-          The best gifts say what words can't.
-        </p>
-      </div>
       <div className="m-gift-slide-title">
-        <p className="m-gift-slide-title-bold">A gift</p>
-        <p className="m-gift-slide-title-script">before</p>
+        <p className="m-gift-slide-title-bold">The first impression</p>
+        <p className="m-gift-slide-title-script">is a part of</p>
         <p className="m-gift-slide-title-bold-bottom">the gift</p>
       </div>
       <div className="m-slide-content-text">

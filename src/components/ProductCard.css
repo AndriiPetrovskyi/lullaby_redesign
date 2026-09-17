@@ -38,21 +38,6 @@
   opacity: 1;
 }
 
-.product-card-seed-badge {
-  position: absolute;
-  top: var(--spacing-sm);
-  left: var(--spacing-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: rgba(255, 232, 207, 0.85);
-  font-size: 14px;
-  line-height: 1;
-}
-
 .product-card-stock-badge {
   position: absolute;
   top: var(--spacing-sm);

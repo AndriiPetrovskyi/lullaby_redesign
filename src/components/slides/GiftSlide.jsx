@@ -13,10 +13,10 @@ function GiftSlide() {
             The best gifts say what words can't.
           </motion.p>
           <motion.p className="gift-slide-title-bold" {...fadeInUp(0.1)}>
-            A gift
+            The first impression
           </motion.p>
           <motion.p className="gift-slide-title-script" {...fadeInUp(0.2)}>
-            before
+            is a part of
           </motion.p>
           <motion.p
             className="gift-slide-title-bold gift-slide-title-bold--second"

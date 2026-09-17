@@ -5,11 +5,11 @@ import "./HandmadeSlide.css";
 function HandmadeSlide() {
   return (
     <div className="m-slide-content m-handmade-slide">
-      <img className="m-handmade-slide-image" src={productImage} alt="Handmade" />
-
-      <p className="m-handmade-slide-tagline">
-        Nothing perfect. Everything personal.
-      </p>
+      <img
+        className="m-handmade-slide-image"
+        src={productImage}
+        alt="Handmade"
+      />
 
       <div className="m-handmade-slide-title">
         <p className="m-handmade-slide-title-script">Made by</p>

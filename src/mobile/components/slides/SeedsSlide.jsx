@@ -5,10 +5,6 @@ import "./SeedsSlide.css";
 function SeedsSlide() {
   return (
     <div className="m-slide-content m-seeds-slide">
-      <p className="m-seeds-slide-tagline">
-        When one ritual ends, another begins.
-      </p>
-
       <div className="m-seeds-slide-title m-seeds-slide-title--top">
         <p className="m-seeds-slide-title-script">A little</p>
         <p className="m-seeds-slide-title-bold m-seeds-slide-title-bold--light">

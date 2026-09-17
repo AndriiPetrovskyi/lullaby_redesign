@@ -54,7 +54,6 @@
   font-size: calc(40px * var(--mobile-scale));
   color: #ff620e;
   letter-spacing: -0.08em;
-  filter: blur(1px);
 }
 
 .m-product-info-slide-caption {

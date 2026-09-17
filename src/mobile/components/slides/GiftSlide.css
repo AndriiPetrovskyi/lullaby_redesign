@@ -42,8 +42,9 @@
 
 .m-gift-slide-title {
   position: absolute;
-  top: calc(70% - 31px * var(--mobile-scale));
-  left: calc(55px * var(--mobile-scale));
+  top: calc(72% - 31px * var(--mobile-scale));
+  left: calc(15px * var(--mobile-scale));
+  right: var(--spacing-md);
   display: flex;
   flex-direction: column;
 }
@@ -52,37 +53,35 @@
 .m-gift-slide-title-bold,
 .m-gift-slide-title-bold-bottom {
   margin: 0;
-  line-height: 0.9;
+  line-height: 1;
 }
 
 .m-gift-slide-title-script {
   font-family: "Libre Caslon Text", serif;
   font-style: italic;
-  font-weight: 500;
-  font-size: calc(36px * var(--mobile-scale));
-  filter: blur(0.9px);
-  letter-spacing: -0.08em;
+  font-weight: 600;
+  font-size: calc(34px * var(--mobile-scale));
+  letter-spacing: -0.06em;
   color: #ffa047;
-  margin-left: calc(100px * var(--mobile-scale));
+  margin-left: calc(30px * var(--mobile-scale));
 }
 
 .m-gift-slide-title-bold {
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: calc(72px * var(--mobile-scale));
-  letter-spacing: -0.05em;
+  font-size: calc(42px * var(--mobile-scale));
+  letter-spacing: -0.08em;
   color: #ff620e;
 }
 
 .m-gift-slide-title-bold-bottom {
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: calc(72px * var(--mobile-scale));
+  font-size: calc(46px * var(--mobile-scale));
   font-style: italic;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.08em;
   color: #ff620e;
-  margin-left: calc(60px * var(--mobile-scale));
-  margin-top: calc(-12px * var(--mobile-scale));
+  margin-left: calc(160px * var(--mobile-scale));
 }
 
 .m-gift-slide-caption {

@@ -46,12 +46,6 @@ function ProductCard({ product }) {
             aria-hidden="true"
           />
         )}
-        <span
-          className="product-card-seed-badge"
-          aria-hidden="true"
-          title="A packet of seeds is hidden inside">
-          🌱
-        </span>
         {isLowStock && (
           <span className="product-card-stock-badge">
             Only {product.stock} left
