@@ -10,6 +10,7 @@ import Seo from "../components/Seo.jsx";
 import Slider from "../mobile/components/Slider.jsx";
 import { DEFAULT_OG_IMAGE, absoluteUrl } from "../config/seo.js";
 import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
+import { trackEvent } from "../utils/metaPixel.js";
 import vesselImage from "../assets/fl1.PNG";
 import jarProcessVideo from "../assets/process.mp4";
 import boxProcessVideo from "../assets/video2.MP4";
@@ -43,6 +44,17 @@ function ProductPage() {
   useEffect(() => {
     setActiveImage(0);
   }, [slug]);
+
+  useEffect(() => {
+    if (!product) return;
+    trackEvent("ViewContent", {
+      content_ids: [product.id],
+      content_name: product.name,
+      content_type: "product",
+      value: product.price,
+      currency: "USD",
+    });
+  }, [product]);
 
   const toggleInfoSection = (index) => {
     setOpenInfoSections((prev) => {
@@ -89,6 +101,20 @@ function ProductPage() {
     />
   );
 
+  const handleEtsyClick = () => {
+    trackEvent("InitiateCheckout", {
+      content_ids: [product.id],
+      content_name: product.name,
+      value: product.price,
+      currency: "USD",
+    });
+  };
+
+  const handleDirectOrderClick = () => {
+    trackEvent("Contact", { content_name: product.name });
+    setIsDirectOrderModalOpen(true);
+  };
+
   if (isMobile) {
     return (
       <main className="m-product-page">
@@ -106,13 +132,14 @@ function ProductPage() {
               href={product.etsyUrl}
               target="_blank"
               rel="noreferrer"
+              onClick={handleEtsyClick}
               className="m-product-page-buy-etsy">
               Buy on Etsy
             </a>
             <button
               type="button"
               className="m-product-page-direct-order"
-              onClick={() => setIsDirectOrderModalOpen(true)}>
+              onClick={handleDirectOrderClick}>
               Direct Order
             </button>
           </div>
@@ -253,13 +280,14 @@ function ProductPage() {
                 href={product.etsyUrl}
                 target="_blank"
                 rel="noreferrer"
+                onClick={handleEtsyClick}
                 className="m-product-page-buy-etsy">
                 Buy on Etsy
               </a>
               <button
                 type="button"
                 className="m-product-page-direct-order"
-                onClick={() => setIsDirectOrderModalOpen(true)}>
+                onClick={handleDirectOrderClick}>
                 Direct Order
               </button>
             </div>
@@ -364,13 +392,14 @@ function ProductPage() {
               href={product.etsyUrl}
               target="_blank"
               rel="noreferrer"
+              onClick={handleEtsyClick}
               className="d-product-page-buy-etsy">
               Buy on Etsy
             </a>
             <button
               type="button"
               className="d-product-page-direct-order"
-              onClick={() => setIsDirectOrderModalOpen(true)}>
+              onClick={handleDirectOrderClick}>
               Direct Order
             </button>
           </div>
@@ -518,13 +547,14 @@ function ProductPage() {
             href={product.etsyUrl}
             target="_blank"
             rel="noreferrer"
+            onClick={handleEtsyClick}
             className="d-product-page-buy-etsy">
             Buy on Etsy
           </a>
           <button
             type="button"
             className="d-product-page-direct-order"
-            onClick={() => setIsDirectOrderModalOpen(true)}>
+            onClick={handleDirectOrderClick}>
             Direct Order
           </button>
         </div>

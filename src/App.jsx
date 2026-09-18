@@ -1,4 +1,5 @@
 import Footer from './components/Footer.jsx'
+import MetaPixelTracker from './components/MetaPixelTracker.jsx'
 import Navbar from './components/Navbar.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
 import { useIsMobile } from './hooks/useIsMobile.js'
@@ -12,6 +13,7 @@ function App() {
   return (
     <>
       <ScrollToTop />
+      <MetaPixelTracker />
       {isMobile ? <MobileNavbar /> : <Navbar />}
       <AppRoutes />
       {isMobile ? <MobileFooter /> : <Footer />}

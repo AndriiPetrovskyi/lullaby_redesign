@@ -5,6 +5,8 @@
 [build.environment]
   # Public backend API (Railway). Baked into the bundle at build time.
   VITE_API_BASE_URL = "https://api-production-38d4.up.railway.app/api"
+  # Meta Pixel ID (Business Settings -> Data Sources -> Datasets & pixels).
+  VITE_META_PIXEL_ID = "1493161325318690"
 
 [[redirects]]
   from = "/*"

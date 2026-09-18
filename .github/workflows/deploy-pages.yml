@@ -28,6 +28,8 @@ jobs:
         env:
           GITHUB_PAGES: true
           VITE_API_BASE_URL: https://api-production-38d4.up.railway.app/api
+          # Meta Pixel ID (Business Settings -> Data Sources -> Datasets & pixels).
+          VITE_META_PIXEL_ID: "1493161325318690"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
