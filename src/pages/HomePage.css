@@ -13,21 +13,50 @@
   position: relative;
   width: 977px;
   max-width: 100%;
-  height: 100vh;
-  overflow: hidden;
+  padding: 96px 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.home-section--first {
-  height: calc(100vh - var(--nav-height, 108px));
-}
-
 .home-section-inner {
   position: relative;
   width: 100%;
-  height: 70%;
+}
+
+.home-section--wide {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding-inline: 6vw;
+}
+
+.home-section--bleed-left {
+  padding-left: 0;
+}
+
+.home-section--bleed-right {
+  padding-right: 0;
+}
+
+.home-section--pad-32 {
+  padding: 32px;
+}
+
+.home-section--full {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  height: 100vh;
+  padding: 32px 0;
+}
+
+.home-section--full .home-section-inner {
+  height: 100%;
+}
+
+.home-section--hero {
+  margin-top: calc(-1 * var(--navbar-height));
 }
 
 .m-home-sections {

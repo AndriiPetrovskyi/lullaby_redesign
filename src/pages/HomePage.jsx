@@ -1,4 +1,3 @@
-import { useLayoutEffect, useState } from "react";
 import AnimatedSection from "../components/AnimatedSection.jsx";
 import Seo from "../components/Seo.jsx";
 import BestsellersSlide from "../components/slides/BestsellersSlide.jsx";
@@ -8,7 +7,6 @@ import ProductInfoSlide from "../components/slides/ProductInfoSlide.jsx";
 import SeedsSlide from "../components/slides/SeedsSlide.jsx";
 import { SITE_NAME, absoluteUrl } from "../config/seo.js";
 import { useIsMobile } from "../hooks/useIsMobile.js";
-import { useSectionScroll } from "../hooks/useSectionScroll.js";
 import MobileBestsellersSlide from "../mobile/components/slides/BestsellersSlide.jsx";
 import MobileGiftSlide from "../mobile/components/slides/GiftSlide.jsx";
 import MobileHandmadeSlide from "../mobile/components/slides/HandmadeSlide.jsx";
@@ -26,14 +24,6 @@ const HOME_JSON_LD = {
 
 function HomePage() {
   const isMobile = useIsMobile();
-  const [navHeight, setNavHeight] = useState(0);
-  useSectionScroll(5, { duration: 1600, enabled: !isMobile });
-
-  useLayoutEffect(() => {
-    if (isMobile) return;
-    const nav = document.querySelector(".navbar");
-    if (nav) setNavHeight(nav.offsetHeight);
-  }, [isMobile]);
 
   if (isMobile) {
     return (
@@ -64,10 +54,7 @@ function HomePage() {
     <>
       <Seo path="/" jsonLd={HOME_JSON_LD} />
       <main className="home-sections">
-        <section
-          className="home-section home-section--first"
-          style={{ "--nav-height": `${navHeight}px` }}
-        >
+        <section className="home-section home-section--full home-section--hero">
           <AnimatedSection className="home-section-inner" direction={-1}>
             <ProductInfoSlide />
           </AnimatedSection>
@@ -77,17 +64,17 @@ function HomePage() {
             <BestsellersSlide />
           </AnimatedSection>
         </section>
-        <section className="home-section">
+        <section className="home-section home-section--wide home-section--bleed-left">
           <AnimatedSection className="home-section-inner" direction={-1}>
             <SeedsSlide />
           </AnimatedSection>
         </section>
-        <section className="home-section">
+        <section className="home-section home-section--full">
           <AnimatedSection className="home-section-inner" direction={-1}>
             <HandmadeSlide />
           </AnimatedSection>
         </section>
-        <section className="home-section">
+        <section className="home-section home-section--wide home-section--pad-32">
           <AnimatedSection className="home-section-inner" direction={1}>
             <GiftSlide />
           </AnimatedSection>

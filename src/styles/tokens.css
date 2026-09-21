@@ -27,4 +27,7 @@
 
   /* Layout */
   --container-max-width: 1200px;
+  /* Sticky .navbar's own rendered height (padding + toggle icon) — kept in
+     sync manually since it's a fixed-size element, not measured at runtime. */
+  --navbar-height: calc(var(--spacing-md) * 2 + 22px);
 }

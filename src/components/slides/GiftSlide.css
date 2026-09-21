@@ -1,33 +1,40 @@
 .gift-slide {
   position: relative;
-  align-items: flex-start;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 40px;
+}
+
+.gift-slide-text {
+  flex: 1 1 260px;
+  text-align: left;
 }
 
 .gift-slide-tagline {
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin: 0;
+  margin: 0 0 16px;
   font-family: "Libre Caslon Text", serif;
   font-style: italic;
   font-weight: 500;
-  font-size: 16px;
+  font-size: clamp(13px, 1.6vw, 16px);
   color: #ff620e;
   letter-spacing: -0.1em;
 }
 
-.gift-slide-row {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
+.gift-slide-image {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 50vw;
+  max-height: 90vh;
+  aspect-ratio: 627 / 677;
 }
 
-.gift-slide .slide-content-image {
-  width: 627px;
-  height: 677px;
-  max-width: 100%;
+.gift-slide-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .gift-slide-title {
@@ -43,44 +50,37 @@
 .gift-slide-title-bold {
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: 94px;
+  font-size: clamp(44px, 8vw, 94px);
   letter-spacing: -0.05em;
   color: #ff620e;
 }
 
 .gift-slide-title-bold--second {
   position: relative;
-  left: 120px;
-  top: -36px;
+  left: 1.28em;
+  top: -0.38em;
 }
 
 .gift-slide-title-script {
   position: relative;
-  left: 110px;
-  top: -18px;
-  margin-left: 60px;
+  left: 1.72em;
+  top: -0.28em;
+  margin-left: 0.94em;
   font-family: "Libre Caslon Text", serif;
   font-style: italic;
   font-weight: 500;
-  font-size: 64px;
+  font-size: clamp(32px, 5.5vw, 64px);
   color: #ffa047;
   letter-spacing: -0.08em;
 }
 
 .gift-slide-caption {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 280px;
-  text-align: left;
-}
-
-.gift-slide-caption p {
-  margin: 0;
+  margin-top: 16px;
+  max-width: 280px;
   font-family: "Inter", sans-serif;
   font-weight: 700;
   font-style: italic;
-  font-size: 20px;
+  font-size: clamp(15px, 1.8vw, 20px);
   color: #ffa047;
   letter-spacing: -0.08em;
   line-height: 1.2;

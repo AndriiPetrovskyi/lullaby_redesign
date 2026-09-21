@@ -1,21 +1,18 @@
 import { motion } from 'framer-motion'
 import productImage from '../../assets/slider/3.png'
 import { fadeInUp, scaleDown } from '../../utils/scrollAnimation.js'
-import './Slide.css'
 import './SeedsSlide.css'
 
 function SeedsSlide() {
   return (
-    <div className="slide-content seeds-slide">
-      <div className="slide-content-text">
-        <motion.p className="body-text" {...fadeInUp()}>
+    <div className="seeds-slide">
+      <div className="seeds-slide-image">
+        <motion.img src={productImage} alt="Seeds" {...scaleDown()} />
+      </div>
+      <div className="seeds-slide-text">
+        <motion.p className="body-text seeds-slide-intro" {...fadeInUp()}>
           When one ritual ends, another begins.
         </motion.p>
-      </div>
-      <div className="seeds-slide-row">
-        <div className="slide-content-image">
-          <motion.img src={productImage} alt="Seeds" {...scaleDown()} />
-        </div>
         <div className="seeds-slide-title">
           <motion.p
             className="seeds-slide-title-script seeds-slide-title-script--first"
@@ -36,9 +33,7 @@ function SeedsSlide() {
             life...
           </motion.p>
         </div>
-      </div>
-      <div className="seeds-slide-caption">
-        <motion.p className="body-text" {...fadeInUp(0.4)}>
+        <motion.p className="body-text seeds-slide-caption" {...fadeInUp(0.4)}>
           Every candle leaves something behind — seeds for whatever comes next.
         </motion.p>
       </div>
