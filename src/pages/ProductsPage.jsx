@@ -1,11 +1,9 @@
-import { motion } from "framer-motion";
 import ProductCard from "../components/ProductCard.jsx";
 import ProductCardSkeleton from "../components/ProductCardSkeleton.jsx";
 import Seo from "../components/Seo.jsx";
 import { absoluteUrl } from "../config/seo.js";
 import { useProducts } from "../hooks/useProducts.js";
 import { buildItemListJsonLd } from "../utils/seo.js";
-import { riseUp } from "../utils/scrollAnimation.js";
 import "./ProductsPage.css";
 
 const PRODUCTS_SEO_PROPS = {
@@ -67,9 +65,7 @@ function ProductsPage() {
         ) : (
           <div className="products-grid">
             {products.map((product) => (
-              <motion.div key={product.id} {...riseUp()}>
-                <ProductCard product={product} />
-              </motion.div>
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         )}

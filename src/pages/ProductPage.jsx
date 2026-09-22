@@ -11,9 +11,9 @@ import Slider from "../mobile/components/Slider.jsx";
 import { DEFAULT_OG_IMAGE, absoluteUrl } from "../config/seo.js";
 import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
 import { trackEvent } from "../utils/metaPixel.js";
-import vesselImage from "../assets/fl1.PNG";
 import jarProcessVideo from "../assets/process.mp4";
 import boxProcessVideo from "../assets/video2.MP4";
+import seedsVideo from "../assets/seeds-video.mp4";
 import "./ProductPage.css";
 
 const CONTACT_EMAIL = "hello@lullaby.com";
@@ -240,11 +240,9 @@ function ProductPage() {
               <br />
               Plant a flower in it.
             </p>
-            <img
-              className="m-product-page-vessel-image"
-              src={vesselImage}
-              alt="Candle vessel replanted with a flower"
-            />
+            <div className="m-product-page-video-frame">
+              <MutableVideo className="m-product-page-video" src={seedsVideo} />
+            </div>
             <p className="m-product-page-vessel-caption">
               Burn the candle, keep the vessel, and grow something new — a small
               ritual that keeps on giving.
@@ -383,41 +381,43 @@ function ProductPage() {
           )}
         </div>
 
-        <div className="d-product-page-info">
-          <h1 className="d-product-page-name">{product.name}</h1>
-          <p className="d-product-page-price">${product.price}</p>
+        <div className="d-product-page-info-col">
+          <div className="d-product-page-info">
+            <h1 className="d-product-page-name">{product.name}</h1>
+            <p className="d-product-page-price">${product.price}</p>
 
-          <div className="d-product-page-cta-row">
-            <a
-              href={product.etsyUrl}
-              target="_blank"
-              rel="noreferrer"
-              onClick={handleEtsyClick}
-              className="d-product-page-buy-etsy">
-              Buy on Etsy
-            </a>
-            <button
-              type="button"
-              className="d-product-page-direct-order"
-              onClick={handleDirectOrderClick}>
-              Direct Order
-            </button>
-          </div>
-
-          {product.fragranceNotes && (
-            <div className="d-product-page-notes">
-              <p className="d-product-page-notes-title">Fragrance Notes</p>
-              <p className="d-product-page-notes-row">
-                <span>Top:</span> {product.fragranceNotes.top}
-              </p>
-              <p className="d-product-page-notes-row">
-                <span>Heart:</span> {product.fragranceNotes.heart}
-              </p>
-              <p className="d-product-page-notes-row">
-                <span>Base:</span> {product.fragranceNotes.base}
-              </p>
+            <div className="d-product-page-cta-row">
+              <a
+                href={product.etsyUrl}
+                target="_blank"
+                rel="noreferrer"
+                onClick={handleEtsyClick}
+                className="d-product-page-buy-etsy">
+                Buy on Etsy
+              </a>
+              <button
+                type="button"
+                className="d-product-page-direct-order"
+                onClick={handleDirectOrderClick}>
+                Direct Order
+              </button>
             </div>
-          )}
+
+            {product.fragranceNotes && (
+              <div className="d-product-page-notes">
+                <p className="d-product-page-notes-title">Fragrance Notes</p>
+                <p className="d-product-page-notes-row">
+                  <span>Top:</span> {product.fragranceNotes.top}
+                </p>
+                <p className="d-product-page-notes-row">
+                  <span>Heart:</span> {product.fragranceNotes.heart}
+                </p>
+                <p className="d-product-page-notes-row">
+                  <span>Base:</span> {product.fragranceNotes.base}
+                </p>
+              </div>
+            )}
+          </div>
 
           <div className="d-product-page-accordion">
             <motion.div
@@ -499,11 +499,9 @@ function ProductPage() {
       </section>
 
       <section className="d-product-page-story d-product-page-story--reverse">
-        <img
-          className="d-product-page-story-media d-product-page-vessel-image"
-          src={vesselImage}
-          alt="Candle vessel replanted with a flower"
-        />
+        <div className="d-product-page-story-media">
+          <MutableVideo className="d-product-page-video" src={seedsVideo} />
+        </div>
         <div className="d-product-page-story-text">
           <p className="d-product-page-story-title">
             Don&apos;t throw the vessel away. Plant a flower in it.

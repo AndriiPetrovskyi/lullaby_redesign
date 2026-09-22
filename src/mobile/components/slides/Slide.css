@@ -1,9 +1,17 @@
 .m-slide-content {
   /* Uniform scale factor vs. the 390x844 reference design used to hand-tune
      the fixed px positions/font-sizes below. Multiply any such px value by
-     var(--mobile-scale) so it scales with the real viewport height instead
-     of only looking right at one device size. */
-  --mobile-scale: calc(100vh / 844px);
+     var(--mobile-scale) so it scales with the real viewport instead of only
+     looking right at one device size.
+     Scaling by height alone (100vh / 844px) overflows on Android phones,
+     which vary in aspect ratio far more than iPhones — a screen narrower
+     than the 390:844 reference gets text scaled up by its (taller) height
+     ratio with no matching extra width, so it runs past the edge. Taking
+     the min() of the width- and height-based ratios caps the scale to
+     whichever dimension is tighter, so text always fits both axes, same
+     as object-fit: contain. 100dvh (not 100vh) keeps it stable across
+     Android's address-bar show/hide instead of "vh" resizing under it. */
+  --mobile-scale: min(calc(100vw / 390px), calc(100dvh / 844px));
   display: flex;
   flex-direction: column;
   align-items: center;

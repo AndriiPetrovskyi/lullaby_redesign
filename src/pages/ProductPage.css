@@ -292,14 +292,6 @@
   letter-spacing: -0.08em;
 }
 
-.m-product-page-vessel-image {
-  display: block;
-  width: calc(100% + var(--spacing-md) * 2);
-  margin-inline: calc(var(--spacing-md) * -1);
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-}
-
 .m-product-page-vessel-caption {
   margin: var(--spacing-md) 0 0;
   font-family: "Inter", sans-serif;
@@ -429,11 +421,19 @@
   background: var(--color-bg-light);
 }
 
+.d-product-page-info-col {
+  padding-inline: clamp(32px, 5vw, 88px);
+}
+
 .d-product-page-info {
+  /* only the static-height summary (name/price/CTA/notes) sticks — the
+     accordion and FAQ below it change height on click, and a sticky
+     ancestor whose own box keeps resizing while "stuck" makes the browser
+     re-run its sticky offset math mid-animation, which reads as the panel
+     jumping up with its top spacing gone. Keeping dynamic content out of
+     the sticky box avoids that entirely. */
   position: sticky;
   top: var(--spacing-lg);
-  align-self: start;
-  padding-inline: clamp(32px, 5vw, 88px);
 }
 
 .d-product-page-name {
@@ -641,11 +641,6 @@
   overflow: hidden;
   background: var(--color-bg-light);
   order: 2;
-}
-
-img.d-product-page-story-media {
-  display: block;
-  object-fit: cover;
 }
 
 .d-product-page-story--reverse .d-product-page-story-media {
