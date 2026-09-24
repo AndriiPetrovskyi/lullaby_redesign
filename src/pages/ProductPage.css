@@ -421,19 +421,16 @@
   background: var(--color-bg-light);
 }
 
-.d-product-page-info-col {
-  padding-inline: clamp(32px, 5vw, 88px);
-}
-
 .d-product-page-info {
-  /* only the static-height summary (name/price/CTA/notes) sticks — the
-     accordion and FAQ below it change height on click, and a sticky
-     ancestor whose own box keeps resizing while "stuck" makes the browser
-     re-run its sticky offset math mid-animation, which reads as the panel
-     jumping up with its top spacing gone. Keeping dynamic content out of
-     the sticky box avoids that entirely. */
-  position: sticky;
-  top: var(--spacing-lg);
+  /* Not sticky: this column holds the accordion/FAQ, whose height changes
+     on click. A sticky ancestor re-runs its stuck-offset math whenever its
+     own box resizes mid-animation (reads as the panel jumping on open),
+     and — if the variable-height content were split out as a plain-flow
+     sibling instead, to dodge that — a sticky element still doesn't
+     reserve scroll space for siblings below it, so that content would
+     slide up and overlap it on scroll. Plain flow avoids both at once. */
+  align-self: start;
+  padding-inline: clamp(32px, 5vw, 88px);
 }
 
 .d-product-page-name {

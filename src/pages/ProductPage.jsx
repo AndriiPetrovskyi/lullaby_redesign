@@ -7,6 +7,7 @@ import LoadingScreen from "../components/LoadingScreen.jsx";
 import MutableVideo from "../components/MutableVideo.jsx";
 import Modal from "../components/Modal.jsx";
 import Seo from "../components/Seo.jsx";
+import { InstagramIcon, MailIcon } from "../components/icons/SocialIcons.jsx";
 import Slider from "../mobile/components/Slider.jsx";
 import { DEFAULT_OG_IMAGE, absoluteUrl } from "../config/seo.js";
 import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
@@ -16,8 +17,10 @@ import boxProcessVideo from "../assets/video2.MP4";
 import seedsVideo from "../assets/seeds-video.mp4";
 import "./ProductPage.css";
 
-const CONTACT_EMAIL = "hello@lullaby.com";
-const INSTAGRAM_HANDLE = "@lullaby.candles";
+const CONTACT_EMAIL = "lullaby.rituals@gmail.com";
+const CONTACT_EMAIL_HANDLE = "lullaby.rituals";
+const INSTAGRAM_HANDLE = "@lullaby.rituals";
+const INSTAGRAM_URL = "https://www.instagram.com/lullaby.rituals";
 
 const PRODUCT_INFO_SECTIONS = [
   {
@@ -304,11 +307,17 @@ function ProductPage() {
           </p>
           <div className="modal-contacts">
             <a href={`mailto:${CONTACT_EMAIL}`} className="modal-contact-link">
-              {CONTACT_EMAIL}
+              <MailIcon className="modal-contact-icon" />
+              {CONTACT_EMAIL_HANDLE}
             </a>
-            <span className="modal-contact-link modal-contact-link--static">
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="modal-contact-link">
+              <InstagramIcon className="modal-contact-icon" />
               {INSTAGRAM_HANDLE}
-            </span>
+            </a>
           </div>
         </Modal>
       </main>
@@ -381,43 +390,41 @@ function ProductPage() {
           )}
         </div>
 
-        <div className="d-product-page-info-col">
-          <div className="d-product-page-info">
-            <h1 className="d-product-page-name">{product.name}</h1>
-            <p className="d-product-page-price">${product.price}</p>
+        <div className="d-product-page-info">
+          <h1 className="d-product-page-name">{product.name}</h1>
+          <p className="d-product-page-price">${product.price}</p>
 
-            <div className="d-product-page-cta-row">
-              <a
-                href={product.etsyUrl}
-                target="_blank"
-                rel="noreferrer"
-                onClick={handleEtsyClick}
-                className="d-product-page-buy-etsy">
-                Buy on Etsy
-              </a>
-              <button
-                type="button"
-                className="d-product-page-direct-order"
-                onClick={handleDirectOrderClick}>
-                Direct Order
-              </button>
-            </div>
-
-            {product.fragranceNotes && (
-              <div className="d-product-page-notes">
-                <p className="d-product-page-notes-title">Fragrance Notes</p>
-                <p className="d-product-page-notes-row">
-                  <span>Top:</span> {product.fragranceNotes.top}
-                </p>
-                <p className="d-product-page-notes-row">
-                  <span>Heart:</span> {product.fragranceNotes.heart}
-                </p>
-                <p className="d-product-page-notes-row">
-                  <span>Base:</span> {product.fragranceNotes.base}
-                </p>
-              </div>
-            )}
+          <div className="d-product-page-cta-row">
+            <a
+              href={product.etsyUrl}
+              target="_blank"
+              rel="noreferrer"
+              onClick={handleEtsyClick}
+              className="d-product-page-buy-etsy">
+              Buy on Etsy
+            </a>
+            <button
+              type="button"
+              className="d-product-page-direct-order"
+              onClick={handleDirectOrderClick}>
+              Direct Order
+            </button>
           </div>
+
+          {product.fragranceNotes && (
+            <div className="d-product-page-notes">
+              <p className="d-product-page-notes-title">Fragrance Notes</p>
+              <p className="d-product-page-notes-row">
+                <span>Top:</span> {product.fragranceNotes.top}
+              </p>
+              <p className="d-product-page-notes-row">
+                <span>Heart:</span> {product.fragranceNotes.heart}
+              </p>
+              <p className="d-product-page-notes-row">
+                <span>Base:</span> {product.fragranceNotes.base}
+              </p>
+            </div>
+          )}
 
           <div className="d-product-page-accordion">
             <motion.div
@@ -571,11 +578,17 @@ function ProductPage() {
         </p>
         <div className="modal-contacts">
           <a href={`mailto:${CONTACT_EMAIL}`} className="modal-contact-link">
-            {CONTACT_EMAIL}
+            <MailIcon className="modal-contact-icon" />
+            {CONTACT_EMAIL_HANDLE}
           </a>
-          <span className="modal-contact-link modal-contact-link--static">
+          <a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="modal-contact-link">
+            <InstagramIcon className="modal-contact-icon" />
             {INSTAGRAM_HANDLE}
-          </span>
+          </a>
         </div>
       </Modal>
     </main>

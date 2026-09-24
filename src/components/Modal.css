@@ -75,6 +75,9 @@
 }
 
 .modal-contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
   font-family: "Inter", sans-serif;
   font-weight: 700;
   font-size: 14px;
@@ -82,6 +85,8 @@
   text-decoration: underline;
 }
 
-.modal-contact-link--static {
-  text-decoration: none;
+.modal-contact-icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
 }

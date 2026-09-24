@@ -21,6 +21,20 @@ export function InstagramIcon(props) {
   );
 }
 
+export function MailIcon(props) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      {...props}>
+      <rect x="3" y="5" width="18" height="14" rx="3" />
+      <path d="m4 7 8 6 8-6" />
+    </svg>
+  );
+}
+
 export function TikTokIcon(props) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" {...props}>

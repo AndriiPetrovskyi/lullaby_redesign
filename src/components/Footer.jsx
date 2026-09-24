@@ -11,7 +11,11 @@ const legalLinks = [
 const socialLinks = [
   { label: "Facebook", href: "#", Icon: FacebookIcon },
   { label: "TikTok", href: "#", Icon: TikTokIcon },
-  { label: "Instagram", href: "#", Icon: InstagramIcon },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/lullaby.rituals",
+    Icon: InstagramIcon,
+  },
 ];
 
 function Footer() {
