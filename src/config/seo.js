@@ -1,7 +1,7 @@
-// Canonical production target for all SEO metadata (sitemap, canonical
-// links, Open Graph/Twitter URLs), independent of which host actually
-// served the bundle a visitor is looking at.
-export const SITE_URL = "https://andriipetrovskyi.github.io/lullaby_redesign";
+// Canonical production target for all SEO metadata (canonical links, Open
+// Graph/Twitter URLs), independent of which host served the bundle. Resolved
+// at build time from VITE_SITE_URL — see scripts/site-url.mjs.
+export const SITE_URL = import.meta.env.VITE_SITE_URL;
 
 export const SITE_NAME = "Lullaby";
 

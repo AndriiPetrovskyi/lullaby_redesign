@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://andriipetrovskyi.github.io/lullaby_redesign/sitemap.xml

@@ -1,14 +1,13 @@
-// Runs before `vite build` (see package.json). Writes public/sitemap.xml,
-// which Vite then copies into dist/ verbatim like any other public asset.
+// Runs before `vite build` (see package.json). Writes public/sitemap.xml and
+// public/robots.txt, which Vite then copies into dist/ verbatim.
 //
 // Product URLs come from the live API at build time, so the sitemap always
 // matches whatever's in the store — no manual upkeep when products change.
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { resolveSiteUrl } from "./site-url.mjs";
 
-// Sitemap URLs always target the canonical GH Pages deployment (see
-// src/config/seo.js), regardless of which host actually runs this build.
-const SITE_URL = "https://andriipetrovskyi.github.io/lullaby_redesign";
+const SITE_URL = resolveSiteUrl();
 const API_BASE_URL =
   process.env.VITE_API_BASE_URL ?? "https://api-production-38d4.up.railway.app/api";
 
@@ -49,5 +48,12 @@ const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.s
 const outDir = path.resolve("public");
 await mkdir(outDir, { recursive: true });
 await writeFile(path.join(outDir, "sitemap.xml"), xml, "utf8");
+await writeFile(
+  path.join(outDir, "robots.txt"),
+  `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`,
+  "utf8",
+);
 
-console.log(`[sitemap] wrote ${paths.length} URLs to public/sitemap.xml`);
+console.log(
+  `[sitemap] wrote ${paths.length} URLs to public/sitemap.xml (+ robots.txt) for ${SITE_URL}`,
+);
