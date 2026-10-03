@@ -16,6 +16,14 @@ body {
 
 #root {
   min-height: 100svh;
+  /* Lets <main> grow to fill the screen so the footer stays at the bottom
+     on short pages instead of floating halfway up with empty space below. */
+  display: flex;
+  flex-direction: column;
+}
+
+#root > main {
+  flex: 1 0 auto;
 }
 
 .container {

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { photoKey } from "../utils/images.js";
 import "./ProductCard.css";
 
 const LOW_STOCK_THRESHOLD = 3;
@@ -9,20 +10,9 @@ function getScentTeaser(product) {
   return firstLine || undefined;
 }
 
-// The same photo sometimes gets uploaded twice — once as the main image,
-// once into the gallery — under the same filename but a different folder
-// (".../photo.jpg" vs ".../gallery/photo.jpg"). Comparing full URLs treats
-// those as "different", so the hover swap silently lands on a byte-identical
-// copy of the main photo. Compare filenames instead to actually skip it.
-function getFileName(url) {
-  return url?.split("/").pop();
-}
-
 function getHoverImage(product) {
-  const mainFileName = getFileName(product.image);
-  return product.gallery?.find(
-    (src) => src && getFileName(src) !== mainFileName,
-  );
+  const mainKey = photoKey(product.image);
+  return product.gallery?.find((src) => src && photoKey(src) !== mainKey);
 }
 
 function ProductCard({ product }) {

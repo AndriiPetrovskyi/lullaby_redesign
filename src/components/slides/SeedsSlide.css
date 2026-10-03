@@ -90,7 +90,9 @@
 }
 
 .seeds-slide-caption {
-  margin: 0;
+  /* "life..." above is nudged down with position: relative, which doesn't
+     take up space, so the column gap alone left the caption touching it. */
+  margin: var(--spacing-lg) 0 0;
   font-family: "Inter", sans-serif;
   font-weight: 700;
   font-style: italic;

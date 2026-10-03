@@ -1,4 +1,5 @@
 import Seo from "../components/Seo.jsx";
+import "./SimplePage.css";
 
 function TermsPage() {
   return (
@@ -8,7 +9,7 @@ function TermsPage() {
         description="Lullaby's terms and conditions — shipping, orders, and use of this site."
         path="/terms"
       />
-      <main>
+      <main className="simple-page">
         <h1 className="h1-heading">Terms & Conditions</h1>
       </main>
     </>

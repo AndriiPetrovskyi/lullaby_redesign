@@ -1,0 +1,24 @@
+/* Shared layout for plain text pages (Contact, Terms, Privacy, 404) —
+   same container width and side padding as the All Scents page. */
+.simple-page {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-inline: auto;
+  padding: var(--spacing-lg) var(--spacing-md) 64px;
+}
+
+.simple-page .h1-heading {
+  margin-bottom: var(--spacing-md);
+}
+
+.simple-page a {
+  font-weight: 700;
+  color: var(--color-accent-cobalt);
+  text-decoration: underline;
+}
+
+@media (min-width: 768px) {
+  .simple-page {
+    padding: var(--spacing-lg) 40px 96px;
+  }
+}

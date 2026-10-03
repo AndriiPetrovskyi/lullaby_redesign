@@ -1,4 +1,7 @@
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import { useLocation } from "react-router-dom";
+import { trackGaPageView } from "../utils/googleAnalytics.js";
 import {
   SITE_NAME,
   DEFAULT_DESCRIPTION,
@@ -17,6 +20,11 @@ function Seo({
 }) {
   const fullTitle = title ? `${title} | ${SITE_NAME}` : `${SITE_NAME} — Handmade Scented Candles`;
   const url = absoluteUrl(path);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    trackGaPageView(fullTitle);
+  }, [pathname, fullTitle]);
 
   return (
     <Helmet>

@@ -12,6 +12,8 @@ import Slider from "../mobile/components/Slider.jsx";
 import { DEFAULT_OG_IMAGE, absoluteUrl } from "../config/seo.js";
 import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
 import { trackEvent } from "../utils/metaPixel.js";
+import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
+import { uniquePhotos } from "../utils/images.js";
 import jarProcessVideo from "../assets/process.mp4";
 import boxProcessVideo from "../assets/video2.MP4";
 import seedsVideo from "../assets/seeds-video.mp4";
@@ -57,6 +59,7 @@ function ProductPage() {
       value: product.price,
       currency: "USD",
     });
+    trackGaEvent("view_item", gaItem(product));
   }, [product]);
 
   const toggleInfoSection = (index) => {
@@ -111,10 +114,12 @@ function ProductPage() {
       value: product.price,
       currency: "USD",
     });
+    trackGaEvent("begin_checkout", gaItem(product));
   };
 
   const handleDirectOrderClick = () => {
     trackEvent("Contact", { content_name: product.name });
+    trackGaEvent("generate_lead", gaItem(product));
     setIsDirectOrderModalOpen(true);
   };
 
@@ -123,7 +128,7 @@ function ProductPage() {
       <main className="m-product-page">
         {productSeo}
         <Slider
-          slides={product.gallery.map((src, i) => (
+          slides={uniquePhotos(product.gallery ?? []).map((src, i) => (
             <img key={i} src={src} alt={`${product.name} ${i + 1}`} />
           ))}
         />
@@ -324,9 +329,7 @@ function ProductPage() {
     );
   }
 
-  const galleryImages = [product.image, ...(product.gallery ?? [])].filter(
-    (src, i, arr) => src && arr.indexOf(src) === i,
-  );
+  const galleryImages = uniquePhotos([product.image, ...(product.gallery ?? [])]);
 
   return (
     <main className="d-product-page">

@@ -10,7 +10,9 @@
 
 .bestsellers-slide-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* minmax(0, 1fr), not plain 1fr: a 1fr track can't shrink below its
+     content's min width, so one card with longer text got a wider column. */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--spacing-md);
   width: 100%;
 }

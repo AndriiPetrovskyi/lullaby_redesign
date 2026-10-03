@@ -7,3 +7,8 @@ export const META_PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID;
 // Tracking only runs in production builds with a configured pixel ID — keeps
 // `npm run dev` and any build missing the ID from sending real events.
 export const isTrackingEnabled = Boolean(META_PIXEL_ID) && import.meta.env.PROD;
+
+// Google Analytics 4 — same rules as the pixel: public ID from env, and only
+// production builds with an ID configured send anything.
+export const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
+export const isGaEnabled = Boolean(GA_MEASUREMENT_ID) && import.meta.env.PROD;

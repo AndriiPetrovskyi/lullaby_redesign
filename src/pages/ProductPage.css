@@ -430,7 +430,9 @@
      reserve scroll space for siblings below it, so that content would
      slide up and overlap it on scroll. Plain flow avoids both at once. */
   align-self: start;
-  padding-inline: clamp(32px, 5vw, 88px);
+  /* .d-product-page is pulled up under the transparent navbar so the photo
+     reaches the top edge; push the text back down out from under it. */
+  padding: var(--navbar-height) clamp(32px, 5vw, 88px) 0;
 }
 
 .d-product-page-name {

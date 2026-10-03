@@ -47,7 +47,7 @@
     margin-inline: auto;
     padding: var(--spacing-sm) 40px 96px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--spacing-lg) var(--spacing-md);
   }
 }

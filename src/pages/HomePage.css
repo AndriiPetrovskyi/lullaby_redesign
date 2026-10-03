@@ -7,6 +7,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* Sections slide in from the side (AnimatedSection), so until each is
+     revealed it sits ~120px off to the right; the 100vw-wide sections also
+     overshoot by the scrollbar width on Windows. Both made the page
+     scroll sideways. `clip` (not `hidden`) doesn't create a scroll
+     container, so nothing else about layout or scrolling changes. */
+  overflow-x: clip;
 }
 
 .home-section {
@@ -17,6 +23,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Below the 977px column width, keep content off the screen edges. Must
+   stay above the --wide/--full/--pad-32 modifiers so they still win. */
+@media (max-width: 1024px) {
+  .home-section {
+    padding-inline: var(--spacing-lg);
+  }
 }
 
 .home-section-inner {
