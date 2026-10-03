@@ -14,26 +14,29 @@ import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
 import { trackEvent } from "../utils/metaPixel.js";
 import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
 import { uniquePhotos } from "../utils/images.js";
+import {
+  CONTACT_EMAIL,
+  CONTACT_EMAIL_HANDLE,
+  DAMAGE_REPORT_HOURS,
+  DELIVERY_TIME,
+  DISPATCH_TIME,
+  INSTAGRAM_HANDLE,
+  INSTAGRAM_URL,
+  RETURN_WINDOW_DAYS,
+} from "../config/contact.js";
 import jarProcessVideo from "../assets/process.mp4";
 import boxProcessVideo from "../assets/video2.MP4";
 import seedsVideo from "../assets/seeds-video.mp4";
 import "./ProductPage.css";
 
-const CONTACT_EMAIL = "lullaby.rituals@gmail.com";
-const CONTACT_EMAIL_HANDLE = "lullaby.rituals";
-const INSTAGRAM_HANDLE = "@lullaby.rituals";
-const INSTAGRAM_URL = "https://www.instagram.com/lullaby.rituals";
-
 const PRODUCT_INFO_SECTIONS = [
   {
     title: "Shipping & Delivery",
-    content:
-      "Orders ship within 2–3 business days. Delivery typically takes 5–10 business days depending on location.",
+    content: `Free shipping on every order. Orders ship within ${DISPATCH_TIME}; delivery typically takes ${DELIVERY_TIME} depending on location.`,
   },
   {
     title: "Returns & Damaged Items",
-    content:
-      "We accept returns within 14 days of delivery. If your item arrives damaged, contact us within 48 hours for a replacement.",
+    content: `We accept returns within ${RETURN_WINDOW_DAYS} days of delivery. If your item arrives damaged, contact us within ${DAMAGE_REPORT_HOURS} hours for a replacement.`,
   },
 ];
 

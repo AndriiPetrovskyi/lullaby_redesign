@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import navLinks from "../data/navLinks.js";
 import { FacebookIcon, InstagramIcon, TikTokIcon } from "./icons/SocialIcons.jsx";
+import { INSTAGRAM_URL } from "../config/contact.js";
 import "./Footer.css";
 
 const legalLinks = [
@@ -13,7 +14,7 @@ const socialLinks = [
   { label: "TikTok", href: "#", Icon: TikTokIcon },
   {
     label: "Instagram",
-    href: "https://www.instagram.com/lullaby.rituals",
+    href: INSTAGRAM_URL,
     Icon: InstagramIcon,
   },
 ];
