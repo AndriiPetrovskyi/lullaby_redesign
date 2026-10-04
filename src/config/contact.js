@@ -13,6 +13,6 @@ export const ETSY_SHOP_URL = "https://workshoplullaby.etsy.com";
 export const RETURN_WINDOW_DAYS = 14;
 export const DAMAGE_REPORT_HOURS = 48;
 export const DISPATCH_TIME = "2–3 business days";
-export const DELIVERY_TIME = "5–10 business days";
+export const DELIVERY_TIME = "8–14 business days";
 
 export const LEGAL_LAST_UPDATED = "October 3, 2026";
