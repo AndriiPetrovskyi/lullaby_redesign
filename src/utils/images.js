@@ -7,6 +7,20 @@ export function photoKey(url) {
   return url?.split("/").pop()?.replace(/\.[^.]+$/, "").toLowerCase();
 }
 
+// Product photos are uploaded full-size (2–12 MB). The backend serves a
+// resized WebP for `/uploads/...?w=<width>` (widths must match its
+// ALLOWED_WIDTHS), so the browser picks the smallest one that fits.
+// URLs not served by the backend (e.g. bundled assets) pass through as-is.
+export function responsiveImage(url, widths, sizes) {
+  if (!url || !url.includes("/uploads/")) return { src: url };
+  const variant = (w) => `${url}${url.includes("?") ? "&" : "?"}w=${w}`;
+  return {
+    src: variant(widths[Math.floor(widths.length / 2)]),
+    srcSet: widths.map((w) => `${variant(w)} ${w}w`).join(", "),
+    sizes,
+  };
+}
+
 export function uniquePhotos(urls) {
   const seen = new Set();
   return urls.filter((url) => {

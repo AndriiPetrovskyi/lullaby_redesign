@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
-import { photoKey } from "../utils/images.js";
+import { photoKey, responsiveImage } from "../utils/images.js";
 import "./ProductCard.css";
 
 const LOW_STOCK_THRESHOLD = 3;
+const CARD_WIDTHS = [400, 600, 800];
+const CARD_SIZES = "(min-width: 768px) 33vw, 100vw";
 
 function getScentTeaser(product) {
   if (product.fragranceNotes?.top) return product.fragranceNotes.top;
@@ -25,15 +27,19 @@ function ProductCard({ product }) {
       <div className="product-card-image">
         <img
           className="product-card-image-primary"
-          src={product.image}
+          {...responsiveImage(product.image, CARD_WIDTHS, CARD_SIZES)}
           alt={product.name}
+          loading="lazy"
+          decoding="async"
         />
         {hoverImage && (
           <img
             className="product-card-image-hover"
-            src={hoverImage}
+            {...responsiveImage(hoverImage, CARD_WIDTHS, CARD_SIZES)}
             alt=""
             aria-hidden="true"
+            loading="lazy"
+            decoding="async"
           />
         )}
         {isLowStock && (

@@ -6,10 +6,22 @@ const pad = (n) => String(n).padStart(2, '0')
 const AUTOPLAY_INTERVAL = 5000
 const SWIPE_THRESHOLD = 50
 
-function Slider({ slides }) {
+function Slider({ slides, autoplay: autoplayEnabled = true }) {
   const [index, setIndex] = useState(0)
-  const [autoplay, setAutoplay] = useState(true)
+  const [autoplay, setAutoplay] = useState(autoplayEnabled)
+  // Slides are only mounted once they're current or next up — mounting all of
+  // them made the browser download every photo at once, so the first one
+  // took seconds to appear. Mounted slides stay mounted (no re-download).
+  const [mounted, setMounted] = useState(() => new Set([0, 1]))
   const total = slides.length
+
+  useEffect(() => {
+    setMounted((prev) => {
+      const next = (index + 1) % total
+      if (prev.has(index) && prev.has(next)) return prev
+      return new Set([...prev, index, next])
+    })
+  }, [index, total])
 
   const goPrev = () => {
     setAutoplay(false)
@@ -49,7 +61,7 @@ function Slider({ slides }) {
         >
           {slides.map((slide, i) => (
             <div className="m-slider-slide" key={i}>
-              {slide}
+              {mounted.has(i) && slide}
             </div>
           ))}
         </motion.div>

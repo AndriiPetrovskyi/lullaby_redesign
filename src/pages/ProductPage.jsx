@@ -13,7 +13,7 @@ import { DEFAULT_OG_IMAGE, absoluteUrl } from "../config/seo.js";
 import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
 import { trackEvent } from "../utils/metaPixel.js";
 import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
-import { uniquePhotos } from "../utils/images.js";
+import { responsiveImage, uniquePhotos } from "../utils/images.js";
 import {
   CONTACT_EMAIL,
   CONTACT_EMAIL_HANDLE,
@@ -28,6 +28,9 @@ import jarProcessVideo from "../assets/process.mp4";
 import boxProcessVideo from "../assets/video2.MP4";
 import seedsVideo from "../assets/seeds-video.mp4";
 import "./ProductPage.css";
+
+const MOBILE_GALLERY_WIDTHS = [600, 800, 1200];
+const DESKTOP_GALLERY_WIDTHS = [800, 1200, 1600];
 
 const PRODUCT_INFO_SECTIONS = [
   {
@@ -130,9 +133,18 @@ function ProductPage() {
     return (
       <main className="m-product-page">
         {productSeo}
+        {/* No autoplay: ad visitors land here to look at this candle, and
+            auto-advancing swapped in not-yet-loaded photos. */}
         <Slider
+          autoplay={false}
           slides={uniquePhotos(product.gallery ?? []).map((src, i) => (
-            <img key={i} src={src} alt={`${product.name} ${i + 1}`} />
+            <img
+              key={i}
+              {...responsiveImage(src, MOBILE_GALLERY_WIDTHS, "100vw")}
+              alt={`${product.name} ${i + 1}`}
+              fetchPriority={i === 0 ? "high" : "auto"}
+              decoding="async"
+            />
           ))}
         />
         <div className="m-product-page-info">
@@ -343,8 +355,13 @@ function ProductPage() {
             <motion.img
               key={activeImage}
               className="d-product-page-gallery-main"
-              src={galleryImages[activeImage] ?? galleryImages[0]}
+              {...responsiveImage(
+                galleryImages[activeImage] ?? galleryImages[0],
+                DESKTOP_GALLERY_WIDTHS,
+                "50vw",
+              )}
               alt={product.name}
+              fetchPriority="high"
               initial={{ opacity: 0.4 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2 }}
@@ -389,7 +406,12 @@ function ProductPage() {
                   }
                   onClick={() => setActiveImage(i)}
                   aria-label={`${product.name} — photo ${i + 1}`}>
-                  <img src={src} alt={`${product.name} ${i + 1}`} />
+                  <img
+                    {...responsiveImage(src, [200, 400], "100px")}
+                    alt={`${product.name} ${i + 1}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </button>
               ))}
             </div>

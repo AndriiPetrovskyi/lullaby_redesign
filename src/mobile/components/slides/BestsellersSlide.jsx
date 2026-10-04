@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useProducts } from "../../../hooks/useProducts.js";
+import { responsiveImage } from "../../../utils/images.js";
 import "./Slide.css";
 import "./BestsellersSlide.css";
 
@@ -19,7 +20,12 @@ function BestsellersSlide() {
             key={product.id}
             to={`/products/${product.slug}`}
             className="m-bestsellers-slide-item">
-            <img src={product.image} alt={product.name} />
+            <img
+              {...responsiveImage(product.image, [400, 600, 800], "50vw")}
+              alt={product.name}
+              loading="lazy"
+              decoding="async"
+            />
             <p className="m-bestsellers-slide-item-name">{product.name}</p>
           </Link>
         ))}
