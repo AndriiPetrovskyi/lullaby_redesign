@@ -8,6 +8,11 @@ import MutableVideo from "../components/MutableVideo.jsx";
 import Modal from "../components/Modal.jsx";
 import Seo from "../components/Seo.jsx";
 import { InstagramIcon, MailIcon } from "../components/icons/SocialIcons.jsx";
+import {
+  HandHeartIcon,
+  ReturnIcon,
+  TruckIcon,
+} from "../components/icons/TrustIcons.jsx";
 import Slider from "../mobile/components/Slider.jsx";
 import { DEFAULT_OG_IMAGE, absoluteUrl } from "../config/seo.js";
 import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
@@ -38,9 +43,18 @@ const DESKTOP_GALLERY_WIDTHS = [800, 1200, 1600];
 function TrustLine({ className }) {
   return (
     <ul className={`product-trust ${className}`}>
-      <li>Free shipping</li>
-      <li>{RETURN_WINDOW_DAYS}-day returns</li>
-      <li>Handmade in {BUSINESS_COUNTRY}</li>
+      <li>
+        <TruckIcon className="product-trust-icon" aria-hidden="true" />
+        <span>Free shipping</span>
+      </li>
+      <li>
+        <ReturnIcon className="product-trust-icon" aria-hidden="true" />
+        <span>{RETURN_WINDOW_DAYS}-day returns</span>
+      </li>
+      <li>
+        <HandHeartIcon className="product-trust-icon" aria-hidden="true" />
+        <span>Handmade in {BUSINESS_COUNTRY}</span>
+      </li>
     </ul>
   );
 }
