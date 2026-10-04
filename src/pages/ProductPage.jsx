@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import { useProduct } from "../hooks/useProducts.js";
 import LoadingScreen from "../components/LoadingScreen.jsx";
+import MoreScents from "../components/MoreScents.jsx";
 import MutableVideo from "../components/MutableVideo.jsx";
 import Modal from "../components/Modal.jsx";
 import Seo from "../components/Seo.jsx";
@@ -129,10 +130,17 @@ function ProductPage() {
     setIsDirectOrderModalOpen(true);
   };
 
+  const backLink = (
+    <Link to="/products" className="product-back-link">
+      <span aria-hidden="true">←</span> All scents
+    </Link>
+  );
+
   if (isMobile) {
     return (
       <main className="m-product-page">
         {productSeo}
+        {backLink}
         {/* No autoplay: ad visitors land here to look at this candle, and
             auto-advancing swapped in not-yet-loaded photos. */}
         <Slider
@@ -315,6 +323,8 @@ function ProductPage() {
           </div>
         </div>
 
+        <MoreScents currentSlug={product.slug} />
+
         <Modal
           isOpen={isDirectOrderModalOpen}
           onClose={() => setIsDirectOrderModalOpen(false)}>
@@ -349,6 +359,7 @@ function ProductPage() {
   return (
     <main className="d-product-page">
       {productSeo}
+      {backLink}
       <div className="d-product-page-top">
           <div className="d-product-page-gallery">
           <div className="d-product-page-gallery-stage">
@@ -593,6 +604,8 @@ function ProductPage() {
         </div>
         </section>
       </div>
+
+      <MoreScents currentSlug={product.slug} />
 
       <Modal
         isOpen={isDirectOrderModalOpen}

@@ -707,3 +707,30 @@
   max-width: 420px;
   margin: 0 auto;
 }
+
+/* --- "← All scents" back link, top-left opposite the menu button --- */
+
+.m-product-page,
+.d-product-page {
+  position: relative;
+}
+
+.product-back-link {
+  position: absolute;
+  top: 10px;
+  left: var(--spacing-md);
+  /* above the full-width mobile navbar, which would swallow the tap */
+  z-index: 25;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 232, 207, 0.88);
+  font-family: var(--font-family-body);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-accent-cobalt);
+  text-decoration: none;
+}
