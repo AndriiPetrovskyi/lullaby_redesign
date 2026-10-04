@@ -707,3 +707,37 @@
   max-width: 420px;
   margin: 0 auto;
 }
+
+/* --- trust line under the buy buttons (mobile + desktop) --- */
+
+.product-trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-family-body);
+  font-size: 13px;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--color-accent-coral);
+}
+
+.product-trust li + li::before {
+  content: "·";
+  margin: 0 8px;
+}
+
+.m-product-page-trust {
+  margin-top: var(--spacing-sm);
+}
+
+.d-product-page-cta-row:has(+ .d-product-page-trust) {
+  margin-bottom: var(--spacing-sm);
+}
+
+.d-product-page-trust {
+  margin-bottom: var(--spacing-lg);
+}

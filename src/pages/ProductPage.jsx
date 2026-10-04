@@ -15,6 +15,7 @@ import { trackEvent } from "../utils/metaPixel.js";
 import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
 import { responsiveImage, uniquePhotos } from "../utils/images.js";
 import {
+  BUSINESS_COUNTRY,
   CONTACT_EMAIL,
   CONTACT_EMAIL_HANDLE,
   DAMAGE_REPORT_HOURS,
@@ -31,6 +32,18 @@ import "./ProductPage.css";
 
 const MOBILE_GALLERY_WIDTHS = [600, 800, 1200];
 const DESKTOP_GALLERY_WIDTHS = [800, 1200, 1600];
+
+// First-time visitors from ads don't know the brand yet — answer the usual
+// "is this safe to order?" questions right under the buy buttons.
+function TrustLine({ className }) {
+  return (
+    <ul className={`product-trust ${className}`}>
+      <li>Free shipping</li>
+      <li>{RETURN_WINDOW_DAYS}-day returns</li>
+      <li>Handmade in {BUSINESS_COUNTRY}</li>
+    </ul>
+  );
+}
 
 const PRODUCT_INFO_SECTIONS = [
   {
@@ -166,6 +179,7 @@ function ProductPage() {
               Direct Order
             </button>
           </div>
+          <TrustLine className="m-product-page-trust" />
 
           {product.fragranceNotes && (
             <div className="m-product-page-notes">
@@ -438,6 +452,7 @@ function ProductPage() {
               Direct Order
             </button>
           </div>
+          <TrustLine className="d-product-page-trust" />
 
           {product.fragranceNotes && (
             <div className="d-product-page-notes">
