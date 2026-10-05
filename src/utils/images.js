@@ -21,6 +21,19 @@ export function responsiveImage(url, widths, sizes) {
   };
 }
 
+// Ads link to `/products/<slug>?photo=<file name without extension>` so the
+// gallery opens on the same photo the ad showed. Moves that photo to the
+// front; `extraPool` lets it be found even if it isn't in `urls` (e.g. the
+// product's main image, which the mobile gallery doesn't include). Unknown
+// or missing keys leave the order untouched.
+export function withPhotoFirst(urls, key, extraPool = []) {
+  if (!key) return urls;
+  const wanted = key.toLowerCase();
+  const match = [...urls, ...extraPool].find((url) => photoKey(url) === wanted);
+  if (!match) return urls;
+  return [match, ...urls.filter((url) => photoKey(url) !== wanted)];
+}
+
 export function uniquePhotos(urls) {
   const seen = new Set();
   return urls.filter((url) => {

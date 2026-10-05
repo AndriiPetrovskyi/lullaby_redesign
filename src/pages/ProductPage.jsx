@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import { useProduct } from "../hooks/useProducts.js";
 import LoadingScreen from "../components/LoadingScreen.jsx";
@@ -14,7 +14,7 @@ import { DEFAULT_OG_IMAGE, absoluteUrl } from "../config/seo.js";
 import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
 import { trackEvent } from "../utils/metaPixel.js";
 import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
-import { responsiveImage, uniquePhotos } from "../utils/images.js";
+import { responsiveImage, uniquePhotos, withPhotoFirst } from "../utils/images.js";
 import {
   CONTACT_EMAIL,
   CONTACT_EMAIL_HANDLE,
@@ -46,6 +46,8 @@ const PRODUCT_INFO_SECTIONS = [
 
 function ProductPage() {
   const { slug } = useParams();
+  const [searchParams] = useSearchParams();
+  const adPhoto = searchParams.get("photo");
   const isMobile = useIsMobile();
   const { product, isLoading, error } = useProduct(slug);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
@@ -144,8 +146,13 @@ function ProductPage() {
         {/* No autoplay: ad visitors land here to look at this candle, and
             auto-advancing swapped in not-yet-loaded photos. */}
         <Slider
+          key={product.slug}
           autoplay={false}
-          slides={uniquePhotos(product.gallery ?? []).map((src, i) => (
+          slides={withPhotoFirst(
+            uniquePhotos(product.gallery ?? []),
+            adPhoto,
+            [product.image],
+          ).map((src, i) => (
             <img
               key={i}
               {...responsiveImage(src, MOBILE_GALLERY_WIDTHS, "100vw")}
@@ -354,7 +361,10 @@ function ProductPage() {
     );
   }
 
-  const galleryImages = uniquePhotos([product.image, ...(product.gallery ?? [])]);
+  const galleryImages = withPhotoFirst(
+    uniquePhotos([product.image, ...(product.gallery ?? [])]),
+    adPhoto,
+  );
 
   return (
     <main className="d-product-page">
