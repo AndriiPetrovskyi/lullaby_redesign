@@ -9,7 +9,7 @@ import "./ProductsPage.css";
 const PRODUCTS_SEO_PROPS = {
   title: "All Scents",
   description:
-    "Browse every Lullaby scent — hand-poured candles in hand-glazed ceramic vessels, each with a packet of seeds hidden inside.",
+    "Browse every Lullaby scent — hand-poured candles in handmade gypsum vessels, each with a packet of seeds hidden inside.",
   path: "/products",
 };
 
