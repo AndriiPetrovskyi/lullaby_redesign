@@ -10,6 +10,7 @@ import Modal from "../components/Modal.jsx";
 import Seo from "../components/Seo.jsx";
 import { InstagramIcon, MailIcon } from "../components/icons/SocialIcons.jsx";
 import Slider from "../mobile/components/Slider.jsx";
+import BuyBar from "../mobile/components/BuyBar.jsx";
 import { DEFAULT_OG_IMAGE, absoluteUrl } from "../config/seo.js";
 import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
 import { trackEvent } from "../utils/metaPixel.js";
@@ -165,7 +166,10 @@ function ProductPage() {
         <div className="m-product-page-info">
           <p className="m-product-page-name">{product.name}</p>
           <p className="m-product-page-price">${product.price}</p>
-          <div className="m-product-page-cta-row">
+          <p className="m-product-page-seeds">
+            <span aria-hidden="true">🌱</span> Seeds inside — plant them when the candle&apos;s done
+          </p>
+          <div className="m-product-page-cta-row m-product-page-cta-row--top">
             <a
               href={product.etsyUrl}
               target="_blank"
@@ -311,7 +315,7 @@ function ProductPage() {
                 packaged and ready to be your ultimate gift.
               </span>
             </p>
-            <div className="m-product-page-cta-row">
+            <div className="m-product-page-cta-row m-product-page-cta-row--closing">
               <a
                 href={product.etsyUrl}
                 target="_blank"
@@ -331,6 +335,15 @@ function ProductPage() {
         </div>
 
         <MoreScents currentSlug={product.slug} />
+
+        <BuyBar
+          name={product.name}
+          price={product.price}
+          href={product.etsyUrl}
+          onBuy={handleEtsyClick}
+          firstCtaSelector=".m-product-page-cta-row--top"
+          lastCtaSelector=".m-product-page-cta-row--closing"
+        />
 
         <Modal
           isOpen={isDirectOrderModalOpen}

@@ -6,6 +6,12 @@
   background: var(--color-bg-light);
 }
 
+.m-product-page {
+  /* Brand orange on cream reads at ~3:1 — too faint for long text on a phone
+     in daylight. Body copy uses a deeper shade of the same orange (~5:1). */
+  --m-product-text: #b84a10;
+}
+
 .m-product-page-info {
   padding: var(--spacing-md);
 }
@@ -20,11 +26,19 @@
 }
 
 .m-product-page-price {
-  margin: 0 0 var(--spacing-xs);
+  margin: 0 0 var(--spacing-sm);
   font-family: var(--font-family-body);
-  font-size: var(--scale-body-size);
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 800;
   color: var(--color-accent-cobalt);
+}
+
+.m-product-page-seeds {
+  margin: 0 0 var(--spacing-md);
+  font-family: var(--font-family-body);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--m-product-text);
 }
 
 .m-product-page-cta-row {
@@ -733,4 +747,16 @@
   line-height: 1.2;
   color: var(--color-accent-cobalt);
   text-decoration: none;
+}
+
+/* --- mobile readability: body copy in the deeper orange, a touch heavier --- */
+
+.m-product-page .m-product-page-notes-row,
+.m-product-page .m-product-page-description,
+.m-product-page .m-product-page-faq-content,
+.m-product-page .m-product-page-video-caption,
+.m-product-page .m-product-page-gift-caption,
+.m-product-page .m-product-page-vessel-caption {
+  color: var(--m-product-text);
+  font-weight: 400;
 }
