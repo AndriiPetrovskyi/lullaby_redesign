@@ -14,6 +14,7 @@ import BuyBar from "../mobile/components/BuyBar.jsx";
 import { DEFAULT_OG_IMAGE, absoluteUrl } from "../config/seo.js";
 import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
 import { trackCustomEvent, trackEvent } from "../utils/metaPixel.js";
+import { ORDERING_PAUSED } from "../config/ordering.js";
 import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
 import { responsiveImage, uniquePhotos, withPhotoFirst } from "../utils/images.js";
 import {
@@ -123,6 +124,7 @@ function ProductPage() {
   // its payload is unchanged) and opens a step that explains Etsy checkout.
   // "Continue to checkout" then records whether they still go ahead.
   const handleBuyClick = () => {
+    if (ORDERING_PAUSED) return;
     trackEvent("InitiateCheckout", {
       content_ids: [product.id],
       content_name: product.name,
@@ -170,6 +172,7 @@ function ProductPage() {
   );
 
   const handleDirectOrderClick = () => {
+    if (ORDERING_PAUSED) return;
     trackEvent("Contact", { content_name: product.name });
     trackGaEvent("generate_lead", gaItem(product));
     setIsDirectOrderModalOpen(true);
@@ -220,18 +223,21 @@ function ProductPage() {
             <button
               type="button"
               onClick={handleBuyClick}
+              disabled={ORDERING_PAUSED}
               className="m-product-page-buy-etsy">
-              Buy now
+              {ORDERING_PAUSED ? "Currently unavailable" : "Buy now"}
             </button>
-            <p className="m-product-page-direct-line">
-              Prefer another way to pay?{" "}
-              <button
-                type="button"
-                className="m-product-page-direct-order"
-                onClick={handleDirectOrderClick}>
-                Order directly
-              </button>
-            </p>
+            {!ORDERING_PAUSED && (
+              <p className="m-product-page-direct-line">
+                Prefer another way to pay?{" "}
+                <button
+                  type="button"
+                  className="m-product-page-direct-order"
+                  onClick={handleDirectOrderClick}>
+                  Order directly
+                </button>
+              </p>
+            )}
           </div>
 
           {product.fragranceNotes && (
@@ -367,31 +373,36 @@ function ProductPage() {
               <button
               type="button"
               onClick={handleBuyClick}
+              disabled={ORDERING_PAUSED}
               className="m-product-page-buy-etsy">
-              Buy now
+              {ORDERING_PAUSED ? "Currently unavailable" : "Buy now"}
             </button>
-            <p className="m-product-page-direct-line">
-              Prefer another way to pay?{" "}
-              <button
-                type="button"
-                className="m-product-page-direct-order"
-                onClick={handleDirectOrderClick}>
-                Order directly
-              </button>
-            </p>
+            {!ORDERING_PAUSED && (
+              <p className="m-product-page-direct-line">
+                Prefer another way to pay?{" "}
+                <button
+                  type="button"
+                  className="m-product-page-direct-order"
+                  onClick={handleDirectOrderClick}>
+                  Order directly
+                </button>
+              </p>
+            )}
             </div>
           </div>
         </div>
 
         <MoreScents currentSlug={product.slug} />
 
-        <BuyBar
-          name={product.name}
-          price={product.price}
-          onBuy={handleBuyClick}
-          firstCtaSelector=".m-product-page-cta-row--top"
-          lastCtaSelector=".m-product-page-cta-row--closing"
-        />
+        {!ORDERING_PAUSED && (
+          <BuyBar
+            name={product.name}
+            price={product.price}
+            onBuy={handleBuyClick}
+            firstCtaSelector=".m-product-page-cta-row--top"
+            lastCtaSelector=".m-product-page-cta-row--closing"
+          />
+        )}
 
         {checkoutModal}
 
@@ -510,15 +521,18 @@ function ProductPage() {
             <button
               type="button"
               onClick={handleBuyClick}
+              disabled={ORDERING_PAUSED}
               className="d-product-page-buy-etsy">
-              Buy now
+              {ORDERING_PAUSED ? "Currently unavailable" : "Buy now"}
             </button>
-            <button
-              type="button"
-              className="d-product-page-direct-order"
-              onClick={handleDirectOrderClick}>
-              Direct Order
-            </button>
+            {!ORDERING_PAUSED && (
+              <button
+                type="button"
+                className="d-product-page-direct-order"
+                onClick={handleDirectOrderClick}>
+                Direct Order
+              </button>
+            )}
           </div>
 
           {product.fragranceNotes && (
@@ -661,15 +675,18 @@ function ProductPage() {
           <button
               type="button"
               onClick={handleBuyClick}
+              disabled={ORDERING_PAUSED}
               className="d-product-page-buy-etsy">
-              Buy now
+              {ORDERING_PAUSED ? "Currently unavailable" : "Buy now"}
             </button>
-          <button
-            type="button"
-            className="d-product-page-direct-order"
-            onClick={handleDirectOrderClick}>
-            Direct Order
-          </button>
+          {!ORDERING_PAUSED && (
+            <button
+              type="button"
+              className="d-product-page-direct-order"
+              onClick={handleDirectOrderClick}>
+              Direct Order
+            </button>
+          )}
         </div>
         </section>
       </div>
