@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import "./BuyBar.css";
 
-// Sticky "Buy on Etsy" bar for the mobile product page. Only shows in the
+// Sticky "Buy now" bar for the mobile product page. Only shows in the
 // stretch where neither of the page's own button rows is on screen — after
 // the top buttons scroll away and before the bottom ones come into view —
 // so it never sits on top of a real button or the "You may also like" row.
-function BuyBar({ name, price, href, onBuy, firstCtaSelector, lastCtaSelector }) {
+function BuyBar({ name, price, onBuy, firstCtaSelector, lastCtaSelector }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -48,14 +48,9 @@ function BuyBar({ name, price, href, onBuy, firstCtaSelector, lastCtaSelector })
             </p>
             <p className="m-buy-bar-note">Free shipping to US &amp; Canada</p>
           </div>
-          <a
-            className="m-buy-bar-button"
-            href={href}
-            target="_blank"
-            rel="noreferrer"
-            onClick={onBuy}>
-            Buy on Etsy
-          </a>
+          <button type="button" className="m-buy-bar-button" onClick={onBuy}>
+            Buy now
+          </button>
         </motion.div>
       )}
     </AnimatePresence>

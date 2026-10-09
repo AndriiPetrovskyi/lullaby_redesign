@@ -90,3 +90,30 @@
   width: 18px;
   height: 18px;
 }
+
+.modal-card:focus {
+  outline: none;
+}
+
+/* --- checkout step: "Almost there!" before handing off to Etsy --- */
+
+.modal-checkout-button {
+  display: block;
+  margin-top: var(--spacing-md);
+  padding: 16px var(--spacing-md);
+  background: var(--m-product-cta, #c0451b);
+  font-family: var(--font-family-body);
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+}
+
+.modal-checkout-note {
+  margin: 10px 0 0;
+  font-family: var(--font-family-body);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--m-product-text, var(--color-text-dark));
+}

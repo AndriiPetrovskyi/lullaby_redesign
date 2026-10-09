@@ -91,6 +91,20 @@ export function trackEvent(eventName, customData = {}) {
   sendToConversionsApi(eventName, eventId, customData);
 }
 
+// Same as trackEvent, for event names outside Meta's standard set — these
+// must go through fbq('trackCustom') or the pixel ignores them.
+export function trackCustomEvent(eventName, customData = {}) {
+  if (!isTrackingEnabled) return;
+
+  const eventId = generateEventId();
+
+  if (window.fbq) {
+    window.fbq("trackCustom", eventName, customData, { eventID: eventId });
+  }
+
+  sendToConversionsApi(eventName, eventId, customData);
+}
+
 export function trackPageView() {
   trackEvent("PageView", {});
 }

@@ -13,7 +13,7 @@ import Slider from "../mobile/components/Slider.jsx";
 import BuyBar from "../mobile/components/BuyBar.jsx";
 import { DEFAULT_OG_IMAGE, absoluteUrl } from "../config/seo.js";
 import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
-import { trackEvent } from "../utils/metaPixel.js";
+import { trackCustomEvent, trackEvent } from "../utils/metaPixel.js";
 import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
 import { responsiveImage, uniquePhotos, withPhotoFirst } from "../utils/images.js";
 import {
@@ -54,6 +54,7 @@ function ProductPage() {
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const [openInfoSections, setOpenInfoSections] = useState(() => new Set());
   const [isDirectOrderModalOpen, setIsDirectOrderModalOpen] = useState(false);
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
 
   useEffect(() => {
@@ -117,7 +118,11 @@ function ProductPage() {
     />
   );
 
-  const handleEtsyClick = () => {
+  // Checkout experiment: "Buy now" no longer leaves for Etsy. It records
+  // purchase intent (InitiateCheckout — the ad campaign optimizes for it, so
+  // its payload is unchanged) and opens a step that explains Etsy checkout.
+  // "Continue to checkout" then records whether they still go ahead.
+  const handleBuyClick = () => {
     trackEvent("InitiateCheckout", {
       content_ids: [product.id],
       content_name: product.name,
@@ -125,7 +130,44 @@ function ProductPage() {
       currency: "USD",
     });
     trackGaEvent("begin_checkout", gaItem(product));
+    setIsCheckoutModalOpen(true);
   };
+
+  // Fires on click of a real link that opens Etsy in a new tab (as the old
+  // button did), so this page stays open and the events aren't cut off —
+  // no navigation delay needed, and no popup blocker trouble.
+  const handleContinueToEtsy = () => {
+    trackCustomEvent("ContinueToEtsy", {
+      content_name: product.name,
+      value: product.price,
+      currency: "USD",
+    });
+    trackGaEvent("continue_to_etsy", gaItem(product));
+  };
+
+  const checkoutModal = (
+    <Modal
+      isOpen={isCheckoutModalOpen}
+      onClose={() => setIsCheckoutModalOpen(false)}
+      labelledBy="checkout-modal-title">
+      <p id="checkout-modal-title" className="modal-title">
+        Almost there!
+      </p>
+      <p className="body-text modal-text">
+        We use Etsy for secure checkout — your payment and order are protected
+        by Etsy Purchase Protection.
+      </p>
+      <a
+        href={product.etsyUrl}
+        target="_blank"
+        rel="noreferrer"
+        onClick={handleContinueToEtsy}
+        className="modal-checkout-button">
+        Continue to checkout →
+      </a>
+      <p className="modal-checkout-note">Free shipping · {DELIVERY_TIME}</p>
+    </Modal>
+  );
 
   const handleDirectOrderClick = () => {
     trackEvent("Contact", { content_name: product.name });
@@ -166,24 +208,30 @@ function ProductPage() {
         <div className="m-product-page-info">
           <p className="m-product-page-name">{product.name}</p>
           <p className="m-product-page-price">${product.price}</p>
-          <p className="m-product-page-seeds">
-            <span aria-hidden="true">🌱</span> Seeds inside — plant them when the candle&apos;s done
-          </p>
+          <ul className="m-product-page-perks">
+            <li>
+              Seeds inside — plant them when it&apos;s done
+            </li>
+            <li>
+              Free shipping · {DELIVERY_TIME}
+            </li>
+          </ul>
           <div className="m-product-page-cta-row m-product-page-cta-row--top">
-            <a
-              href={product.etsyUrl}
-              target="_blank"
-              rel="noreferrer"
-              onClick={handleEtsyClick}
-              className="m-product-page-buy-etsy">
-              Buy on Etsy
-            </a>
             <button
               type="button"
-              className="m-product-page-direct-order"
-              onClick={handleDirectOrderClick}>
-              Direct Order
+              onClick={handleBuyClick}
+              className="m-product-page-buy-etsy">
+              Buy now
             </button>
+            <p className="m-product-page-direct-line">
+              Prefer another way to pay?{" "}
+              <button
+                type="button"
+                className="m-product-page-direct-order"
+                onClick={handleDirectOrderClick}>
+                Order directly
+              </button>
+            </p>
           </div>
 
           {product.fragranceNotes && (
@@ -316,20 +364,21 @@ function ProductPage() {
               </span>
             </p>
             <div className="m-product-page-cta-row m-product-page-cta-row--closing">
-              <a
-                href={product.etsyUrl}
-                target="_blank"
-                rel="noreferrer"
-                onClick={handleEtsyClick}
-                className="m-product-page-buy-etsy">
-                Buy on Etsy
-              </a>
+              <button
+              type="button"
+              onClick={handleBuyClick}
+              className="m-product-page-buy-etsy">
+              Buy now
+            </button>
+            <p className="m-product-page-direct-line">
+              Prefer another way to pay?{" "}
               <button
                 type="button"
                 className="m-product-page-direct-order"
                 onClick={handleDirectOrderClick}>
-                Direct Order
+                Order directly
               </button>
+            </p>
             </div>
           </div>
         </div>
@@ -339,11 +388,12 @@ function ProductPage() {
         <BuyBar
           name={product.name}
           price={product.price}
-          href={product.etsyUrl}
-          onBuy={handleEtsyClick}
+          onBuy={handleBuyClick}
           firstCtaSelector=".m-product-page-cta-row--top"
           lastCtaSelector=".m-product-page-cta-row--closing"
         />
+
+        {checkoutModal}
 
         <Modal
           isOpen={isDirectOrderModalOpen}
@@ -457,14 +507,12 @@ function ProductPage() {
           <p className="d-product-page-price">${product.price}</p>
 
           <div className="d-product-page-cta-row">
-            <a
-              href={product.etsyUrl}
-              target="_blank"
-              rel="noreferrer"
-              onClick={handleEtsyClick}
+            <button
+              type="button"
+              onClick={handleBuyClick}
               className="d-product-page-buy-etsy">
-              Buy on Etsy
-            </a>
+              Buy now
+            </button>
             <button
               type="button"
               className="d-product-page-direct-order"
@@ -610,14 +658,12 @@ function ProductPage() {
           </span>
         </p>
         <div className="d-product-page-cta-row d-product-page-cta-row--closing">
-          <a
-            href={product.etsyUrl}
-            target="_blank"
-            rel="noreferrer"
-            onClick={handleEtsyClick}
-            className="d-product-page-buy-etsy">
-            Buy on Etsy
-          </a>
+          <button
+              type="button"
+              onClick={handleBuyClick}
+              className="d-product-page-buy-etsy">
+              Buy now
+            </button>
           <button
             type="button"
             className="d-product-page-direct-order"
@@ -629,6 +675,8 @@ function ProductPage() {
       </div>
 
       <MoreScents currentSlug={product.slug} />
+
+      {checkoutModal}
 
       <Modal
         isOpen={isDirectOrderModalOpen}

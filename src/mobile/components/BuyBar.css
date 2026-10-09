@@ -47,11 +47,16 @@
 .m-buy-bar-button {
   flex: none;
   padding: 13px 18px;
-  background: #ffa047;
+  background: var(--m-product-cta, #c0451b);
   font-family: var(--font-family-body);
   font-size: 15px;
   font-weight: 700;
-  color: #ffe8cf;
+  color: #fff;
   text-decoration: none;
   white-space: nowrap;
+}
+
+button.m-buy-bar-button {
+  border: none;
+  cursor: pointer;
 }

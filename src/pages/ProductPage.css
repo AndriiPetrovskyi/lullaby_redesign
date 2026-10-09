@@ -10,6 +10,8 @@
   /* Brand orange on cream reads at ~3:1 — too faint for long text on a phone
      in daylight. Body copy uses a deeper shade of the same orange (~5:1). */
   --m-product-text: #b84a10;
+  /* terracotta — darker than the old #ffa047 button so white text reads */
+  --m-product-cta: #c0451b;
 }
 
 .m-product-page-info {
@@ -17,11 +19,11 @@
 }
 
 .m-product-page-name {
-  font-size: 24px;
-  letter-spacing: -0.08em;
+  font-size: 30px;
+  letter-spacing: -0.06em;
   font-style: italic;
-  line-height: 1;
-  font-weight: 400;
+  line-height: 1.05;
+  font-weight: 700;
   margin: 0 0 16px 0;
 }
 
@@ -33,43 +35,71 @@
   color: var(--color-accent-cobalt);
 }
 
-.m-product-page-seeds {
+.m-product-page-perks {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   margin: 0 0 var(--spacing-md);
+  padding: 0;
+  list-style: none;
   font-family: var(--font-family-body);
   font-size: 14px;
   line-height: 1.4;
   color: var(--m-product-text);
 }
 
+/* One primary action (Etsy) at full width; Direct Order demoted to a text
+   link so the two don't compete. */
 .m-product-page-cta-row {
   display: flex;
-  gap: var(--spacing-sm);
-}
-
-.m-product-page-buy-etsy,
-.m-product-page-direct-order {
-  flex: 1;
-  box-sizing: border-box;
-  padding: 16px var(--spacing-md);
-  font-family: var(--font-family-body);
-  font-size: var(--scale-body-size);
-  font-weight: 700;
+  flex-direction: column;
+  align-items: stretch;
   text-align: center;
-  text-decoration: none;
-  cursor: pointer;
 }
 
 .m-product-page-buy-etsy {
   display: block;
+  width: 100%;
+  box-sizing: border-box;
   border: none;
-  background: #ffa047;
-  color: #ffe8cf;
+  cursor: pointer;
+  padding: 17px var(--spacing-md);
+  background: var(--m-product-cta);
+  font-family: var(--font-family-body);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+}
+
+.m-product-page-checkout-note {
+  margin: 8px 0 0;
+  font-family: var(--font-family-body);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--m-product-text);
+}
+
+.m-product-page-direct-line {
+  margin: 14px 0 0;
+  font-family: var(--font-family-body);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--m-product-text);
 }
 
 .m-product-page-direct-order {
-  border: 2px solid var(--color-accent-cobalt);
-  background: transparent;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-weight: 700;
   color: var(--color-accent-cobalt);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
 }
 
 .m-product-page-notes {
