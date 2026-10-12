@@ -130,9 +130,58 @@
   cursor: not-allowed;
 }
 
-.checkout-note {
-  margin: 12px 0 0;
-  font-size: 13px;
+/* ---- payment method list (Shopify-style) ---- */
+
+.checkout-section-note {
+  margin: -8px 0 var(--spacing-md);
+  font-size: 14px;
+}
+
+.checkout-payment {
+  border: 1px solid rgba(235, 124, 70, 0.55);
+  background: #fff8f0;
+}
+
+.checkout-payment-option + .checkout-payment-option {
+  border-top: 1px solid rgba(235, 124, 70, 0.55);
+}
+
+.checkout-payment-option--selected {
+  outline: 2px solid var(--color-accent-cobalt);
+  outline-offset: -2px;
+}
+
+.checkout-payment-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+  min-height: 56px;
+  box-sizing: border-box;
+  padding: 12px var(--spacing-md);
+  cursor: pointer;
+}
+
+.checkout-payment-head input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--color-accent-cobalt);
+  cursor: pointer;
+}
+
+.checkout-payment-label {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.checkout-payment-body {
+  margin: 0;
+  padding: var(--spacing-md);
+  border-top: 1px solid rgba(235, 124, 70, 0.3);
+  background: var(--color-bg-light);
+  font-size: 14px;
   line-height: 1.5;
   text-align: center;
 }

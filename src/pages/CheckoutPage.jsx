@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen.jsx";
-import PaymentMethods from "../components/PaymentMethods.jsx";
+import { CardBrandIcons, PayPalLogo } from "../components/PaymentMethods.jsx";
 import Seo from "../components/Seo.jsx";
 import Select from "../components/ui/Select.jsx";
 import { useProduct } from "../hooks/useProducts.js";
@@ -59,6 +59,33 @@ function Field({ label, name, form, onChange, optional, className, ...props }) {
   );
 }
 
+// One row of the Shopify-style payment list: a radio, the method's logos,
+// and an explanation that unfolds while it is selected.
+function PaymentOption({ value, selected, onSelect, label, badge, children }) {
+  const isSelected = selected === value;
+  const id = `checkout-payment-${value}`;
+  return (
+    <div
+      className={`checkout-payment-option${isSelected ? " checkout-payment-option--selected" : ""}`}>
+      <label className="checkout-payment-head" htmlFor={id}>
+        <input
+          id={id}
+          type="radio"
+          name="paymentMethod"
+          value={value}
+          checked={isSelected}
+          onChange={() => onSelect(value)}
+        />
+        <span className="checkout-payment-label">{label}</span>
+        <span className="checkout-payment-badge" aria-hidden="true">
+          {badge}
+        </span>
+      </label>
+      {isSelected && <p className="checkout-payment-body">{children}</p>}
+    </div>
+  );
+}
+
 function CheckoutUnavailable({ title, children }) {
   return (
     <>
@@ -78,6 +105,7 @@ function CheckoutPage() {
   const [configError, setConfigError] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [quantity, setQuantity] = useState(1);
+  const [paymentMethod, setPaymentMethod] = useState("card");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
@@ -90,7 +118,10 @@ function CheckoutPage() {
   const country = config?.countries.find((c) => c.code === form.country);
   const taxRate =
     config?.taxRates.find(
-      (rate) => rate.country === form.country && rate.region === form.state,
+      (rate) =>
+        rate.paymentMethod === paymentMethod &&
+        rate.country === form.country &&
+        rate.region === form.state,
     )?.rate ?? 0;
 
   const totals = useMemo(() => {
@@ -158,6 +189,7 @@ function CheckoutPage() {
       const order = await createOrder({
         productSlug: product.slug,
         quantity,
+        paymentMethod,
         customer: form,
         fbp: readCookie("_fbp"),
         fbc: readCookie("_fbc"),
@@ -247,6 +279,38 @@ function CheckoutPage() {
               </div>
             </fieldset>
 
+            <fieldset className="checkout-section">
+              <legend>Payment</legend>
+              <p className="checkout-section-note">
+                All transactions are secure and encrypted.
+              </p>
+              <div className="checkout-payment">
+                {config.paymentMethods.includes("card") && (
+                  <PaymentOption
+                    value="card"
+                    selected={paymentMethod}
+                    onSelect={setPaymentMethod}
+                    label="Credit card"
+                    badge={<CardBrandIcons />}>
+                    After clicking &ldquo;Continue to payment&rdquo;, you&apos;ll be
+                    redirected to a secure Stripe page to pay by card, Apple Pay or
+                    Google Pay. We never see or store your card details.
+                  </PaymentOption>
+                )}
+                {config.paymentMethods.includes("paypal") && (
+                  <PaymentOption
+                    value="paypal"
+                    selected={paymentMethod}
+                    onSelect={setPaymentMethod}
+                    label="PayPal"
+                    badge={<PayPalLogo />}>
+                    After clicking &ldquo;Pay with PayPal&rdquo;, you&apos;ll be
+                    redirected to PayPal to complete your purchase securely.
+                  </PaymentOption>
+                )}
+              </div>
+            </fieldset>
+
             {submitError && (
               <p className="checkout-error" role="alert">
                 {submitError}
@@ -261,13 +325,10 @@ function CheckoutPage() {
                 ? "Sold out"
                 : isSubmitting
                   ? "Redirecting to payment…"
-                  : `Continue to payment · ${money(totals.total)}`}
+                  : paymentMethod === "paypal"
+                    ? `Pay with PayPal · ${money(totals.total)}`
+                    : `Continue to payment · ${money(totals.total)}`}
             </button>
-            <p className="checkout-note">
-              Pay by card, Apple Pay or Google Pay on a secure payment page. We
-              never see or store your card details.
-            </p>
-            <PaymentMethods />
           </form>
 
           <aside className="checkout-summary" aria-label="Order summary">
