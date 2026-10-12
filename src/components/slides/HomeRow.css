@@ -1,0 +1,71 @@
+/* Shared layout for the desktop home page rows: one image, one text column. */
+.home-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: clamp(48px, 6vw, 96px);
+}
+
+.home-row--media-first .home-row-media {
+  order: -1;
+}
+
+.home-row-media {
+  margin: 0;
+}
+
+.home-row-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.home-row-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-lg);
+  max-width: 480px;
+}
+
+.home-row-eyebrow {
+  margin: 0;
+  font-family: var(--font-family-heading-italic);
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--color-accent-cobalt);
+}
+
+.home-row-title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-weight: inherit;
+}
+
+.home-row-title-bold {
+  font-family: var(--font-family-body);
+  font-weight: 700;
+  font-size: clamp(48px, 5.5vw, 80px);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: var(--color-accent-cobalt);
+}
+
+.home-row-title-script {
+  font-family: var(--font-family-heading-italic);
+  font-style: italic;
+  font-size: clamp(36px, 4vw, 60px);
+  line-height: 1.15;
+  letter-spacing: -0.04em;
+  color: #ffa047;
+}
+
+.home-row-caption {
+  margin: 0;
+  font-family: var(--font-family-body);
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--color-text-dark);
+}

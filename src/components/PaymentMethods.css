@@ -1,0 +1,15 @@
+.payment-methods {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.payment-methods svg {
+  display: block;
+  width: 38px;
+  height: 24px;
+}

@@ -675,6 +675,20 @@
   color: var(--color-text-dark);
 }
 
+.product-details-row {
+  display: grid;
+  grid-template-columns: 7.5em 1fr;
+  gap: var(--spacing-sm);
+}
+
+.product-details dt {
+  font-weight: 600;
+}
+
+.product-details dd {
+  margin: 0;
+}
+
 /* --- story sections --- */
 
 .d-product-page-story {

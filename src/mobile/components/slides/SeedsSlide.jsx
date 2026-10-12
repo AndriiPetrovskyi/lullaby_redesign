@@ -13,7 +13,10 @@ function SeedsSlide() {
       </div>
 
       <div className="m-slide-content-image">
-        <img src={productImage} alt="Seeds" />
+        <img
+          src={productImage}
+          alt="A Lullaby candle vessel given a second life as a planter"
+        />
       </div>
 
       <div className="m-seeds-slide-title m-seeds-slide-title--bottom">
@@ -21,20 +24,20 @@ function SeedsSlide() {
           a little
         </p>
         <p className="m-seeds-slide-title-bold m-seeds-slide-title-bold--italic">
-          life...
+          magic...
         </p>
       </div>
 
       <p className="m-seeds-slide-caption">
         Every candle
         <br />
-        leaves something
+        keeps a little
         <br />
-        behind — seeds
+        secret — a
         <br />
-        for whatever
+        handwritten wish
         <br />
-        comes next.
+        or fortune.
       </p>
     </div>
   );

@@ -1,4 +1,3 @@
-import AnimatedSection from "../components/AnimatedSection.jsx";
 import Seo from "../components/Seo.jsx";
 import BestsellersSlide from "../components/slides/BestsellersSlide.jsx";
 import GiftSlide from "../components/slides/GiftSlide.jsx";
@@ -54,30 +53,20 @@ function HomePage() {
     <>
       <Seo path="/" jsonLd={HOME_JSON_LD} />
       <main className="home-sections">
-        <section className="home-section home-section--full home-section--hero">
-          <AnimatedSection className="home-section-inner" direction={-1}>
-            <ProductInfoSlide />
-          </AnimatedSection>
+        <section className="home-section home-section--hero">
+          <ProductInfoSlide />
         </section>
         <section className="home-section">
-          <AnimatedSection className="home-section-inner" direction={1}>
-            <BestsellersSlide />
-          </AnimatedSection>
+          <BestsellersSlide />
         </section>
-        <section className="home-section home-section--wide home-section--bleed-left">
-          <AnimatedSection className="home-section-inner" direction={-1}>
-            <SeedsSlide />
-          </AnimatedSection>
+        <section className="home-section">
+          <SeedsSlide />
         </section>
-        <section className="home-section home-section--full">
-          <AnimatedSection className="home-section-inner" direction={-1}>
-            <HandmadeSlide />
-          </AnimatedSection>
+        <section className="home-section">
+          <HandmadeSlide />
         </section>
-        <section className="home-section home-section--wide home-section--pad-32">
-          <AnimatedSection className="home-section-inner" direction={1}>
-            <GiftSlide />
-          </AnimatedSection>
+        <section className="home-section">
+          <GiftSlide />
         </section>
       </main>
     </>

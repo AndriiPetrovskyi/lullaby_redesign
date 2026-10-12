@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import { useProduct } from "../hooks/useProducts.js";
 import LoadingScreen from "../components/LoadingScreen.jsx";
 import MoreScents from "../components/MoreScents.jsx";
+import ProductReviews, {
+  ReviewsSummaryLink,
+} from "../components/ProductReviews.jsx";
+import { getProductReviews } from "../data/reviews.js";
 import MutableVideo from "../components/MutableVideo.jsx";
 import Modal from "../components/Modal.jsx";
 import Seo from "../components/Seo.jsx";
@@ -14,7 +18,7 @@ import BuyBar from "../mobile/components/BuyBar.jsx";
 import { DEFAULT_OG_IMAGE, absoluteUrl } from "../config/seo.js";
 import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
 import { trackCustomEvent, trackEvent } from "../utils/metaPixel.js";
-import { ORDERING_PAUSED } from "../config/ordering.js";
+import { CHECKOUT_ENABLED, ORDERING_PAUSED } from "../config/ordering.js";
 import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
 import { responsiveImage, uniquePhotos, withPhotoFirst } from "../utils/images.js";
 import {
@@ -29,13 +33,23 @@ import {
 } from "../config/contact.js";
 import jarProcessVideo from "../assets/process.mp4";
 import boxProcessVideo from "../assets/video2.MP4";
-import seedsVideo from "../assets/seeds-video.mp4";
+import vesselPlanterImage from "../assets/fl3.jpeg";
 import "./ProductPage.css";
 
 const MOBILE_GALLERY_WIDTHS = [600, 800, 1200];
 const DESKTOP_GALLERY_WIDTHS = [800, 1200, 1600];
 
 const PRODUCT_INFO_SECTIONS = [
+  {
+    title: "Details",
+    rows: [
+      ["Burn time", "Approx. 40 hours"],
+      ["Vessel", "Hand-finished gypsum, sealed and washable"],
+      ["Wick", "Cotton"],
+      ["Wax", "Soy"],
+      ["Size", "3.9 × 3.9 in (10 × 10 cm)"],
+    ],
+  },
   {
     title: "Shipping & Delivery",
     content: `Free shipping on every order. Orders ship within ${DISPATCH_TIME}; delivery typically takes ${DELIVERY_TIME} depending on location.`,
@@ -46,11 +60,26 @@ const PRODUCT_INFO_SECTIONS = [
   },
 ];
 
+function ProductInfoContent({ section, className }) {
+  if (!section.rows) return <p className={className}>{section.content}</p>;
+  return (
+    <dl className={`${className} product-details`}>
+      {section.rows.map(([label, value]) => (
+        <div className="product-details-row" key={label}>
+          <dt>{label}</dt>
+          <dd>{value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
 function ProductPage() {
   const { slug } = useParams();
   const [searchParams] = useSearchParams();
   const adPhoto = searchParams.get("photo");
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const { product, isLoading, error } = useProduct(slug);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const [openInfoSections, setOpenInfoSections] = useState(() => new Set());
@@ -105,6 +134,8 @@ function ProductPage() {
     );
   }
 
+  const reviews = getProductReviews(product.slug);
+
   const productSeo = (
     <Seo
       title={product.name}
@@ -119,10 +150,9 @@ function ProductPage() {
     />
   );
 
-  // Checkout experiment: "Buy now" no longer leaves for Etsy. It records
-  // purchase intent (InitiateCheckout — the ad campaign optimizes for it, so
-  // its payload is unchanged) and opens a step that explains Etsy checkout.
-  // "Continue to checkout" then records whether they still go ahead.
+  // "Buy now" records purchase intent (InitiateCheckout — the ad campaign
+  // optimizes for it, so its payload is unchanged), then goes to the site's
+  // own checkout, or — until that is switched on — to the Etsy step.
   const handleBuyClick = () => {
     if (ORDERING_PAUSED) return;
     trackEvent("InitiateCheckout", {
@@ -132,7 +162,11 @@ function ProductPage() {
       currency: "USD",
     });
     trackGaEvent("begin_checkout", gaItem(product));
-    setIsCheckoutModalOpen(true);
+    if (CHECKOUT_ENABLED) {
+      navigate(`/checkout/${product.slug}`);
+    } else {
+      setIsCheckoutModalOpen(true);
+    }
   };
 
   // Fires on click of a real link that opens Etsy in a new tab (as the old
@@ -211,9 +245,10 @@ function ProductPage() {
         <div className="m-product-page-info">
           <p className="m-product-page-name">{product.name}</p>
           <p className="m-product-page-price">${product.price}</p>
+          <ReviewsSummaryLink reviews={reviews} />
           <ul className="m-product-page-perks">
             <li>
-              Seeds inside — plant them when it&apos;s done
+              A handwritten wish or fortune inside
             </li>
             <li>
               Free shipping · {DELIVERY_TIME}
@@ -304,9 +339,10 @@ function ProductPage() {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}>
-                        <p className="body-text m-product-page-faq-content">
-                          {section.content}
-                        </p>
+                        <ProductInfoContent
+                          section={section}
+                          className="body-text m-product-page-faq-content"
+                        />
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -337,7 +373,13 @@ function ProductPage() {
               Plant a flower in it.
             </p>
             <div className="m-product-page-video-frame">
-              <MutableVideo className="m-product-page-video" src={seedsVideo} />
+              <img
+                className="m-product-page-video"
+                src={vesselPlanterImage}
+                alt="A Lullaby vessel reused as a planter"
+                loading="lazy"
+                decoding="async"
+              />
             </div>
             <p className="m-product-page-vessel-caption">
               Burn the candle, keep the vessel, and grow something new — a small
@@ -362,8 +404,8 @@ function ProductPage() {
 
           <div className="m-product-page-closing-section">
             <p className="body-text m-product-page-closing-text">
-              From the first touch of raw material to the sprout that grows from
-              the seeds.
+              From the first touch of raw material to the handwritten note
+              waiting inside.
               <span className="m-product-page-closing-text-emphasis">
                 We've created not just an object, but an emotion—perfectly
                 packaged and ready to be your ultimate gift.
@@ -391,6 +433,8 @@ function ProductPage() {
             </div>
           </div>
         </div>
+
+        <ProductReviews reviews={reviews} />
 
         <MoreScents currentSlug={product.slug} />
 
@@ -516,6 +560,7 @@ function ProductPage() {
         <div className="d-product-page-info">
           <h1 className="d-product-page-name">{product.name}</h1>
           <p className="d-product-page-price">${product.price}</p>
+          <ReviewsSummaryLink reviews={reviews} />
 
           <div className="d-product-page-cta-row">
             <button
@@ -599,9 +644,10 @@ function ProductPage() {
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}>
-                        <p className="body-text d-product-page-faq-content">
-                          {section.content}
-                        </p>
+                        <ProductInfoContent
+                          section={section}
+                          className="body-text d-product-page-faq-content"
+                        />
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -631,7 +677,13 @@ function ProductPage() {
 
       <section className="d-product-page-story d-product-page-story--reverse">
         <div className="d-product-page-story-media">
-          <MutableVideo className="d-product-page-video" src={seedsVideo} />
+          <img
+            className="d-product-page-video"
+            src={vesselPlanterImage}
+            alt="A Lullaby vessel reused as a planter"
+            loading="lazy"
+            decoding="async"
+          />
         </div>
         <div className="d-product-page-story-text">
           <p className="d-product-page-story-title">
@@ -664,8 +716,8 @@ function ProductPage() {
       <div className="d-product-page-inner">
         <section className="d-product-page-closing-section">
         <p className="d-product-page-closing-text">
-          From the first touch of raw material to the sprout that grows from the
-          seeds.
+          From the first touch of raw material to the handwritten note
+          waiting inside.
           <span className="d-product-page-closing-text-emphasis">
             We&apos;ve created not just an object, but an emotion—perfectly
             packaged and ready to be your ultimate gift.
@@ -690,6 +742,8 @@ function ProductPage() {
         </div>
         </section>
       </div>
+
+      <ProductReviews reviews={reviews} />
 
       <MoreScents currentSlug={product.slug} />
 

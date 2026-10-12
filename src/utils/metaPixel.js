@@ -79,10 +79,12 @@ function sendToConversionsApi(eventName, eventId, customData) {
 // Tracks one event through both channels (pixel + Conversions API) under a
 // shared event_id, so Meta deduplicates them into a single event instead of
 // double-counting. No-ops entirely when tracking is disabled.
-export function trackEvent(eventName, customData = {}) {
+export function trackEvent(eventName, customData = {}, { eventId: fixedEventId } = {}) {
   if (!isTrackingEnabled) return;
 
-  const eventId = generateEventId();
+  // A fixed id lets the backend send the same event (e.g. Purchase) and
+  // still have Meta count the pair once.
+  const eventId = fixedEventId ?? generateEventId();
 
   if (window.fbq) {
     window.fbq("track", eventName, customData, { eventID: eventId });

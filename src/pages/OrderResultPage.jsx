@@ -1,0 +1,187 @@
+import { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import Seo from "../components/Seo.jsx";
+import { CONTACT_EMAIL, DISPATCH_TIME, DELIVERY_TIME } from "../config/contact.js";
+import { getOrderStatus } from "../services/orders.js";
+import { trackEvent } from "../utils/metaPixel.js";
+import { trackGaEvent } from "../utils/googleAnalytics.js";
+import "./SimplePage.css";
+import "./CheckoutPage.css";
+
+const POLL_INTERVAL_MS = 2000;
+const POLL_ATTEMPTS = 15;
+const PAID_STATUSES = ["PAID", "SHIPPED"];
+
+// The browser half of the Purchase event; the backend sends the server half
+// with the same id when the payment notification arrives.
+function trackPurchaseOnce(order) {
+  const key = `purchase-tracked-${order.id}`;
+  try {
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, "1");
+  } catch {
+    // storage unavailable — Meta still dedupes by event id
+  }
+  trackEvent(
+    "Purchase",
+    {
+      content_name: order.productName,
+      content_type: "product",
+      num_items: order.quantity,
+      value: order.total,
+      currency: order.currency,
+    },
+    { eventId: `purchase-${order.id}` },
+  );
+  trackGaEvent("purchase", {
+    transaction_id: String(order.number),
+    currency: order.currency,
+    value: order.total,
+    items: [
+      { item_id: order.productSlug, item_name: order.productName, quantity: order.quantity },
+    ],
+  });
+}
+
+function useOrder(orderId, { poll }) {
+  const [order, setOrder] = useState(null);
+  const [state, setState] = useState(orderId ? "loading" : "missing");
+
+  useEffect(() => {
+    if (!orderId) return;
+    let cancelled = false;
+    let attempts = 0;
+    let timer;
+
+    const load = async () => {
+      attempts += 1;
+      try {
+        const data = await getOrderStatus(orderId);
+        if (cancelled) return;
+        if (!data) return setState("missing");
+        setOrder(data);
+        if (PAID_STATUSES.includes(data.status)) return setState("paid");
+        if (data.status === "REFUNDED" || data.status === "CANCELLED") {
+          return setState("closed");
+        }
+        if (poll && attempts < POLL_ATTEMPTS) {
+          timer = setTimeout(load, POLL_INTERVAL_MS);
+        } else {
+          setState("pending");
+        }
+      } catch {
+        if (!cancelled) setState("pending");
+      }
+    };
+    load();
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [orderId, poll]);
+
+  return { order, state };
+}
+
+export function OrderSuccessPage() {
+  const [searchParams] = useSearchParams();
+  const { order, state } = useOrder(searchParams.get("order"), { poll: true });
+
+  useEffect(() => {
+    if (state === "paid" && order) trackPurchaseOnce(order);
+  }, [state, order]);
+
+  return (
+    <>
+      <Seo title="Thank you" path="/checkout/success" noindex />
+      <main className="simple-page">
+        {state === "loading" && (
+          <>
+            <h1 className="h1-heading">Confirming your payment…</h1>
+            <div className="simple-page-content" role="status">
+              <p>This usually takes a few seconds. Please keep this page open.</p>
+            </div>
+          </>
+        )}
+
+        {state === "paid" && order && (
+          <>
+            <h1 className="h1-heading">Thank you for your order!</h1>
+            <div className="simple-page-content">
+              <p>
+                Your payment went through and order{" "}
+                <strong className="order-result-number">#{order.number}</strong> is
+                confirmed: {order.quantity} × {order.productName}, $
+                {order.total.toFixed(2)} {order.currency}.
+              </p>
+              <p>
+                We&apos;ll pour, pack and ship it within {DISPATCH_TIME}; delivery
+                takes {DELIVERY_TIME}. You&apos;ll get a payment receipt by email,
+                and we&apos;ll send your tracking number once it ships.
+              </p>
+              <p>
+                Questions? Write to{" "}
+                <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> and mention
+                your order number.
+              </p>
+              <div className="order-result-actions">
+                <Link to="/products">Continue shopping</Link>
+              </div>
+            </div>
+          </>
+        )}
+
+        {(state === "pending" || state === "closed" || state === "missing") && (
+          <>
+            <h1 className="h1-heading">We&apos;re checking your payment</h1>
+            <div className="simple-page-content">
+              <p>
+                We haven&apos;t received the payment confirmation
+                {order ? (
+                  <>
+                    {" "}for order <strong className="order-result-number">#{order.number}</strong>
+                  </>
+                ) : null}{" "}
+                yet. If you completed the payment, you&apos;ll get a receipt by
+                email and we&apos;ll confirm your order shortly — there&apos;s no
+                need to pay again.
+              </p>
+              <p>
+                Not sure it went through? Write to{" "}
+                <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+                {order ? ` with order number #${order.number}` : ""} and we&apos;ll
+                check for you.
+              </p>
+            </div>
+          </>
+        )}
+      </main>
+    </>
+  );
+}
+
+export function OrderCancelledPage() {
+  const [searchParams] = useSearchParams();
+  const { order } = useOrder(searchParams.get("order"), { poll: false });
+
+  return (
+    <>
+      <Seo title="Payment cancelled" path="/checkout/cancel" noindex />
+      <main className="simple-page">
+        <h1 className="h1-heading">Payment cancelled</h1>
+        <div className="simple-page-content">
+          <p>No payment was taken. Your candle is still waiting for you.</p>
+          <div className="order-result-actions">
+            {order && (
+              <Link to={`/checkout/${order.productSlug}`}>
+                Try again — {order.productName}
+              </Link>
+            )}
+            <Link to="/products">Browse all scents</Link>
+          </div>
+        </div>
+      </main>
+    </>
+  );
+}

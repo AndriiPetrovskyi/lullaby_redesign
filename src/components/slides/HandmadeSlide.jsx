@@ -1,33 +1,32 @@
-import { motion } from 'framer-motion'
-import productImage from '../../assets/handmade.jpg'
-import { fadeInUp, scaleDown } from '../../utils/scrollAnimation.js'
-import './HandmadeSlide.css'
+import productImage from "../../assets/handmade.jpg";
+import "./HomeRow.css";
 
 function HandmadeSlide() {
   return (
-    <div className="handmade-slide">
-      <div className="handmade-slide-image">
-        <motion.img src={productImage} alt="Handmade" {...scaleDown()} />
-      </div>
-      <div className="handmade-slide-overlay">
-        <motion.p className="body-text handmade-slide-intro" {...fadeInUp()}>
-          Nothing perfect. Everything personal.
-        </motion.p>
-        <div className="handmade-slide-title">
-          <motion.p className="handmade-slide-title-script" {...fadeInUp()}>
-            Made by hand
-          </motion.p>
-          <motion.p className="handmade-slide-title-bold" {...fadeInUp(0.1)}>
-            made to feel
-          </motion.p>
-        </div>
-        <motion.p className="body-text handmade-slide-caption" {...fadeInUp(0.2)}>
+    <div className="home-row">
+      <div className="home-row-text">
+        <p className="home-row-eyebrow">Nothing perfect. Everything personal.</p>
+        <h2 className="home-row-title">
+          <span className="home-row-title-script">Made by hand</span>
+          <span className="home-row-title-bold">made to feel</span>
+        </h2>
+        <p className="home-row-caption">
           Small imperfections, soft variations, and the touch of the maker make
           every piece unique.
-        </motion.p>
+        </p>
       </div>
+      <figure className="home-row-media">
+        <img
+          src={productImage}
+          alt="A Lullaby candle being finished by hand"
+          width="960"
+          height="1280"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
     </div>
-  )
+  );
 }
 
-export default HandmadeSlide
+export default HandmadeSlide;

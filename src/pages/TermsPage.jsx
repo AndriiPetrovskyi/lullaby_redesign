@@ -41,8 +41,9 @@ function TermsPage() {
             slightly different depending on your screen.
           </p>
           <p>
-            Each candle includes a packet of seeds as a gift. Germination
-            depends on growing conditions and is not guaranteed.
+            Each candle includes a handwritten note with a wish or a fortune as
+            a small gift. Notes are written for fun and vary from candle to
+            candle.
           </p>
 
           <h2>2. How to order</h2>

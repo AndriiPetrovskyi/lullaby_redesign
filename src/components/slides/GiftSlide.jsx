@@ -1,35 +1,30 @@
-import { motion } from "framer-motion";
-import productImage from "../../assets/box.jpg";
-import { fadeInUp, scaleDown } from "../../utils/scrollAnimation.js";
-import "./GiftSlide.css";
+import productImage from "../../assets/gift-boxes.jpg";
+import "./HomeRow.css";
 
 function GiftSlide() {
   return (
-    <div className="gift-slide">
-      <div className="gift-slide-text">
-        <motion.p className="body-text gift-slide-tagline" {...fadeInUp()}>
-          The best gifts say what words can't.
-        </motion.p>
-        <div className="gift-slide-title">
-          <motion.p className="gift-slide-title-bold" {...fadeInUp(0.1)}>
-            The first impression
-          </motion.p>
-          <motion.p className="gift-slide-title-script" {...fadeInUp(0.2)}>
-            is a part of
-          </motion.p>
-          <motion.p
-            className="gift-slide-title-bold gift-slide-title-bold--second"
-            {...fadeInUp(0.3)}>
-            the gift
-          </motion.p>
-        </div>
-        <motion.p className="body-text gift-slide-caption" {...fadeInUp(0.4)}>
+    <div className="home-row home-row--media-first">
+      <figure className="home-row-media">
+        <img
+          src={productImage}
+          alt="Two Lullaby candles in open black keepsake boxes, each with a corked note vial"
+          width="1600"
+          height="1600"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <div className="home-row-text">
+        <p className="home-row-eyebrow">The best gifts say what words can't.</p>
+        <h2 className="home-row-title">
+          <span className="home-row-title-bold">The first impression</span>
+          <span className="home-row-title-script">is a part of</span>
+          <span className="home-row-title-bold">the gift</span>
+        </h2>
+        <p className="home-row-caption">
           Each candle arrives in a handcrafted keepsake box, created with the
           same care as what's inside.
-        </motion.p>
-      </div>
-      <div className="gift-slide-image">
-        <motion.img src={productImage} alt="Gift" {...scaleDown()} />
+        </p>
       </div>
     </div>
   );
