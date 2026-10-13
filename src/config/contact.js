@@ -15,4 +15,10 @@ export const DAMAGE_REPORT_HOURS = 48;
 export const DISPATCH_TIME = "2–3 business days";
 export const DELIVERY_TIME = "8–14 business days";
 
+// Marketing copy only — the checkout's real fees come from the backend
+// (src/utils/shippingRegions.js there). Keep the two in step.
+export const FREE_SHIPPING_REGIONS = "the US, Canada and Europe";
+export const PAID_SHIPPING_NOTE =
+  "Australia, New Zealand, Israel, Japan, South Korea, Singapore and the UAE: flat $15 delivery fee";
+
 export const LEGAL_LAST_UPDATED = "October 3, 2026";

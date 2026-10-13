@@ -130,12 +130,16 @@ function CheckoutPage() {
         rate.region === form.state,
     )?.rate ?? 0;
 
+  const shippingCents = country?.shippingCents ?? 0;
+
+  // Mirrors the backend's math, which is what actually gets charged.
   const totals = useMemo(() => {
     const price = Number(product?.price ?? 0);
     const subtotal = price * quantity;
-    const tax = Math.round(subtotal * taxRate * 100) / 100;
-    return { price, subtotal, tax, total: subtotal + tax };
-  }, [product, quantity, taxRate]);
+    const shipping = shippingCents / 100;
+    const tax = Math.round((subtotal + shipping) * taxRate * 100) / 100;
+    return { price, subtotal, shipping, tax, total: subtotal + shipping + tax };
+  }, [product, quantity, shippingCents, taxRate]);
 
   if (!CHECKOUT_ENABLED || ORDERING_PAUSED) {
     return (
@@ -392,7 +396,7 @@ function CheckoutPage() {
               </div>
               <div>
                 <dt>Shipping</dt>
-                <dd>Free</dd>
+                <dd>{totals.shipping > 0 ? money(totals.shipping) : "Free"}</dd>
               </div>
               {totals.tax > 0 && (
                 <div>

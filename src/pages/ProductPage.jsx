@@ -27,8 +27,10 @@ import {
   DAMAGE_REPORT_HOURS,
   DELIVERY_TIME,
   DISPATCH_TIME,
+  FREE_SHIPPING_REGIONS,
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
+  PAID_SHIPPING_NOTE,
   RETURN_WINDOW_DAYS,
 } from "../config/contact.js";
 import jarProcessVideo from "../assets/process.mp4";
@@ -52,7 +54,7 @@ const PRODUCT_INFO_SECTIONS = [
   },
   {
     title: "Shipping & Delivery",
-    content: `Free shipping on every order. Orders ship within ${DISPATCH_TIME}; delivery typically takes ${DELIVERY_TIME} depending on location.`,
+    content: `Free shipping to ${FREE_SHIPPING_REGIONS} (${PAID_SHIPPING_NOTE}). Orders ship within ${DISPATCH_TIME}; delivery typically takes ${DELIVERY_TIME} depending on location.`,
   },
   {
     title: "Returns & Damaged Items",
@@ -251,7 +253,7 @@ function ProductPage() {
               A handwritten wish or fortune inside
             </li>
             <li>
-              Free shipping · {DELIVERY_TIME}
+              Free shipping to US, Canada &amp; Europe · {DELIVERY_TIME}
             </li>
           </ul>
           <div className="m-product-page-cta-row m-product-page-cta-row--top">

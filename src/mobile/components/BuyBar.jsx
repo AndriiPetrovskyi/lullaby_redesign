@@ -46,7 +46,7 @@ function BuyBar({ name, price, onBuy, firstCtaSelector, lastCtaSelector }) {
             <p className="m-buy-bar-name">
               {name} · <span className="m-buy-bar-price">${price}</span>
             </p>
-            <p className="m-buy-bar-note">Free shipping to US &amp; Canada</p>
+            <p className="m-buy-bar-note">Free shipping to US, Canada &amp; Europe</p>
           </div>
           <button type="button" className="m-buy-bar-button" onClick={onBuy}>
             Buy now

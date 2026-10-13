@@ -7,6 +7,7 @@ import {
   ETSY_SHOP_URL,
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
+  FREE_SHIPPING_REGIONS,
 } from "../config/contact.js";
 import "./SimplePage.css";
 
@@ -63,7 +64,8 @@ function ContactPage() {
             Instagram with the candle you&apos;d like and your shipping
             address. We&apos;ll confirm the details and send a secure payment
             request through PayPal or Payoneer. Once payment is received, your
-            order ships within {DISPATCH_TIME}, with free shipping.
+            order ships within {DISPATCH_TIME}, with free shipping to
+            {" "}{FREE_SHIPPING_REGIONS}.
           </p>
 
           <h2>Orders, shipping &amp; returns</h2>
