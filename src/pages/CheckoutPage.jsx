@@ -111,7 +111,13 @@ function CheckoutPage() {
 
   useEffect(() => {
     getCheckoutConfig()
-      .then(setConfig)
+      .then((data) => {
+        setConfig(data);
+        // Card payments are off in some regions — fall back to what's offered.
+        setPaymentMethod((current) =>
+          data.paymentMethods.includes(current) ? current : data.paymentMethods[0],
+        );
+      })
       .catch(() => setConfigError(true));
   }, []);
 
@@ -284,6 +290,12 @@ function CheckoutPage() {
               <p className="checkout-section-note">
                 All transactions are secure and encrypted.
               </p>
+              {config.cardUnavailableInRegion && (
+                <p className="checkout-region-note">
+                  Card payments aren&apos;t available in your region — please pay
+                  with PayPal.
+                </p>
+              )}
               <div className="checkout-payment">
                 {config.paymentMethods.includes("card") && (
                   <PaymentOption

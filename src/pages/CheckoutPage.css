@@ -137,6 +137,15 @@
   font-size: 14px;
 }
 
+.checkout-region-note {
+  margin: 0 0 var(--spacing-md);
+  padding: 10px 14px;
+  border-left: 3px solid var(--color-accent-cobalt);
+  background: #fff8f0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 .checkout-payment {
   border: 1px solid rgba(235, 124, 70, 0.55);
   background: #fff8f0;
