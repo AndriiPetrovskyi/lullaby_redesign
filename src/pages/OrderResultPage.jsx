@@ -25,11 +25,13 @@ function trackPurchaseOnce(order) {
   trackEvent(
     "Purchase",
     {
+      content_ids: [order.productId],
       content_name: order.productName,
       content_type: "product",
       num_items: order.quantity,
       value: order.total,
       currency: order.currency,
+      order_id: String(order.number),
     },
     { eventId: `purchase-${order.id}` },
   );
@@ -38,7 +40,12 @@ function trackPurchaseOnce(order) {
     currency: order.currency,
     value: order.total,
     items: [
-      { item_id: order.productSlug, item_name: order.productName, quantity: order.quantity },
+      {
+        item_id: order.productSlug,
+        item_name: order.productName,
+        price: order.unitPrice,
+        quantity: order.quantity,
+      },
     ],
   });
 }

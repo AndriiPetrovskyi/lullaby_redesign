@@ -13,7 +13,7 @@ import {
   redirectToPayment,
 } from "../services/orders.js";
 import { trackEvent } from "../utils/metaPixel.js";
-import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
+import { gaItem, getGaIds, trackGaEvent } from "../utils/googleAnalytics.js";
 import { responsiveImage } from "../utils/images.js";
 import "./SimplePage.css";
 import "./CheckoutPage.css";
@@ -199,6 +199,7 @@ function CheckoutPage() {
         customer: form,
         fbp: readCookie("_fbp"),
         fbc: readCookie("_fbc"),
+        ...getGaIds(),
       });
       trackEvent("AddPaymentInfo", {
         content_ids: [product.id],
@@ -206,7 +207,12 @@ function CheckoutPage() {
         value: totals.total,
         currency: "USD",
       });
-      trackGaEvent("add_payment_info", gaItem(product));
+      trackGaEvent("add_payment_info", {
+        ...gaItem(product),
+        value: totals.total,
+        payment_type: paymentMethod,
+        items: [{ ...gaItem(product).items[0], quantity }],
+      });
       redirectToPayment(order);
     } catch (err) {
       setSubmitError(err.message);

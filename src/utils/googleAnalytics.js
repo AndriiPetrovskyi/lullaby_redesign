@@ -50,6 +50,27 @@ export function trackGaPageView(pageTitle) {
   });
 }
 
+const readCookie = (name) =>
+  document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(`${name}=`))
+    ?.slice(name.length + 1);
+
+// The visitor's GA client/session ids, read from gtag's cookies, so the
+// backend can report the purchase as the same visitor and session.
+// _ga = "GA1.1.<client>.<timestamp>"; _ga_<ID> = "GS1.1.<session>.…" or
+// the newer "GS2.1.s<session>$o…".
+export function getGaIds() {
+  const clientId = readCookie("_ga")?.split(".").slice(2).join(".");
+  const sessionCookie = GA_MEASUREMENT_ID
+    ? readCookie(`_ga_${GA_MEASUREMENT_ID.replace(/^G-/, "")}`)
+    : undefined;
+  const sessionId =
+    sessionCookie?.match(/^GS2\.\d+\.s(\d+)/)?.[1] ??
+    sessionCookie?.match(/^GS1\.\d+\.(\d+)\./)?.[1];
+  return { gaClientId: clientId || undefined, gaSessionId: sessionId };
+}
+
 // GA4's recommended e-commerce shape for a single product.
 export function gaItem(product) {
   return {
