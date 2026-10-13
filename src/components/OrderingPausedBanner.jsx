@@ -7,9 +7,8 @@ function OrderingPausedBanner() {
   return (
     <div className="ordering-paused-banner" role="status">
       <p className="ordering-paused-banner-text">
-        We&apos;ve temporarily paused new orders. International shipping
-        regulations restrict seeds in packaging — we&apos;re updating our
-        candles to meet these requirements. Orders will resume shortly.
+        We&apos;ve temporarily paused new orders while we update our collection.
+        Orders will reopen soon.
       </p>
     </div>
   );

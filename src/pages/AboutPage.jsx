@@ -48,7 +48,7 @@ function AboutPage() {
     <>
       <Seo
         title="About Us"
-        description="The story behind Lullaby — handmade candles in gypsum vessels, poured with natural coconut wax, with a handwritten wish or fortune hidden inside every one."
+        description="The story behind Lullaby — handmade candles in gypsum vessels, poured with natural soy wax, with a handwritten wish or fortune hidden inside every one."
         path="/about"
       />
       <main className="about-page">

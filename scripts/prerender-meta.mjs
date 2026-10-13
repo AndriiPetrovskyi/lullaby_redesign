@@ -28,7 +28,7 @@ const STATIC_PAGES = [
     path: "/about",
     title: "About Us",
     description:
-      "The story behind Lullaby — handmade candles in gypsum vessels, poured with natural coconut wax, with a handwritten wish or fortune hidden inside every one.",
+      "The story behind Lullaby — handmade candles in gypsum vessels, poured with natural soy wax, with a handwritten wish or fortune hidden inside every one.",
   },
   {
     path: "/contact",
