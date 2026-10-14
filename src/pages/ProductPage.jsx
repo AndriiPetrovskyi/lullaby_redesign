@@ -563,8 +563,12 @@ function ProductPage() {
           <h1 className="d-product-page-name">{product.name}</h1>
           <p className="d-product-page-price">${product.price}</p>
           <ReviewsSummaryLink reviews={reviews} />
+          <ul className="d-product-page-perks">
+            <li>A handwritten wish or fortune inside</li>
+            <li>Free shipping to US, Canada &amp; Europe · {DELIVERY_TIME}</li>
+          </ul>
 
-          <div className="d-product-page-cta-row">
+          <div className="d-product-page-cta-row d-product-page-cta-row--top">
             <button
               type="button"
               onClick={handleBuyClick}
@@ -573,12 +577,15 @@ function ProductPage() {
               {ORDERING_PAUSED ? "Currently unavailable" : "Buy now"}
             </button>
             {!ORDERING_PAUSED && (
-              <button
-                type="button"
-                className="d-product-page-direct-order"
-                onClick={handleDirectOrderClick}>
-                Direct Order
-              </button>
+              <p className="d-product-page-direct-line">
+                Prefer another way to pay?{" "}
+                <button
+                  type="button"
+                  className="d-product-page-direct-order"
+                  onClick={handleDirectOrderClick}>
+                  Order directly
+                </button>
+              </p>
             )}
           </div>
 
@@ -726,21 +733,24 @@ function ProductPage() {
           </span>
         </p>
         <div className="d-product-page-cta-row d-product-page-cta-row--closing">
-          <button
+            <button
               type="button"
               onClick={handleBuyClick}
               disabled={ORDERING_PAUSED}
               className="d-product-page-buy-etsy">
               {ORDERING_PAUSED ? "Currently unavailable" : "Buy now"}
             </button>
-          {!ORDERING_PAUSED && (
-            <button
-              type="button"
-              className="d-product-page-direct-order"
-              onClick={handleDirectOrderClick}>
-              Direct Order
-            </button>
-          )}
+            {!ORDERING_PAUSED && (
+              <p className="d-product-page-direct-line">
+                Prefer another way to pay?{" "}
+                <button
+                  type="button"
+                  className="d-product-page-direct-order"
+                  onClick={handleDirectOrderClick}>
+                  Order directly
+                </button>
+              </p>
+            )}
         </div>
         </section>
       </div>
@@ -748,6 +758,16 @@ function ProductPage() {
       <ProductReviews reviews={reviews} />
 
       <MoreScents currentSlug={product.slug} />
+
+      {!ORDERING_PAUSED && (
+        <BuyBar
+          name={product.name}
+          price={product.price}
+          onBuy={handleBuyClick}
+          firstCtaSelector=".d-product-page-cta-row--top"
+          lastCtaSelector=".d-product-page-cta-row--closing"
+        />
+      )}
 
       {checkoutModal}
 

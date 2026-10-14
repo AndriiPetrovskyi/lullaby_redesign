@@ -60,3 +60,25 @@ button.m-buy-bar-button {
   border: none;
   cursor: pointer;
 }
+
+/* Desktop product page uses the same bar; keep its content in the page's
+   1200px column instead of the screen edges. */
+@media (min-width: 768px) {
+  .m-buy-bar {
+    padding-inline: max(var(--spacing-lg), calc((100vw - var(--container-max-width)) / 2));
+  }
+
+  .m-buy-bar-name {
+    font-size: 20px;
+  }
+
+  .m-buy-bar-note {
+    font-size: 13px;
+  }
+
+  .m-buy-bar-button {
+    min-width: 220px;
+    padding: 15px 28px;
+    font-size: 16px;
+  }
+}

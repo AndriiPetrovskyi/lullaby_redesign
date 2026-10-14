@@ -504,37 +504,47 @@
   color: var(--color-accent-cobalt);
 }
 
-.d-product-page-cta-row {
+/* Same as mobile: one primary action at full width, Direct Order demoted to
+   a text link so the two don't compete. */
+.d-product-page-perks {
   display: flex;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-lg);
+  flex-direction: column;
+  gap: 4px;
+  margin: 0 0 var(--spacing-md);
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-family-body);
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--d-product-text);
 }
 
-.d-product-page-buy-etsy,
-.d-product-page-direct-order {
-  flex: 1;
-  box-sizing: border-box;
-  padding: 16px var(--spacing-md);
-  font-family: var(--font-family-body);
-  font-size: var(--scale-body-size);
-  font-weight: 700;
+.d-product-page-cta-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-bottom: var(--spacing-lg);
   text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  transition:
-    opacity 0.2s ease,
-    background 0.2s ease,
-    color 0.2s ease;
 }
 
 .d-product-page-buy-etsy {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 17px var(--spacing-md);
   border: none;
-  background: #ffa047;
-  color: #ffe8cf;
+  background: #c0451b;
+  font-family: var(--font-family-body);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #fff;
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
 }
 
 .d-product-page-buy-etsy:hover {
-  opacity: 0.85;
+  opacity: 0.88;
 }
 
 .d-product-page-buy-etsy:disabled {
@@ -543,15 +553,24 @@
   opacity: 1;
 }
 
-.d-product-page-direct-order {
-  border: 2px solid var(--color-accent-cobalt);
-  background: transparent;
-  color: var(--color-accent-cobalt);
+.d-product-page-direct-line {
+  margin: 14px 0 0;
+  font-family: var(--font-family-body);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--d-product-text);
 }
 
-.d-product-page-direct-order:hover {
-  background: var(--color-accent-cobalt);
-  color: var(--color-bg-light);
+.d-product-page-direct-order {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-weight: 700;
+  color: var(--color-accent-cobalt);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
 }
 
 .d-product-page-notes {
@@ -813,5 +832,24 @@
 .m-product-page .m-product-page-gift-caption,
 .m-product-page .m-product-page-vessel-caption {
   color: var(--m-product-text);
+  font-weight: 400;
+}
+
+/* --- desktop readability: same deeper orange as mobile --- */
+
+.d-product-page {
+  --d-product-text: #b84a10;
+}
+
+.d-product-page .d-product-page-notes-row,
+.d-product-page .d-product-page-description,
+.d-product-page .d-product-page-faq-content,
+.d-product-page .d-product-page-story-caption {
+  color: var(--d-product-text);
+}
+
+.d-product-page .d-product-page-notes-row,
+.d-product-page .d-product-page-description,
+.d-product-page .d-product-page-faq-content {
   font-weight: 400;
 }
