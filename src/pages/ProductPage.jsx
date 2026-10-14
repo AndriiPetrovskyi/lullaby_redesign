@@ -356,19 +356,19 @@ function ProductPage() {
             })}
           </div>
 
-          <div className="m-product-page-video-section">
-            <p className="m-product-page-video-title">
-              Crafted, not mass-produced: art in every detail.
+          <div className="m-product-page-gift-section">
+            <p className="m-product-page-gift-title">
+              The Perfect Frame. A Ready-to-Give Gift.
             </p>
             <div className="m-product-page-video-frame">
               <MutableVideo
                 className="m-product-page-video"
-                src={jarProcessVideo}
-                poster={jarProcessPoster}></MutableVideo>
+                src={boxProcessVideo}
+                poster={boxProcessPoster}></MutableVideo>
             </div>
-            <p className="m-product-page-video-caption">
-              Poured by hand, one candle at a time — every pour a little
-              different from the last.
+            <p className="m-product-page-gift-caption">
+              Ready to gift, straight out of the box — no extra wrapping, no
+              last-minute run to the store.
             </p>
           </div>
 
@@ -386,6 +386,22 @@ function ProductPage() {
             <p className="m-product-page-vessel-caption">
               Every candle comes with a tiny corked vial and a note written by
               hand, in ink — a small thought to keep you company.
+            </p>
+          </div>
+
+          <div className="m-product-page-video-section">
+            <p className="m-product-page-video-title">
+              Crafted, not mass-produced: art in every detail.
+            </p>
+            <div className="m-product-page-video-frame">
+              <MutableVideo
+                className="m-product-page-video"
+                src={jarProcessVideo}
+                poster={jarProcessPoster}></MutableVideo>
+            </div>
+            <p className="m-product-page-video-caption">
+              Poured by hand, one candle at a time — every pour a little
+              different from the last.
             </p>
           </div>
 
@@ -407,22 +423,6 @@ function ProductPage() {
             <p className="m-product-page-vessel-caption">
               Burn the candle, keep the vessel, and grow something new — a small
               ritual that keeps on giving.
-            </p>
-          </div>
-
-          <div className="m-product-page-gift-section">
-            <p className="m-product-page-gift-title">
-              The Perfect Frame. A Ready-to-Give Gift.
-            </p>
-            <div className="m-product-page-video-frame">
-              <MutableVideo
-                className="m-product-page-video"
-                src={boxProcessVideo}
-                poster={boxProcessPoster}></MutableVideo>
-            </div>
-            <p className="m-product-page-gift-caption">
-              Ready to gift, straight out of the box — no extra wrapping, no
-              last-minute run to the store.
             </p>
           </div>
 
@@ -693,16 +693,16 @@ function ProductPage() {
         <div className="d-product-page-story-media">
           <MutableVideo
             className="d-product-page-video"
-            src={jarProcessVideo}
-                poster={jarProcessPoster}></MutableVideo>
+            src={boxProcessVideo}
+                poster={boxProcessPoster}></MutableVideo>
         </div>
         <div className="d-product-page-story-text">
           <p className="d-product-page-story-title">
-            Crafted, not mass-produced: art in every detail.
+            The Perfect Frame. A Ready-to-Give Gift.
           </p>
           <p className="d-product-page-story-caption">
-            Poured by hand, one candle at a time — every pour a little different
-            from the last.
+            Ready to gift, straight out of the box — no extra wrapping, no
+            last-minute run to the store.
           </p>
         </div>
       </section>
@@ -729,6 +729,24 @@ function ProductPage() {
 
       <section className="d-product-page-story">
         <div className="d-product-page-story-media">
+          <MutableVideo
+            className="d-product-page-video"
+            src={jarProcessVideo}
+                poster={jarProcessPoster}></MutableVideo>
+        </div>
+        <div className="d-product-page-story-text">
+          <p className="d-product-page-story-title">
+            Crafted, not mass-produced: art in every detail.
+          </p>
+          <p className="d-product-page-story-caption">
+            Poured by hand, one candle at a time — every pour a little different
+            from the last.
+          </p>
+        </div>
+      </section>
+
+      <section className="d-product-page-story d-product-page-story--reverse">
+        <div className="d-product-page-story-media">
           <img
             className="d-product-page-video"
             src={vesselPlanterImage}
@@ -744,24 +762,6 @@ function ProductPage() {
           <p className="d-product-page-story-caption">
             Burn the candle, keep the vessel, and grow something new — a small
             ritual that keeps on giving.
-          </p>
-        </div>
-      </section>
-
-      <section className="d-product-page-story d-product-page-story--reverse">
-        <div className="d-product-page-story-media">
-          <MutableVideo
-            className="d-product-page-video"
-            src={boxProcessVideo}
-                poster={boxProcessPoster}></MutableVideo>
-        </div>
-        <div className="d-product-page-story-text">
-          <p className="d-product-page-story-title">
-            The Perfect Frame. A Ready-to-Give Gift.
-          </p>
-          <p className="d-product-page-story-caption">
-            Ready to gift, straight out of the box — no extra wrapping, no
-            last-minute run to the store.
           </p>
         </div>
       </section>

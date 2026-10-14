@@ -228,6 +228,15 @@
 
 .m-product-page-video-section {
   margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-accent-coral);
+}
+
+/* The first story block sits right under the FAQ, which already ends with
+   a divider line. */
+.m-product-page-faq + div {
+  padding-top: 0;
+  border-top: 0;
 }
 
 .m-product-page-video-title {
