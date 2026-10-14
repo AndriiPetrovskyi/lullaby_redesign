@@ -8,7 +8,7 @@
   display: flex;
   flex-wrap: nowrap;
   align-items: baseline;
-  gap: 0.25em;
+  gap: 0;
   width: 100%;
   margin: 0;
   padding-inline: var(--spacing-md);
@@ -22,16 +22,18 @@
   font-family: "Libre Caslon Text", serif;
   font-style: italic;
   font-weight: 500;
-  font-size: calc(34px * var(--mobile-scale));
-  letter-spacing: -0.06em;
+  font-size: calc(38px * var(--mobile-scale));
+  letter-spacing: -0.08em;
   color: #ffa047;
 }
 
 .m-seeds-slide-title-bold {
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: calc(70px * var(--mobile-scale));
-  letter-spacing: -0.05em;
+  /* gap can't go negative, so pull "Vial" in tight against "Message in a". */
+  margin-left: -0.1em;
+  font-size: calc(100px * var(--mobile-scale));
+  letter-spacing: -0.07em;
   color: #ff620e;
 }
 
