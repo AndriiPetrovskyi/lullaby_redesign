@@ -3,45 +3,42 @@
   padding-inline: 0;
 }
 
-.m-seeds-slide-heading {
-  width: 100%;
-  padding-inline: var(--spacing-md);
-  box-sizing: border-box;
-}
-
+/* One line, both parts sitting on the same baseline. */
 .m-seeds-slide-title {
   display: flex;
-  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  gap: 0.25em;
+  width: 100%;
   margin: 0;
+  padding-inline: var(--spacing-md);
+  box-sizing: border-box;
   font-weight: inherit;
-  line-height: 0.95;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .m-seeds-slide-title-script {
   font-family: "Libre Caslon Text", serif;
   font-style: italic;
   font-weight: 500;
-  font-size: calc(40px * var(--mobile-scale));
+  font-size: calc(34px * var(--mobile-scale));
   letter-spacing: -0.06em;
   color: #ffa047;
 }
 
 .m-seeds-slide-title-bold {
-  /* Tucked up under "Message in a" so the letters touch, and nudged in
-     toward the centre of the line above. */
-  margin-top: -0.19em;
-  padding-left: calc(78px * var(--mobile-scale));
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  font-size: calc(88px * var(--mobile-scale));
-  line-height: 1;
+  font-size: calc(70px * var(--mobile-scale));
   letter-spacing: -0.05em;
   color: #ff620e;
 }
 
 .m-seeds-slide-caption {
-  margin: var(--spacing-sm) 0 0;
-  max-width: 30ch;
+  align-self: stretch;
+  margin: 0;
+  padding-inline: var(--spacing-md);
   font-family: "Inter", sans-serif;
   font-style: italic;
   font-weight: 500;
