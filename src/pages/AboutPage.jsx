@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import Seo from "../components/Seo.jsx";
-import boxImage from "../assets/box.jpg";
+import boxImage from "../assets/box.webp";
 import gardenVesselImage from "../assets/fl3.jpeg";
-import vesselImage from "../assets/fl1.PNG";
+import vesselImage from "../assets/fl1.webp";
 import handmadeImage from "../assets/handmade.jpg";
 import "./AboutPage.css";
 

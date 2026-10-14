@@ -35,6 +35,8 @@ import {
 } from "../config/contact.js";
 import jarProcessVideo from "../assets/process.mp4";
 import boxProcessVideo from "../assets/video2.MP4";
+import jarProcessPoster from "../assets/process-poster.webp";
+import boxProcessPoster from "../assets/video2-poster.webp";
 import vesselPlanterImage from "../assets/fl3.jpeg";
 import "./ProductPage.css";
 
@@ -360,7 +362,8 @@ function ProductPage() {
             <div className="m-product-page-video-frame">
               <MutableVideo
                 className="m-product-page-video"
-                src={jarProcessVideo}></MutableVideo>
+                src={jarProcessVideo}
+                poster={jarProcessPoster}></MutableVideo>
             </div>
             <p className="m-product-page-video-caption">
               Poured by hand, one candle at a time — every pour a little
@@ -396,7 +399,8 @@ function ProductPage() {
             <div className="m-product-page-video-frame">
               <MutableVideo
                 className="m-product-page-video"
-                src={boxProcessVideo}></MutableVideo>
+                src={boxProcessVideo}
+                poster={boxProcessPoster}></MutableVideo>
             </div>
             <p className="m-product-page-gift-caption">
               Ready to gift, straight out of the box — no extra wrapping, no
@@ -671,7 +675,8 @@ function ProductPage() {
         <div className="d-product-page-story-media">
           <MutableVideo
             className="d-product-page-video"
-            src={jarProcessVideo}></MutableVideo>
+            src={jarProcessVideo}
+                poster={jarProcessPoster}></MutableVideo>
         </div>
         <div className="d-product-page-story-text">
           <p className="d-product-page-story-title">
@@ -709,7 +714,8 @@ function ProductPage() {
         <div className="d-product-page-story-media">
           <MutableVideo
             className="d-product-page-video"
-            src={boxProcessVideo}></MutableVideo>
+            src={boxProcessVideo}
+                poster={boxProcessPoster}></MutableVideo>
         </div>
         <div className="d-product-page-story-text">
           <p className="d-product-page-story-title">

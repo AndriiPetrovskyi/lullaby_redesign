@@ -1,4 +1,6 @@
-import productImage from "../../assets/sun.jpeg";
+import heroSmall from "../../assets/sun-1280.webp";
+import heroMedium from "../../assets/sun-1920.webp";
+import heroLarge from "../../assets/sun-2400.webp";
 import "./HomeRow.css";
 import "./ProductInfoSlide.css";
 
@@ -7,7 +9,9 @@ function ProductInfoSlide() {
     <div className="home-hero">
       <img
         className="home-hero-image"
-        src={productImage}
+        src={heroMedium}
+        srcSet={`${heroSmall} 1280w, ${heroMedium} 1920w, ${heroLarge} 2400w`}
+        sizes="100vw"
         alt="Lullaby candles in handmade gypsum vessels"
         width="2400"
         height="1792"

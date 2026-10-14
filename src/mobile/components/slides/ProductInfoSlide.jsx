@@ -1,4 +1,5 @@
 import processVideo from "../../../assets/process.mp4";
+import processPoster from "../../../assets/process-poster.webp";
 import MutableVideo from "../../../components/MutableVideo.jsx";
 import "./Slide.css";
 import "./ProductInfoSlide.css";
@@ -6,7 +7,7 @@ import "./ProductInfoSlide.css";
 function ProductInfoSlide() {
   return (
     <div className="m-slide-content m-product-info-slide">
-      <MutableVideo className="m-slide-bg-image" src={processVideo} />
+      <MutableVideo className="m-slide-bg-image" src={processVideo} poster={processPoster} />
 
       <p className="m-product-info-slide-tagline">
         Some moments don't need words.

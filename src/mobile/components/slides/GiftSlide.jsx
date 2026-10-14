@@ -1,4 +1,5 @@
 import productVideo from "../../../assets/video2.MP4";
+import productPoster from "../../../assets/video2-poster.webp";
 import MutableVideo from "../../../components/MutableVideo.jsx";
 import "./Slide.css";
 import "./GiftSlide.css";
@@ -7,7 +8,7 @@ function GiftSlide() {
   return (
     <div className="m-slide-content m-gift-slide">
       <div className="m-slide-content-image">
-        <MutableVideo src={productVideo} />
+        <MutableVideo src={productVideo} poster={productPoster} />
       </div>
       <div className="m-gift-slide-title">
         <p className="m-gift-slide-title-bold">The first impression</p>

@@ -1,4 +1,4 @@
-import productImage from "../../assets/slider/3.png";
+import productImage from "../../assets/slider/3.webp";
 import "./HomeRow.css";
 
 function SeedsSlide() {
