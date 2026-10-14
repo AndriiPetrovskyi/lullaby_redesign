@@ -27,9 +27,14 @@
 }
 
 .m-seeds-slide-title-bold {
+  /* Tucked up under "Message in a" so the letters touch, and nudged in
+     toward the centre of the line above. */
+  margin-top: -0.19em;
+  padding-left: calc(78px * var(--mobile-scale));
   font-family: "Inter", sans-serif;
   font-weight: 700;
   font-size: calc(88px * var(--mobile-scale));
+  line-height: 1;
   letter-spacing: -0.05em;
   color: #ff620e;
 }
