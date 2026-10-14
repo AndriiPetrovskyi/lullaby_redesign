@@ -22,13 +22,13 @@ const STATIC_PAGES = [
     path: "/products",
     title: "All Scents",
     description:
-      "Browse every Lullaby scent — hand-poured candles in handmade gypsum vessels, each with a handwritten wish or fortune hidden inside.",
+      "Browse every Lullaby scent — hand-poured candles in handmade gypsum vessels, each with a handwritten message in a vial tucked inside.",
   },
   {
     path: "/about",
     title: "About Us",
     description:
-      "The story behind Lullaby — handmade candles in gypsum vessels, poured with natural soy wax, with a handwritten wish or fortune hidden inside every one.",
+      "The story behind Lullaby — handmade candles in gypsum vessels, poured with natural soy wax, with a handwritten message in a vial tucked inside every one.",
   },
   {
     path: "/contact",

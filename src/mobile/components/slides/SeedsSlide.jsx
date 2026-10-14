@@ -1,4 +1,4 @@
-import productImage from "../../../assets/fl3.jpeg";
+import notesImage from "../../../assets/notes/notes-and-vial.webp";
 import "./Slide.css";
 import "./SeedsSlide.css";
 
@@ -6,25 +6,22 @@ function SeedsSlide() {
   return (
     <div className="m-slide-content m-seeds-slide">
       <div className="m-seeds-slide-title m-seeds-slide-title--top">
-        <p className="m-seeds-slide-title-script">A little</p>
+        <p className="m-seeds-slide-title-script">Message</p>
         <p className="m-seeds-slide-title-bold m-seeds-slide-title-bold--light">
-          light,
+          in a
         </p>
       </div>
 
       <div className="m-slide-content-image">
         <img
-          src={productImage}
-          alt="A Lullaby candle vessel given a second life as a planter"
+          src={notesImage}
+          alt="Handwritten notes beside a small corked glass vial"
         />
       </div>
 
       <div className="m-seeds-slide-title m-seeds-slide-title--bottom">
-        <p className="m-seeds-slide-title-script m-seeds-slide-title-script--bottom">
-          a little
-        </p>
         <p className="m-seeds-slide-title-bold m-seeds-slide-title-bold--italic">
-          magic...
+          Vial
         </p>
       </div>
 
@@ -33,11 +30,11 @@ function SeedsSlide() {
         <br />
         keeps a little
         <br />
-        secret — a
+        secret — a note
         <br />
-        handwritten wish
+        written by hand,
         <br />
-        or fortune.
+        in ink, just for you.
       </p>
     </div>
   );

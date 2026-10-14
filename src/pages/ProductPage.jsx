@@ -38,6 +38,7 @@ import boxProcessVideo from "../assets/video2.MP4";
 import jarProcessPoster from "../assets/process-poster.webp";
 import boxProcessPoster from "../assets/video2-poster.webp";
 import vesselPlanterImage from "../assets/fl3.jpeg";
+import vialImage from "../assets/notes/vial-and-pen.webp";
 import "./ProductPage.css";
 
 const MOBILE_GALLERY_WIDTHS = [600, 800, 1200];
@@ -252,7 +253,7 @@ function ProductPage() {
           <ReviewsSummaryLink reviews={reviews} />
           <ul className="m-product-page-perks">
             <li>
-              A handwritten wish or fortune inside
+              Message in a Vial — a handwritten note inside
             </li>
             <li>
               Free shipping to US, Canada &amp; Europe · {DELIVERY_TIME}
@@ -368,6 +369,23 @@ function ProductPage() {
             <p className="m-product-page-video-caption">
               Poured by hand, one candle at a time — every pour a little
               different from the last.
+            </p>
+          </div>
+
+          <div className="m-product-page-vessel-section">
+            <p className="m-product-page-vessel-title">Message in a Vial.</p>
+            <div className="m-product-page-video-frame">
+              <img
+                className="m-product-page-video"
+                src={vialImage}
+                alt="A corked glass vial holding a rolled handwritten note, beside an ink pen"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <p className="m-product-page-vessel-caption">
+              Every candle comes with a tiny corked vial and a note written by
+              hand, in ink — a small thought to keep you company.
             </p>
           </div>
 
@@ -568,7 +586,7 @@ function ProductPage() {
           <p className="d-product-page-price">${product.price}</p>
           <ReviewsSummaryLink reviews={reviews} />
           <ul className="d-product-page-perks">
-            <li>A handwritten wish or fortune inside</li>
+            <li>Message in a Vial — a handwritten note inside</li>
             <li>Free shipping to US, Canada &amp; Europe · {DELIVERY_TIME}</li>
           </ul>
 
@@ -693,6 +711,26 @@ function ProductPage() {
         <div className="d-product-page-story-media">
           <img
             className="d-product-page-video"
+            src={vialImage}
+            alt="A corked glass vial holding a rolled handwritten note, beside an ink pen"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <div className="d-product-page-story-text">
+          <p className="d-product-page-story-title">Message in a Vial.</p>
+          <p className="d-product-page-story-caption">
+            Every candle comes with a tiny corked vial and a note written by
+            hand, in ink — a small thought to keep you company, like &ldquo;The
+            world won&apos;t stop spinning if you take a rest.&rdquo;
+          </p>
+        </div>
+      </section>
+
+      <section className="d-product-page-story">
+        <div className="d-product-page-story-media">
+          <img
+            className="d-product-page-video"
             src={vesselPlanterImage}
             alt="A Lullaby vessel reused as a planter"
             loading="lazy"
@@ -710,7 +748,7 @@ function ProductPage() {
         </div>
       </section>
 
-      <section className="d-product-page-story">
+      <section className="d-product-page-story d-product-page-story--reverse">
         <div className="d-product-page-story-media">
           <MutableVideo
             className="d-product-page-video"

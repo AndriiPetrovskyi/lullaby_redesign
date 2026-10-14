@@ -6,7 +6,7 @@ export const SITE_URL = import.meta.env.VITE_SITE_URL;
 export const SITE_NAME = "Lullaby";
 
 export const DEFAULT_DESCRIPTION =
-  "Hand-poured scented candles in handmade gypsum vessels. Every Lullaby candle hides a handwritten note with a wish or a fortune — and when it is done, the vessel can live on as a little planter.";
+  "Hand-poured scented candles in handmade gypsum vessels. Every Lullaby candle comes with a handwritten message in a tiny corked vial — and when it is done, the vessel can live on as a little planter.";
 
 // Falls back to a real product photo until the site has a dedicated share image.
 export const DEFAULT_OG_IMAGE =

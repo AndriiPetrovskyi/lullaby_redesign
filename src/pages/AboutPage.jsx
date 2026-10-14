@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Seo from "../components/Seo.jsx";
 import boxImage from "../assets/box.webp";
-import gardenVesselImage from "../assets/fl3.jpeg";
+import makerWritingImage from "../assets/notes/maker-writing.webp";
 import vesselImage from "../assets/fl1.webp";
 import handmadeImage from "../assets/handmade.jpg";
 import "./AboutPage.css";
@@ -18,11 +18,11 @@ const STORY_SECTIONS = [
     ],
   },
   {
-    image: gardenVesselImage,
-    alt: "A Lullaby candle vessel in the garden",
+    image: makerWritingImage,
+    alt: "Writing a note by hand with an ink pen at the workshop table",
     paragraphs: [
       "We wanted to create a candle that feels special to give, beautiful to keep, and meaningful to light. Something with a little secret of its own.",
-      "So we hid a little note inside — a handwritten wish or fortune for whoever lights it.",
+      "So every candle comes with a Message in a Vial — a short note I write by hand, in ink, one at a time, and tuck into a tiny corked vial for whoever lights it.",
     ],
   },
   {
@@ -48,7 +48,7 @@ function AboutPage() {
     <>
       <Seo
         title="About Us"
-        description="The story behind Lullaby — handmade candles in gypsum vessels, poured with natural soy wax, with a handwritten wish or fortune hidden inside every one."
+        description="The story behind Lullaby — handmade candles in gypsum vessels, poured with natural soy wax, with a handwritten message in a vial tucked inside every one."
         path="/about"
       />
       <main className="about-page">

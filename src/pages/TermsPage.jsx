@@ -41,9 +41,9 @@ function TermsPage() {
             slightly different depending on your screen.
           </p>
           <p>
-            Each candle includes a handwritten note with a wish or a fortune as
-            a small gift. Notes are written for fun and vary from candle to
-            candle.
+            Each candle includes a small corked vial with a handwritten note as
+            a little gift. Notes are written by hand for fun and vary from
+            candle to candle.
           </p>
 
           <h2>2. How to order</h2>

@@ -1,4 +1,4 @@
-import productImage from "../../assets/slider/3.webp";
+import notesImage from "../../assets/notes/notes-and-vial.webp";
 import "./HomeRow.css";
 
 function SeedsSlide() {
@@ -6,25 +6,25 @@ function SeedsSlide() {
     <div className="home-row home-row--media-first">
       <figure className="home-row-media">
         <img
-          src={productImage}
-          alt="A Lullaby candle vessel given a second life as a planter"
+          src={notesImage}
+          alt="Handwritten notes beside a small corked glass vial"
           width="1280"
-          height="800"
+          height="1280"
           loading="lazy"
           decoding="async"
         />
       </figure>
       <div className="home-row-text">
-        <p className="home-row-eyebrow">When one ritual ends, another begins.</p>
+        <p className="home-row-eyebrow">Every candle keeps a little secret.</p>
         <h2 className="home-row-title">
-          <span className="home-row-title-script">A little</span>
-          <span className="home-row-title-bold">light,</span>
-          <span className="home-row-title-script">a little</span>
-          <span className="home-row-title-bold">magic...</span>
+          <span className="home-row-title-script">Message</span>
+          <span className="home-row-title-bold">in a Vial</span>
         </h2>
         <p className="home-row-caption">
-          Every candle keeps a little secret — a handwritten wish or fortune,
-          waiting just for you.
+          Tucked beside every candle is a tiny corked vial with a note written
+          by hand, in ink, one at a time — a small thought to keep you company,
+          like <em>&ldquo;The world won&apos;t stop spinning if you take a
+          rest.&rdquo;</em> No two are quite the same.
         </p>
       </div>
     </div>
