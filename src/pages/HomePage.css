@@ -1,6 +1,8 @@
 .home-sections {
   --home-gutter: clamp(32px, 5vw, 80px);
   padding-inline: var(--home-gutter);
+  /* full-bleed bands use 100vw, which includes the scrollbar on Windows */
+  overflow-x: clip;
 }
 
 .home-section {
@@ -25,6 +27,7 @@
 .m-home-sections {
   display: flex;
   flex-direction: column;
+  overflow-x: clip;
 }
 
 .m-home-section {

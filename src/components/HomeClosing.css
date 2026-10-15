@@ -4,51 +4,67 @@
   gap: clamp(56px, 7vw, 96px);
 }
 
-/* ---- guarantees strip ---- */
+/* ---- guarantees marquee: a full-width orange band ---- */
 
-.home-guarantees {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--spacing-lg) var(--spacing-md);
-  margin: 0;
-  padding: var(--spacing-lg) 0;
-  list-style: none;
-  border-top: 1px solid rgba(235, 124, 70, 0.35);
-  border-bottom: 1px solid rgba(235, 124, 70, 0.35);
+.home-marquee {
+  /* Break out of the page column to span the whole screen. */
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  overflow: hidden;
+  background: var(--color-accent-cobalt);
 }
 
-.home-guarantee {
+.home-marquee-track {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+  width: max-content;
+  animation: home-marquee-scroll 40s linear infinite;
 }
 
-.home-guarantee-icon {
-  width: 34px;
-  height: 34px;
-  margin-bottom: 12px;
-  fill: none;
-  stroke: var(--color-accent-cobalt);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.home-marquee:hover .home-marquee-track {
+  animation-play-state: paused;
 }
 
-.home-guarantee-title {
+.home-marquee-group {
+  display: flex;
+  flex-shrink: 0;
   margin: 0;
-  font-family: var(--font-family-body);
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--color-accent-cobalt);
+  padding: 0;
+  list-style: none;
 }
 
-.home-guarantee-text {
-  margin: 4px 0 0;
+.home-marquee-item {
+  display: flex;
+  align-items: center;
+  padding: 18px 0;
   font-family: var(--font-family-body);
-  font-size: 14px;
-  line-height: 1.4;
-  color: #b84a10;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-bg-light);
+}
+
+.home-marquee-dot {
+  margin-inline: 28px;
+  font-size: 12px;
+}
+
+/* Each group is exactly half the track, so -50% lands on an identical
+   frame and the loop is seamless. */
+@keyframes home-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-marquee-track {
+    animation: none;
+  }
 }
 
 /* ---- closing call to action ---- */
@@ -113,11 +129,20 @@
 
 @media (max-width: 767px) {
   .home-closing {
-    padding: var(--spacing-lg) var(--spacing-md) 64px;
+    padding-bottom: 64px;
   }
 
-  .home-guarantees {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .home-cta {
+    padding-inline: var(--spacing-md);
+  }
+
+  .home-marquee-item {
+    padding: 14px 0;
+    font-size: 13px;
+  }
+
+  .home-marquee-dot {
+    margin-inline: 20px;
   }
 
   .home-cta-button {
