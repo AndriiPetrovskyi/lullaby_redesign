@@ -3,7 +3,7 @@ import "./HomeRow.css";
 
 function SeedsSlide() {
   return (
-    <div className="home-row home-row--media-first">
+    <div className="home-row home-row--media-last">
       <figure className="home-row-media">
         <img
           src={notesImage}

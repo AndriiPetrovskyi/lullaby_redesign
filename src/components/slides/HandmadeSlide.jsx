@@ -3,7 +3,7 @@ import "./HomeRow.css";
 
 function HandmadeSlide() {
   return (
-    <div className="home-row">
+    <div className="home-row home-row--media-first">
       <div className="home-row-text">
         <p className="home-row-eyebrow">Nothing perfect. Everything personal.</p>
         <h2 className="home-row-title">

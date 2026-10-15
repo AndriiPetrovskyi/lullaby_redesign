@@ -36,13 +36,13 @@ function HomePage() {
             <MobileBestsellersSlide />
           </section>
           <section className="m-home-section">
+            <MobileGiftSlide />
+          </section>
+          <section className="m-home-section">
             <MobileSeedsSlide />
           </section>
           <section className="m-home-section">
             <MobileHandmadeSlide />
-          </section>
-          <section className="m-home-section">
-            <MobileGiftSlide />
           </section>
         </main>
       </>
@@ -60,13 +60,13 @@ function HomePage() {
           <BestsellersSlide />
         </section>
         <section className="home-section">
+          <GiftSlide />
+        </section>
+        <section className="home-section">
           <SeedsSlide />
         </section>
         <section className="home-section">
           <HandmadeSlide />
-        </section>
-        <section className="home-section">
-          <GiftSlide />
         </section>
       </main>
     </>
