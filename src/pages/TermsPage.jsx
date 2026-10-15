@@ -7,7 +7,9 @@ import {
   DAMAGE_REPORT_HOURS,
   DELIVERY_TIME,
   DISPATCH_TIME,
+  FREE_SHIPPING_REGIONS,
   LEGAL_LAST_UPDATED,
+  PAID_SHIPPING_NOTE,
   RETURN_WINDOW_DAYS,
 } from "../config/contact.js";
 import "./SimplePage.css";
@@ -17,7 +19,7 @@ function TermsPage() {
     <>
       <Seo
         title="Terms & Conditions"
-        description="Lullaby's terms and conditions — ordering, free shipping, returns, and candle care."
+        description="Lullaby's terms and conditions — ordering, payment, shipping, returns, and candle care."
         path="/terms"
       />
       <main className="simple-page">
@@ -49,9 +51,14 @@ function TermsPage() {
           <h2>2. How to order</h2>
           <ul>
             <li>
-              <strong>Through Etsy.</strong> The &ldquo;Buy on Etsy&rdquo;
-              button takes you to our Etsy shop. Purchases made there are also
-              subject to Etsy&apos;s terms, policies, and purchase protection.
+              <strong>On the Site.</strong> The &ldquo;Buy now&rdquo; button
+              opens our checkout, where you enter your shipping details and pay
+              by card (including Apple Pay and Google Pay, where available) or
+              PayPal. Payments are processed securely by our payment partner,
+              Western Bid, through Stripe or PayPal — we never see or store your
+              card details. The charge on your statement may show
+              &ldquo;Western Bid&rdquo; or &ldquo;WB&rdquo;. Your order is
+              confirmed once payment is received.
             </li>
             <li>
               <strong>Direct order.</strong> Contact us by email or Instagram
@@ -59,18 +66,38 @@ function TermsPage() {
               and send a payment request via PayPal or Payoneer. Your order is
               confirmed once payment is received.
             </li>
+            <li>
+              <strong>Through Etsy.</strong> Some of our candles are also
+              available in our Etsy shop. Purchases made there are subject to
+              Etsy&apos;s terms, policies, and purchase protection.
+            </li>
           </ul>
+          <p>
+            Card payments aren&apos;t available in every region; where they
+            aren&apos;t, the checkout offers PayPal instead. We may cancel and
+            fully refund an order if an item turns out to be out of stock or
+            the order can&apos;t be shipped to the address given.
+          </p>
 
           <h2>3. Prices</h2>
           <p>
             Prices are shown in US dollars. We may change prices at any time;
             the price at the moment you pay is the price that applies to your
-            order.
+            order. The checkout shows the full total — item, delivery, and
+            any sales tax (for example, Florida sales tax on some US card
+            payments) — before you pay.
           </p>
 
           <h2>4. Shipping</h2>
           <ul>
-            <li>Shipping is free on every order.</li>
+            <li>
+              Shipping is free to {FREE_SHIPPING_REGIONS}. A few farther
+              destinations have a delivery fee ({PAID_SHIPPING_NOTE}), shown
+              at checkout before you pay.
+            </li>
+            <li>
+              We can only ship to the countries listed at checkout.
+            </li>
             <li>Orders ship within {DISPATCH_TIME}.</li>
             <li>
               Delivery typically takes {DELIVERY_TIME}, depending on your
@@ -99,12 +126,13 @@ function TermsPage() {
               damaged or was not what you ordered.
             </li>
             <li>
-              Refunds are issued to the original payment method once we
-              receive and check the returned item.
+              Refunds are issued to the original payment method (card or
+              PayPal) once we receive and check the returned item. Your bank
+              or PayPal may take a few days to show it.
             </li>
             <li>
-              For Etsy orders, please start a return through Etsy messages so
-              it follows Etsy&apos;s process.
+              For orders placed on Etsy, please start a return through Etsy
+              messages so it follows Etsy&apos;s process.
             </li>
           </ul>
 

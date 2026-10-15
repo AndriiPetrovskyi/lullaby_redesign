@@ -31,22 +31,30 @@ function PrivacyPolicyPage() {
           <h2>1. Information we collect</h2>
           <ul>
             <li>
+              <strong>Orders on the Site.</strong> When you check out, we
+              collect your name, email address, phone number, shipping
+              address, the items you order, and your order total.
+            </li>
+            <li>
+              <strong>Payments.</strong> Checkout payments are processed by our
+              payment partner Western Bid, through Stripe (cards, Apple Pay,
+              Google Pay) or PayPal, under their own privacy policies. Your
+              card details are entered on their secure pages — we never see or
+              store them. They send us back the payment status, a transaction
+              ID, and, for PayPal, the shipping address you confirmed there.
+              Direct orders are paid through PayPal or Payoneer.
+            </li>
+            <li>
               <strong>Information you send us.</strong> When you contact us by
               email or Instagram (for example, to place a direct order), we
               receive what you share: your name, email address or Instagram
               username, shipping address, and the content of your messages.
             </li>
             <li>
-              <strong>Payments.</strong> Direct orders are paid through PayPal
-              or Payoneer, which process your payment under their own privacy
-              policies. We never see or store your card details.
-            </li>
-            <li>
-              <strong>Etsy orders.</strong> When you click &ldquo;Buy on
-              Etsy&rdquo;, you leave our Site and your purchase is handled by
-              Etsy under Etsy&apos;s privacy policy. Etsy shares with us the
-              details needed to fulfil your order, such as your name and
-              shipping address.
+              <strong>Etsy orders.</strong> If you buy from our Etsy shop, your
+              purchase is handled by Etsy under Etsy&apos;s privacy policy.
+              Etsy shares with us the details needed to fulfil your order,
+              such as your name and shipping address.
             </li>
             <li>
               <strong>Usage information.</strong> When you browse the Site, we
@@ -54,12 +62,15 @@ function PrivacyPolicyPage() {
               information such as the pages you view, the buttons you click,
               your device and browser type, your approximate location (derived
               from your IP address), and how you arrived at the Site. Our
-              hosting providers also keep standard server logs.
+              hosting providers also keep standard server logs. At checkout we
+              use your IP address to determine your country (with the
+              GeoLite2 database by MaxMind) so we can offer the payment
+              methods available there.
             </li>
           </ul>
           <p>
-            The Site has no user accounts, contact forms, or checkout, so we
-            don&apos;t collect payment details or passwords on it.
+            The Site has no user accounts, so we don&apos;t ask you to create a
+            password.
           </p>
 
           <h2>2. Cookies, analytics, and advertising</h2>
@@ -67,7 +78,10 @@ function PrivacyPolicyPage() {
             <li>
               <strong>Google Analytics 4</strong> (Google LLC) helps us
               understand how visitors use the Site — which pages are visited
-              and which products are viewed. It uses cookies. You can opt out
+              and which products are viewed. It uses cookies. When an order is
+              paid, our server reports the purchase (order number, product,
+              and amount — not your name or contact details) to Google
+              Analytics, linked to your browsing session. You can opt out
               with Google&apos;s{" "}
               <a
                 href="https://tools.google.com/dlpage/gaoptout"
@@ -80,11 +94,15 @@ function PrivacyPolicyPage() {
             <li>
               <strong>Meta Pixel and Meta Conversions API</strong> (Meta
               Platforms, Inc.) help us measure and improve our ads on Facebook
-              and Instagram. When you view a product or click &ldquo;Buy on
-              Etsy&rdquo; or &ldquo;Direct Order&rdquo;, information about that
-              action — including your IP address, browser details, the page
-              address, and the product — is sent to Meta, both from your
-              browser and from our server. Meta may use cookies and combine
+              and Instagram. When you view a product, start checkout, or
+              click &ldquo;Direct Order&rdquo;, information about that action
+              — including your IP address, browser details, the page address,
+              and the product — is sent to Meta, both from your browser and
+              from our server. When you complete a purchase, our server also
+              sends Meta the order value and your email, phone number, name,
+              city, postal code, and country in hashed (scrambled) form, so
+              Meta can match the purchase to an ad you saw without receiving
+              those details in readable form. Meta may use cookies and combine
               this with other information it holds about you. You can manage
               how Meta uses your information for ads in your Facebook or
               Instagram ad preferences.
@@ -107,11 +125,13 @@ function PrivacyPolicyPage() {
 
           <h2>4. Who we share it with</h2>
           <p>
-            Only with the services we need to run the business: Etsy, PayPal
-            and Payoneer (payments), postal and courier services (to deliver
-            your order), Google and Meta (analytics and advertising, as
-            described above), and our hosting providers. We may also disclose
-            information when required by law.
+            Only with the services we need to run the business: Western Bid,
+            Stripe, PayPal, and Payoneer (payments), Etsy (for Etsy orders),
+            postal and courier services (your name, address, and phone number,
+            to deliver your order and contact you about delivery), Google and
+            Meta (analytics and advertising, as described above), and our
+            hosting and database providers. We may also disclose information
+            when required by law.
           </p>
 
           <h2>5. International transfers</h2>

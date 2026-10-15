@@ -60,7 +60,7 @@ function ContactPage() {
 
           <h2>Ordering directly</h2>
           <p>
-            Prefer not to order through Etsy? Message us by email or on
+            Prefer to order by message? Write to us by email or on
             Instagram with the candle you&apos;d like and your shipping
             address. We&apos;ll confirm the details and send a secure payment
             request through PayPal or Payoneer. Once payment is received, your
