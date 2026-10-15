@@ -11,6 +11,7 @@ import MobileGiftSlide from "../mobile/components/slides/GiftSlide.jsx";
 import MobileHandmadeSlide from "../mobile/components/slides/HandmadeSlide.jsx";
 import MobileProductInfoSlide from "../mobile/components/slides/ProductInfoSlide.jsx";
 import MobileSeedsSlide from "../mobile/components/slides/SeedsSlide.jsx";
+import HomeClosing from "../components/HomeClosing.jsx";
 import "./HomePage.css";
 
 const HOME_JSON_LD = {
@@ -44,6 +45,9 @@ function HomePage() {
           <section className="m-home-section">
             <MobileHandmadeSlide />
           </section>
+          <section className="m-home-section m-home-section--auto">
+            <HomeClosing />
+          </section>
         </main>
       </>
     );
@@ -67,6 +71,9 @@ function HomePage() {
         </section>
         <section className="home-section">
           <HandmadeSlide />
+        </section>
+        <section className="home-section">
+          <HomeClosing />
         </section>
       </main>
     </>
