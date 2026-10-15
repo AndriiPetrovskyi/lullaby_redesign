@@ -39,7 +39,13 @@ import jarProcessPoster from "../assets/process-poster.webp";
 import boxProcessPoster from "../assets/video2-poster.webp";
 import vesselPlanterImage from "../assets/fl3.jpeg";
 import vialImage from "../assets/notes/vial-and-pen.webp";
+import notesAndVialImage from "../assets/notes/notes-and-vial.webp";
+import penWritingImage from "../assets/notes/pen-writing.webp";
 import "./ProductPage.css";
+
+// Shown after every candle's own photos: the Message in a Vial that ships
+// with it.
+const VIAL_GALLERY_PHOTOS = [notesAndVialImage, vialImage, penWritingImage];
 
 const MOBILE_GALLERY_WIDTHS = [600, 800, 1200];
 const DESKTOP_GALLERY_WIDTHS = [800, 1200, 1600];
@@ -234,7 +240,7 @@ function ProductPage() {
           key={product.slug}
           autoplay={false}
           slides={withPhotoFirst(
-            uniquePhotos(product.gallery ?? []),
+            uniquePhotos([...(product.gallery ?? []), ...VIAL_GALLERY_PHOTOS]),
             adPhoto,
             [product.image],
           ).map((src, i) => (
@@ -504,7 +510,7 @@ function ProductPage() {
   }
 
   const galleryImages = withPhotoFirst(
-    uniquePhotos([product.image, ...(product.gallery ?? [])]),
+    uniquePhotos([product.image, ...(product.gallery ?? []), ...VIAL_GALLERY_PHOTOS]),
     adPhoto,
   );
 
