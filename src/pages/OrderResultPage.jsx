@@ -4,7 +4,6 @@ import Seo from "../components/Seo.jsx";
 import { CONTACT_EMAIL, DISPATCH_TIME, DELIVERY_TIME } from "../config/contact.js";
 import { getOrderStatus } from "../services/orders.js";
 import { trackEvent } from "../utils/metaPixel.js";
-import { trackGaEvent } from "../utils/googleAnalytics.js";
 import "./SimplePage.css";
 import "./CheckoutPage.css";
 
@@ -12,7 +11,7 @@ const POLL_INTERVAL_MS = 2000;
 const POLL_ATTEMPTS = 15;
 const PAID_STATUSES = ["PAID", "SHIPPED"];
 
-// The browser half of the Purchase event; the backend sends the server half
+// The browser half of the Meta Purchase event; the backend sends the server half
 // with the same id when the payment notification arrives.
 function trackPurchaseOnce(order) {
   const key = `purchase-tracked-${order.id}`;
@@ -35,19 +34,10 @@ function trackPurchaseOnce(order) {
     },
     { eventId: `purchase-${order.id}` },
   );
-  trackGaEvent("purchase", {
-    transaction_id: String(order.number),
-    currency: order.currency,
-    value: order.total,
-    items: [
-      {
-        item_id: order.productSlug,
-        item_name: order.productName,
-        price: order.unitPrice,
-        quantity: order.quantity,
-      },
-    ],
-  });
+  // GA4's "purchase" comes only from the backend (Measurement Protocol, with
+  // this visitor's client/session ids): GA doesn't reliably merge a browser
+  // and a server purchase with the same transaction_id, so sending both
+  // could double the revenue.
 }
 
 function useOrder(orderId, { poll }) {
