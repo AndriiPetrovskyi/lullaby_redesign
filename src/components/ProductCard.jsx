@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { CHECKOUT_ENABLED } from "../config/ordering.js";
 import { photoKey, responsiveImage } from "../utils/images.js";
 import "./ProductCard.css";
 
@@ -21,6 +22,7 @@ function ProductCard({ product }) {
   const scentTeaser = getScentTeaser(product);
   const hoverImage = getHoverImage(product);
   const isLowStock = product.stock > 0 && product.stock <= LOW_STOCK_THRESHOLD;
+  const isSoldOut = CHECKOUT_ENABLED && product.stock < 1;
 
   return (
     <Link to={`/products/${product.slug}`} className="product-card">
@@ -42,9 +44,9 @@ function ProductCard({ product }) {
             decoding="async"
           />
         )}
-        {isLowStock && (
+        {(isLowStock || isSoldOut) && (
           <span className="product-card-stock-badge">
-            Only {product.stock} left
+            {isSoldOut ? "Sold out" : `Only ${product.stock} left`}
           </span>
         )}
       </div>

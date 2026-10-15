@@ -165,8 +165,17 @@ function ProductPage() {
   // "Buy now" records purchase intent (InitiateCheckout — the ad campaign
   // optimizes for it, so its payload is unchanged), then goes to the site's
   // own checkout, or — until that is switched on — to the Etsy step.
+  // Stock only gates the site's own checkout; Etsy keeps its own count.
+  const isSoldOut = CHECKOUT_ENABLED && product.stock < 1;
+  const canBuy = !ORDERING_PAUSED && !isSoldOut;
+  const buyLabel = ORDERING_PAUSED
+    ? "Currently unavailable"
+    : isSoldOut
+      ? "Sold out"
+      : "Buy now";
+
   const handleBuyClick = () => {
-    if (ORDERING_PAUSED) return;
+    if (!canBuy) return;
     trackEvent("InitiateCheckout", {
       content_ids: [product.id],
       content_name: product.name,
@@ -270,9 +279,9 @@ function ProductPage() {
             <button
               type="button"
               onClick={handleBuyClick}
-              disabled={ORDERING_PAUSED}
+              disabled={!canBuy}
               className="m-product-page-buy-etsy">
-              {ORDERING_PAUSED ? "Currently unavailable" : "Buy now"}
+              {buyLabel}
             </button>
             {!ORDERING_PAUSED && (
               <p className="m-product-page-direct-line">
@@ -446,9 +455,9 @@ function ProductPage() {
               <button
               type="button"
               onClick={handleBuyClick}
-              disabled={ORDERING_PAUSED}
+              disabled={!canBuy}
               className="m-product-page-buy-etsy">
-              {ORDERING_PAUSED ? "Currently unavailable" : "Buy now"}
+              {buyLabel}
             </button>
             {!ORDERING_PAUSED && (
               <p className="m-product-page-direct-line">
@@ -471,7 +480,7 @@ function ProductPage() {
 
         <MoreScents currentSlug={product.slug} />
 
-        {!ORDERING_PAUSED && (
+        {canBuy && (
           <BuyBar
             name={product.name}
             price={product.price}
@@ -603,9 +612,9 @@ function ProductPage() {
             <button
               type="button"
               onClick={handleBuyClick}
-              disabled={ORDERING_PAUSED}
+              disabled={!canBuy}
               className="d-product-page-buy-etsy">
-              {ORDERING_PAUSED ? "Currently unavailable" : "Buy now"}
+              {buyLabel}
             </button>
             {!ORDERING_PAUSED && (
               <p className="d-product-page-direct-line">
@@ -789,9 +798,9 @@ function ProductPage() {
             <button
               type="button"
               onClick={handleBuyClick}
-              disabled={ORDERING_PAUSED}
+              disabled={!canBuy}
               className="d-product-page-buy-etsy">
-              {ORDERING_PAUSED ? "Currently unavailable" : "Buy now"}
+              {buyLabel}
             </button>
             {!ORDERING_PAUSED && (
               <p className="d-product-page-direct-line">
@@ -814,7 +823,7 @@ function ProductPage() {
 
       <MoreScents currentSlug={product.slug} />
 
-      {!ORDERING_PAUSED && (
+      {canBuy && (
         <BuyBar
           name={product.name}
           price={product.price}
