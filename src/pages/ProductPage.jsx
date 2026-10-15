@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import { useProduct } from "../hooks/useProducts.js";
 import LoadingScreen from "../components/LoadingScreen.jsx";
+import GuaranteesMarquee from "../components/GuaranteesMarquee.jsx";
 import MoreScents from "../components/MoreScents.jsx";
 import ProductReviews, {
   ReviewsSummaryLink,
@@ -362,6 +363,8 @@ function ProductPage() {
             })}
           </div>
 
+          <GuaranteesMarquee className="m-product-page-marquee" />
+
           <div className="m-product-page-gift-section">
             <p className="m-product-page-gift-title">
               The Perfect Frame. A Ready-to-Give Gift.
@@ -694,6 +697,8 @@ function ProductPage() {
           </div>
         </div>
       </div>
+
+      <GuaranteesMarquee className="d-product-page-marquee" />
 
       <section className="d-product-page-story">
         <div className="d-product-page-story-media">

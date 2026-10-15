@@ -10,6 +10,8 @@
   /* Brand orange on cream reads at ~3:1 — too faint for long text on a phone
      in daylight. Body copy uses a deeper shade of the same orange (~5:1). */
   --m-product-text: #b84a10;
+  /* the full-width guarantees band uses 100vw */
+  overflow-x: clip;
   /* terracotta — darker than the old #ffa047 button so white text reads */
   --m-product-cta: #c0451b;
 }
@@ -232,9 +234,9 @@
   border-top: 1px solid var(--color-accent-coral);
 }
 
-/* The first story block sits right under the FAQ, which already ends with
-   a divider line. */
-.m-product-page-faq + div {
+/* The first story block sits right under the guarantees band, which already
+   separates it from the FAQ. */
+.m-product-page-marquee + div {
   padding-top: 0;
   border-top: 0;
 }
@@ -861,4 +863,14 @@
 .d-product-page .d-product-page-description,
 .d-product-page .d-product-page-faq-content {
   font-weight: 400;
+}
+
+/* --- guarantees band between the buy area and the story sections --- */
+
+.m-product-page-marquee {
+  margin-top: var(--spacing-lg);
+}
+
+.d-product-page-marquee {
+  margin-block: var(--spacing-lg) clamp(48px, 6vw, 96px);
 }
