@@ -363,8 +363,6 @@ function ProductPage() {
             })}
           </div>
 
-          <GuaranteesMarquee className="m-product-page-marquee" />
-
           <div className="m-product-page-gift-section">
             <p className="m-product-page-gift-title">
               The Perfect Frame. A Ready-to-Give Gift.
@@ -468,6 +466,8 @@ function ProductPage() {
         </div>
 
         <ProductReviews reviews={reviews} />
+
+        <GuaranteesMarquee className="product-page-marquee" />
 
         <MoreScents currentSlug={product.slug} />
 
@@ -698,8 +698,6 @@ function ProductPage() {
         </div>
       </div>
 
-      <GuaranteesMarquee className="d-product-page-marquee" />
-
       <section className="d-product-page-story">
         <div className="d-product-page-story-media">
           <MutableVideo
@@ -811,6 +809,8 @@ function ProductPage() {
       </div>
 
       <ProductReviews reviews={reviews} />
+
+      <GuaranteesMarquee className="product-page-marquee" />
 
       <MoreScents currentSlug={product.slug} />
 
