@@ -2,7 +2,12 @@ import { Link } from "react-router-dom";
 import Seo from "../components/Seo.jsx";
 import {
   BUSINESS_COUNTRY,
+  BUSINESS_NAME,
   CONTACT_EMAIL,
+  SELLER_ADDRESS,
+  SELLER_EMAIL,
+  SELLER_NAME,
+  SELLER_STATUS,
   DISPATCH_TIME,
   ETSY_SHOP_URL,
   INSTAGRAM_HANDLE,
@@ -74,6 +79,19 @@ function ContactPage() {
             order was placed under so we can find it quickly. Shipping times,
             returns, and damaged items are covered in our{" "}
             <Link to="/terms">Terms &amp; Conditions</Link>.
+          </p>
+
+          <h2>Seller information</h2>
+          <p>
+            {BUSINESS_NAME} is run by {SELLER_NAME}, {SELLER_STATUS}.
+            <br />
+            {SELLER_ADDRESS.map((line) => (
+              <span key={line}>
+                {line}
+                <br />
+              </span>
+            ))}
+            <a href={`mailto:${SELLER_EMAIL}`}>{SELLER_EMAIL}</a>
           </p>
         </div>
       </main>

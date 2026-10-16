@@ -4,6 +4,16 @@
 export const BUSINESS_NAME = "Lullaby Rituals";
 export const BUSINESS_COUNTRY = "Ukraine";
 
+// Seller identity, required for online sales to EU consumers.
+export const SELLER_NAME = "Andrii Petrovskyi";
+export const SELLER_STATUS = "individual entrepreneur (FOP), registered in Ukraine";
+export const SELLER_ADDRESS = [
+  "20 Henerala Tarnavskoho St, apt. 11",
+  "Bibrka, Lviv Oblast, 81220",
+  "Ukraine",
+];
+export const SELLER_EMAIL = "andriipetrovskyi.it@gmail.com";
+
 export const CONTACT_EMAIL = "lullaby.rituals@gmail.com";
 export const CONTACT_EMAIL_HANDLE = "lullaby.rituals";
 export const INSTAGRAM_HANDLE = "@lullaby.rituals";
@@ -21,4 +31,4 @@ export const FREE_SHIPPING_REGIONS = "the US, Canada and Europe";
 export const PAID_SHIPPING_NOTE =
   "Australia, New Zealand, Israel, Japan, South Korea, Singapore and the UAE: flat $15 delivery fee";
 
-export const LEGAL_LAST_UPDATED = "October 15, 2026";
+export const LEGAL_LAST_UPDATED = "October 16, 2026";

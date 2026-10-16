@@ -11,6 +11,10 @@ import {
   LEGAL_LAST_UPDATED,
   PAID_SHIPPING_NOTE,
   RETURN_WINDOW_DAYS,
+  SELLER_ADDRESS,
+  SELLER_EMAIL,
+  SELLER_NAME,
+  SELLER_STATUS,
 } from "../config/contact.js";
 import "./SimplePage.css";
 
@@ -33,6 +37,11 @@ function TermsPage() {
             (&ldquo;Lullaby&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;). We are a
             small handmade candle studio based in {BUSINESS_COUNTRY}. By using
             the Site or placing an order, you agree to these terms.
+          </p>
+          <p>
+            Seller: {SELLER_NAME}, {SELLER_STATUS}.
+            Address: {SELLER_ADDRESS.join(", ")}. Email:{" "}
+            <a href={`mailto:${SELLER_EMAIL}`}>{SELLER_EMAIL}</a>.
           </p>
 
           <h2>1. Our products</h2>

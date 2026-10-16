@@ -4,6 +4,10 @@ import {
   BUSINESS_NAME,
   CONTACT_EMAIL,
   LEGAL_LAST_UPDATED,
+  SELLER_ADDRESS,
+  SELLER_EMAIL,
+  SELLER_NAME,
+  SELLER_STATUS,
 } from "../config/contact.js";
 import "./SimplePage.css";
 
@@ -26,6 +30,11 @@ function PrivacyPolicyPage() {
             based in {BUSINESS_COUNTRY}, collects and uses information when you
             visit lullaby-rituals.com (the &ldquo;Site&rdquo;) or order from
             us.
+          </p>
+          <p>
+            The data controller is {SELLER_NAME}, {SELLER_STATUS},{" "}
+            {SELLER_ADDRESS.join(", ")} (
+            <a href={`mailto:${SELLER_EMAIL}`}>{SELLER_EMAIL}</a>).
           </p>
 
           <h2>1. Information we collect</h2>
