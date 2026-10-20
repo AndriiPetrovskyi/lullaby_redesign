@@ -31,4 +31,4 @@ export const FREE_SHIPPING_REGIONS = "the US, Canada and Europe";
 export const PAID_SHIPPING_NOTE =
   "Australia, New Zealand, Israel, Japan, South Korea, Singapore and the UAE: flat $15 delivery fee";
 
-export const LEGAL_LAST_UPDATED = "October 16, 2026";
+export const LEGAL_LAST_UPDATED = "October 20, 2026";

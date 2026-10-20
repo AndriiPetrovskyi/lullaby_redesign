@@ -1,3 +1,4 @@
+import CookieBanner from './components/CookieBanner.jsx'
 import Footer from './components/Footer.jsx'
 import MetaPixelTracker from './components/MetaPixelTracker.jsx'
 import Navbar from './components/Navbar.jsx'
@@ -19,6 +20,7 @@ function App() {
       {isMobile ? <MobileNavbar /> : <Navbar />}
       <AppRoutes />
       {isMobile ? <MobileFooter /> : <Footer />}
+      <CookieBanner />
     </>
   )
 }

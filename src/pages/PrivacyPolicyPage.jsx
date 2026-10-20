@@ -118,8 +118,16 @@ function PrivacyPolicyPage() {
             </li>
           </ul>
           <p>
-            You can block or delete cookies in your browser settings. The Site
-            will keep working, though our analytics will be less accurate.
+            If you visit from the EU/EEA, the UK, or Switzerland, we ask for
+            your consent first: Google Analytics and Meta are not loaded, and
+            nothing is sent to them, unless you click &ldquo;Accept&rdquo;. If
+            you decline, we also don&apos;t report your purchases to Google or
+            Meta. You can change your choice at any time with &ldquo;Cookie
+            settings&rdquo; at the bottom of every page.
+          </p>
+          <p>
+            You can also block or delete cookies in your browser settings. The
+            Site will keep working, though our analytics will be less accurate.
           </p>
 
           <h2>3. How we use information</h2>

@@ -6,6 +6,7 @@ import {
   TikTokIcon,
 } from "../../components/icons/SocialIcons.jsx";
 import { INSTAGRAM_URL } from "../../config/contact.js";
+import { reopenConsentBanner } from "../../utils/consent.js";
 import "./Footer.css";
 
 const legalLinks = [
@@ -55,6 +56,14 @@ function Footer() {
               </NavLink>
             </li>
           ))}
+          <li>
+            <button
+              type="button"
+              className="m-footer-legal-link m-footer-legal-button"
+              onClick={reopenConsentBanner}>
+              Cookie settings
+            </button>
+          </li>
         </ul>
       </div>
 

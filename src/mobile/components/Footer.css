@@ -104,3 +104,10 @@
   font-size: 0.8rem;
   color: rgba(255, 232, 207, 0.5);
 }
+
+.m-footer-legal-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}

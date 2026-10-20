@@ -1,10 +1,11 @@
 import { META_PIXEL_ID, isTrackingEnabled } from "../config/tracking.js";
+import { onConsentRevoked, whenTrackingAllowed } from "./consent.js";
 
 let isPixelInitialized = false;
 
 // Meta's official base snippet, loaded only once, only when tracking is
 // actually enabled (production build + pixel ID configured).
-export function initMetaPixel() {
+function loadMetaPixel() {
   if (!isTrackingEnabled || isPixelInitialized) return;
   isPixelInitialized = true;
 
@@ -36,6 +37,13 @@ export function initMetaPixel() {
 
   window.fbq("init", META_PIXEL_ID);
 }
+
+// Loads the pixel once the visitor has agreed to tracking (or wasn't asked).
+export function initMetaPixel() {
+  whenTrackingAllowed(loadMetaPixel);
+}
+
+onConsentRevoked(() => window.fbq?.("consent", "revoke"));
 
 function generateEventId() {
   if (typeof crypto !== "undefined" && crypto.randomUUID) {
@@ -86,11 +94,11 @@ export function trackEvent(eventName, customData = {}, { eventId: fixedEventId }
   // still have Meta count the pair once.
   const eventId = fixedEventId ?? generateEventId();
 
-  if (window.fbq) {
+  whenTrackingAllowed(() => {
+    loadMetaPixel();
     window.fbq("track", eventName, customData, { eventID: eventId });
-  }
-
-  sendToConversionsApi(eventName, eventId, customData);
+    sendToConversionsApi(eventName, eventId, customData);
+  });
 }
 
 // Same as trackEvent, for event names outside Meta's standard set — these
@@ -100,11 +108,11 @@ export function trackCustomEvent(eventName, customData = {}) {
 
   const eventId = generateEventId();
 
-  if (window.fbq) {
+  whenTrackingAllowed(() => {
+    loadMetaPixel();
     window.fbq("trackCustom", eventName, customData, { eventID: eventId });
-  }
-
-  sendToConversionsApi(eventName, eventId, customData);
+    sendToConversionsApi(eventName, eventId, customData);
+  });
 }
 
 export function trackPageView() {

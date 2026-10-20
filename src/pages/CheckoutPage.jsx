@@ -12,6 +12,7 @@ import {
   getCheckoutConfig,
   redirectToPayment,
 } from "../services/orders.js";
+import { hasTrackingConsent } from "../utils/consent.js";
 import { trackEvent } from "../utils/metaPixel.js";
 import { gaItem, getGaIds, trackGaEvent } from "../utils/googleAnalytics.js";
 import { responsiveImage } from "../utils/images.js";
@@ -204,6 +205,7 @@ function CheckoutPage() {
         fbp: readCookie("_fbp"),
         fbc: readCookie("_fbc"),
         ...getGaIds(),
+        trackingConsent: hasTrackingConsent(),
       });
       trackEvent("AddPaymentInfo", {
         content_ids: [product.id],

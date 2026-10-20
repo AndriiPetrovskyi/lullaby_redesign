@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import navLinks from "../data/navLinks.js";
 import { FacebookIcon, InstagramIcon, TikTokIcon } from "./icons/SocialIcons.jsx";
 import { INSTAGRAM_URL } from "../config/contact.js";
+import { reopenConsentBanner } from "../utils/consent.js";
 import "./Footer.css";
 
 const legalLinks = [
@@ -52,6 +53,14 @@ function Footer() {
                 </NavLink>
               </li>
             ))}
+            <li>
+              <button
+                type="button"
+                className="footer-legal-link footer-legal-button"
+                onClick={reopenConsentBanner}>
+                Cookie settings
+              </button>
+            </li>
           </ul>
         </div>
 

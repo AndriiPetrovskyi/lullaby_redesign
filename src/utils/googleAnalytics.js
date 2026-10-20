@@ -1,4 +1,5 @@
 import { GA_MEASUREMENT_ID, isGaEnabled } from "../config/tracking.js";
+import { onConsentRevoked, whenTrackingAllowed } from "./consent.js";
 
 let isGaInitialized = false;
 
@@ -24,11 +25,23 @@ export function initGoogleAnalytics() {
   window.gtag("config", GA_MEASUREMENT_ID, { send_page_view: false });
 }
 
+// Waits for cookie consent (see consent.js) before anything reaches Google.
 export function trackGaEvent(eventName, params = {}) {
   if (!isGaEnabled) return;
-  initGoogleAnalytics();
-  window.gtag("event", eventName, params);
+  whenTrackingAllowed(() => {
+    initGoogleAnalytics();
+    window.gtag("event", eventName, params);
+  });
 }
+
+onConsentRevoked(() =>
+  window.gtag?.("consent", "update", {
+    analytics_storage: "denied",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+  }),
+);
 
 // Called from <Seo> rather than on route change: document.title is updated
 // by Helmet asynchronously, and product pages only know their title once the
