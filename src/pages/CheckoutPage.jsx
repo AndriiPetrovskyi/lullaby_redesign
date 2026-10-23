@@ -314,7 +314,7 @@ function CheckoutPage() {
                     value="card"
                     selected={paymentMethod}
                     onSelect={setPaymentMethod}
-                    label="Credit card"
+                    label="Card, Apple Pay or Google Pay"
                     badge={<CardBrandIcons />}>
                     After clicking &ldquo;Continue to payment&rdquo;, you&apos;ll be
                     redirected to a secure Stripe page to pay by card, Apple Pay or
