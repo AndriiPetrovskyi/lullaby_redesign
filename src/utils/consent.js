@@ -8,6 +8,8 @@
 // status: "pending" (still finding out) | "ask" (show the banner)
 //       | "granted" | "denied"
 
+import { isGaEnabled, isTrackingEnabled } from "../config/tracking.js";
+
 const STORAGE_KEY = "lullaby-tracking-consent";
 
 let status = "pending";
@@ -61,8 +63,10 @@ export function whenTrackingAllowed(fn) {
 }
 
 // What the backend should do with this buyer's purchase: report it to Meta
-// and Google, or not. Unknown (still pending) counts as no.
-export const hasTrackingConsent = () => status === "granted";
+// and Google, or not. Unknown (still pending) counts as no, and so does a
+// local or dev build — test orders placed from it must not reach analytics.
+export const hasTrackingConsent = () =>
+  (isGaEnabled || isTrackingEnabled) && status === "granted";
 
 const revokeListeners = new Set();
 export const onConsentRevoked = (listener) => revokeListeners.add(listener);
