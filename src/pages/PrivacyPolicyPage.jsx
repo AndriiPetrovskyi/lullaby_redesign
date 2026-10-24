@@ -76,6 +76,14 @@ function PrivacyPolicyPage() {
               GeoLite2 database by MaxMind) so we can offer the payment
               methods available there.
             </li>
+            <li>
+              <strong>Checkout statistics.</strong> To improve our checkout, we
+              keep anonymous records of checkout visits on our own server: the
+              candle, your country and device type, how you arrived at the
+              Site, and how far you got (for example, which form field you
+              filled in last — never what you typed). These records contain no
+              name, email, address, or cookies.
+            </li>
           </ul>
           <p>
             The Site has no user accounts, so we don&apos;t ask you to create a

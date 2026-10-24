@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter } from 'react-router-dom'
 import './styles/index.css'
+import './utils/trafficSource.js'
 import App from './App.jsx'
 
 // react-helmet-async only ever appends its managed tags to <head> — it has

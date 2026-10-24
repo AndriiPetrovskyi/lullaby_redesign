@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen.jsx";
 import { CardBrandIcons, PayPalLogo } from "../components/PaymentMethods.jsx";
@@ -12,7 +12,9 @@ import {
   getCheckoutConfig,
   redirectToPayment,
 } from "../services/orders.js";
+import { openCheckoutVisit, updateCheckoutVisit } from "../services/checkoutVisits.js";
 import { hasTrackingConsent } from "../utils/consent.js";
+import { getTrafficSource } from "../utils/trafficSource.js";
 import { trackEvent } from "../utils/metaPixel.js";
 import { gaItem, getGaIds, trackGaEvent } from "../utils/googleAnalytics.js";
 import { responsiveImage } from "../utils/images.js";
@@ -87,6 +89,67 @@ function PaymentOption({ value, selected, onSelect, label, badge, children }) {
   );
 }
 
+// Records this checkout visit in our own anonymous funnel (admin →
+// CheckoutVisit): opened, then the first keystroke, then the last field
+// touched. Field names only — never what was typed.
+const FIELD_REPORT_DELAY_MS = 1500;
+
+function useCheckoutVisit(productSlug) {
+  const visitId = useRef(null);
+  const hasStarted = useRef(false);
+  const pending = useRef({});
+  const timer = useRef(null);
+
+  useEffect(() => {
+    if (!productSlug) return undefined;
+    let cancelled = false;
+    // Deferred so React's dev-mode double mount doesn't open two visits.
+    const start = setTimeout(() => {
+      openCheckoutVisit({ productSlug, ...getTrafficSource() }).then((id) => {
+        if (!cancelled) visitId.current = id;
+      });
+    }, 0);
+    return () => {
+      cancelled = true;
+      clearTimeout(start);
+    };
+  }, [productSlug]);
+
+  const flush = useCallback(() => {
+    clearTimeout(timer.current);
+    if (visitId.current && Object.keys(pending.current).length > 0) {
+      updateCheckoutVisit(visitId.current, pending.current);
+      pending.current = {};
+    }
+  }, []);
+
+  useEffect(() => {
+    const onHide = () => document.visibilityState === "hidden" && flush();
+    document.addEventListener("visibilitychange", onHide);
+    return () => {
+      document.removeEventListener("visibilitychange", onHide);
+      flush();
+    };
+  }, [flush]);
+
+  const noteField = useCallback(
+    (field, extra = {}) => {
+      Object.assign(pending.current, { lastField: field }, extra);
+      if (!hasStarted.current) {
+        hasStarted.current = true;
+        pending.current.step = "STARTED";
+        flush();
+      } else {
+        clearTimeout(timer.current);
+        timer.current = setTimeout(flush, FIELD_REPORT_DELAY_MS);
+      }
+    },
+    [flush],
+  );
+
+  return { visitId, noteField, flush };
+}
+
 function CheckoutUnavailable({ title, children }) {
   return (
     <>
@@ -109,6 +172,7 @@ function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const checkoutVisit = useCheckoutVisit(product?.slug);
 
   useEffect(() => {
     getCheckoutConfig()
@@ -187,6 +251,7 @@ function CheckoutPage() {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+    checkoutVisit.noteField(name, name === "country" ? { shipToCountry: value } : {});
     setForm((prev) =>
       name === "country" ? { ...prev, country: value, state: "" } : { ...prev, [name]: value },
     );
@@ -196,6 +261,7 @@ function CheckoutPage() {
     event.preventDefault();
     setSubmitError("");
     setIsSubmitting(true);
+    checkoutVisit.flush();
     try {
       const order = await createOrder({
         productSlug: product.slug,
@@ -206,6 +272,7 @@ function CheckoutPage() {
         fbc: readCookie("_fbc"),
         ...getGaIds(),
         trackingConsent: hasTrackingConsent(),
+        checkoutVisitId: checkoutVisit.visitId.current ?? undefined,
       });
       trackEvent("AddPaymentInfo", {
         content_ids: [product.id],
@@ -224,6 +291,16 @@ function CheckoutPage() {
       setSubmitError(err.message);
       setIsSubmitting(false);
     }
+  };
+
+  const selectPaymentMethod = (method) => {
+    checkoutVisit.noteField("paymentMethod");
+    setPaymentMethod(method);
+  };
+
+  const changeQuantity = (delta) => {
+    checkoutVisit.noteField("quantity");
+    setQuantity((q) => q + delta);
   };
 
   const fieldProps = { form, onChange: handleChange };
@@ -313,7 +390,7 @@ function CheckoutPage() {
                   <PaymentOption
                     value="card"
                     selected={paymentMethod}
-                    onSelect={setPaymentMethod}
+                    onSelect={selectPaymentMethod}
                     label="Card, Apple Pay or Google Pay"
                     badge={<CardBrandIcons />}>
                     After clicking &ldquo;Continue to payment&rdquo;, you&apos;ll be
@@ -325,7 +402,7 @@ function CheckoutPage() {
                   <PaymentOption
                     value="paypal"
                     selected={paymentMethod}
-                    onSelect={setPaymentMethod}
+                    onSelect={selectPaymentMethod}
                     label="PayPal"
                     badge={<PayPalLogo />}>
                     After clicking &ldquo;Pay with PayPal&rdquo;, you&apos;ll be
@@ -376,7 +453,7 @@ function CheckoutPage() {
                     type="button"
                     aria-label="Decrease quantity"
                     disabled={quantity <= 1}
-                    onClick={() => setQuantity((q) => q - 1)}>
+                    onClick={() => changeQuantity(-1)}>
                     −
                   </button>
                   <output aria-live="polite">{quantity}</output>
@@ -384,7 +461,7 @@ function CheckoutPage() {
                     type="button"
                     aria-label="Increase quantity"
                     disabled={quantity >= maxQuantity}
-                    onClick={() => setQuantity((q) => q + 1)}>
+                    onClick={() => changeQuantity(1)}>
                     +
                   </button>
                 </div>
