@@ -15,6 +15,7 @@ import {
 import { openCheckoutVisit, updateCheckoutVisit } from "../services/checkoutVisits.js";
 import { hasTrackingConsent } from "../utils/consent.js";
 import { getTrafficSource } from "../utils/trafficSource.js";
+import { getVisitorId } from "../utils/visitorId.js";
 import { trackEvent } from "../utils/metaPixel.js";
 import { gaItem, getGaIds, trackGaEvent } from "../utils/googleAnalytics.js";
 import { responsiveImage } from "../utils/images.js";
@@ -105,7 +106,11 @@ function useCheckoutVisit(productSlug) {
     let cancelled = false;
     // Deferred so React's dev-mode double mount doesn't open two visits.
     const start = setTimeout(() => {
-      openCheckoutVisit({ productSlug, ...getTrafficSource() }).then((id) => {
+      openCheckoutVisit({
+        productSlug,
+        ...getTrafficSource(),
+        visitorId: getVisitorId() ?? undefined,
+      }).then((id) => {
         if (!cancelled) visitId.current = id;
       });
     }, 0);
