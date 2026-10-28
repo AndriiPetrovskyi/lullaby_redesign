@@ -115,7 +115,9 @@ export function OrderSuccessPage() {
               <p>
                 We&apos;ll pour, pack and ship it within {DISPATCH_TIME}; delivery
                 takes {DELIVERY_TIME}. You&apos;ll get a payment receipt by email,
-                and we&apos;ll send your tracking number once it ships.
+                and we&apos;ll send your tracking number once it ships. The charge
+                will appear as &ldquo;WESTERN BID&rdquo; on your card or PayPal
+                statement: they are our payment partner.
               </p>
               <p>
                 Questions? Write to{" "}

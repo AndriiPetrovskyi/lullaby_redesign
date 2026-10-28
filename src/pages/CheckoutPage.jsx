@@ -6,7 +6,7 @@ import Seo from "../components/Seo.jsx";
 import Select from "../components/ui/Select.jsx";
 import { useProduct } from "../hooks/useProducts.js";
 import { CHECKOUT_ENABLED, ORDERING_PAUSED } from "../config/ordering.js";
-import { CONTACT_EMAIL, DELIVERY_TIME } from "../config/contact.js";
+import { CONTACT_EMAIL, DELIVERY_TIME, MOR_DISCLAIMER } from "../config/contact.js";
 import {
   createOrder,
   getCheckoutConfig,
@@ -409,6 +409,13 @@ function CheckoutPage() {
                     redirected to PayPal to complete your purchase securely.
                   </PaymentOption>
                 )}
+              </div>
+              <div className="checkout-mor-note">
+                <p>
+                  <strong>Disclaimer.</strong> We&apos;re a small handmade studio
+                  based in Ukraine. {MOR_DISCLAIMER}
+                </p>
+                <p>On the payment page, please make sure USD ($) is selected.</p>
               </div>
             </fieldset>
 

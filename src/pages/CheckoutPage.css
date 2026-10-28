@@ -137,6 +137,23 @@
   font-size: 14px;
 }
 
+.checkout-mor-note {
+  margin: var(--spacing-md) 0 0;
+  padding: 10px 14px;
+  border-left: 3px solid var(--color-accent-cobalt);
+  background: #fff8f0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.checkout-mor-note p {
+  margin: 0;
+}
+
+.checkout-mor-note p + p {
+  margin-top: 6px;
+}
+
 .checkout-region-note {
   margin: 0 0 var(--spacing-md);
   padding: 10px 14px;

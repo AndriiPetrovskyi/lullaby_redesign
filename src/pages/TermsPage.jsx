@@ -9,6 +9,7 @@ import {
   DISPATCH_TIME,
   FREE_SHIPPING_REGIONS,
   LEGAL_LAST_UPDATED,
+  MOR_DISCLAIMER,
   PAID_SHIPPING_NOTE,
   RETURN_WINDOW_DAYS,
   SELLER_ADDRESS,
@@ -65,9 +66,9 @@ function TermsPage() {
               by card (including Apple Pay and Google Pay, where available) or
               PayPal. Payments are processed securely by our payment partner,
               Western Bid, through Stripe or PayPal — we never see or store your
-              card details. The charge on your statement may show
-              &ldquo;Western Bid&rdquo; or &ldquo;WB&rdquo;. Your order is
-              confirmed once payment is received.
+              card details. Your order is confirmed once payment is received.
+              <br />
+              <strong>Disclaimer.</strong> {MOR_DISCLAIMER}
             </li>
             <li>
               <strong>Direct order.</strong> Contact us by email or Instagram

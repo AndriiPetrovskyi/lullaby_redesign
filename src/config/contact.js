@@ -32,3 +32,8 @@ export const PAID_SHIPPING_NOTE =
   "Australia, New Zealand, Israel, Japan, South Korea, Singapore and the UAE: flat $15 delivery fee";
 
 export const LEGAL_LAST_UPDATED = "October 24, 2026";
+
+// Merchant of Record disclaimer required by Western Bid (and through them by
+// Stripe and PayPal). Keep the wording verbatim and on at least two pages.
+export const MOR_DISCLAIMER =
+  "This store is integrated with the Western Bid™ e-commerce platform, and Western Bid, Inc. is the Merchant of Record for all purchases made in this store. Therefore, you will see “WESTERN BID” listed as the payee on your PayPal account and credit card statement.";

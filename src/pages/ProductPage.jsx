@@ -31,6 +31,7 @@ import {
   FREE_SHIPPING_REGIONS,
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
+  MOR_DISCLAIMER,
   PAID_SHIPPING_NOTE,
   RETURN_WINDOW_DAYS,
 } from "../config/contact.js";
@@ -65,6 +66,10 @@ const PRODUCT_INFO_SECTIONS = [
   {
     title: "Shipping & Delivery",
     content: `Free shipping to ${FREE_SHIPPING_REGIONS} (${PAID_SHIPPING_NOTE}). Orders ship within ${DISPATCH_TIME}; delivery typically takes ${DELIVERY_TIME} depending on location.`,
+  },
+  {
+    title: "Payment",
+    content: `Pay by card (including Apple Pay and Google Pay, where available) or PayPal. ${MOR_DISCLAIMER}`,
   },
   {
     title: "Returns & Damaged Items",
