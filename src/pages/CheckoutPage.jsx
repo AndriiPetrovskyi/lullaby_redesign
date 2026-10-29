@@ -50,15 +50,14 @@ const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Leaving our site for a page with another company's name on it is where
 // buyers hesitate, so the checkout says up front that it's coming.
-function CheckoutSteps({ isPayPal }) {
+function CheckoutSteps() {
   return (
     <ol className="checkout-steps" aria-label="Checkout steps">
       <li className="checkout-steps-item checkout-steps-item--current" aria-current="step">
         <span className="checkout-steps-number">1</span> Your details
       </li>
       <li className="checkout-steps-item">
-        <span className="checkout-steps-number">2</span>{" "}
-        {isPayPal ? "Pay on PayPal" : "Secure payment"}
+        <span className="checkout-steps-number">2</span> Secure payment
       </li>
       <li className="checkout-steps-item">
         <span className="checkout-steps-number">3</span> Confirmation
@@ -239,7 +238,7 @@ function CheckoutUnavailable({ title, children }) {
 
 function CheckoutPage() {
   const { slug } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const { product, isLoading, error } = useProduct(slug);
   const [config, setConfig] = useState(null);
   const [configError, setConfigError] = useState(false);
@@ -270,19 +269,6 @@ function CheckoutPage() {
   useEffect(() => {
     if (product) setQuantity((q) => Math.max(1, Math.min(q, product.stock)));
   }, [product]);
-
-  // Came from the product page's PayPal button: a PayPal-only form, with a
-  // way back to card if they change their mind.
-  const isPayPalFlow =
-    searchParams.get("method") === "paypal" &&
-    paymentMethod === "paypal" &&
-    Boolean(config?.paymentMethods.includes("paypal"));
-
-  const switchToCard = () => {
-    checkoutVisit.noteField("paymentMethod");
-    setPaymentMethod("card");
-    setSearchParams({}, { replace: true });
-  };
 
   const country = config?.countries.find((c) => c.code === form.country);
   const taxRate =
@@ -414,10 +400,8 @@ function CheckoutPage() {
         <Link to={`/products/${product.slug}`} className="checkout-back">
           <span aria-hidden="true">←</span> Back to {product.name}
         </Link>
-        <h1 className="checkout-title">
-          {isPayPalFlow ? "Checkout with PayPal" : "Checkout"}
-        </h1>
-        <CheckoutSteps isPayPal={isPayPalFlow} />
+        <h1 className="checkout-title">Checkout</h1>
+        <CheckoutSteps />
         {isSubmitting && <RedirectNotice paymentMethod={paymentMethod} />}
 
         <div className="checkout-layout">
@@ -480,76 +464,49 @@ function CheckoutPage() {
               </div>
             </fieldset>
 
-            {isPayPalFlow ? (
-              <fieldset className="checkout-section">
-                <legend>Payment</legend>
-                <div className="checkout-paypal-flow">
-                  <PayPalLogo />
-                  <p>
-                    Next you&apos;ll log in to PayPal and confirm the payment.
-                    We&apos;ll ship to the address above, and PayPal will show
-                    it too.
-                  </p>
-                </div>
-                <div className="checkout-mor-note">
-                  <p>
-                    <strong>Disclaimer.</strong> We&apos;re a small handmade studio
-                    based in Ukraine. {MOR_DISCLAIMER}
-                  </p>
-                </div>
-                {config.paymentMethods.includes("card") && (
-                  <p className="checkout-switch-method">
-                    <button type="button" onClick={switchToCard}>
-                      Pay by card, Apple Pay or Google Pay instead
-                    </button>
-                  </p>
-                )}
-              </fieldset>
-            ) : (
-              <fieldset className="checkout-section">
-                <legend>Payment</legend>
-                <p className="checkout-section-note">
-                  All transactions are secure and encrypted.
+            <fieldset className="checkout-section">
+              <legend>Payment</legend>
+              <p className="checkout-section-note">
+                All transactions are secure and encrypted.
+              </p>
+              {config.cardUnavailableInRegion && (
+                <p className="checkout-region-note">
+                  Card payments aren&apos;t available in your region — please pay
+                  with PayPal.
                 </p>
-                {config.cardUnavailableInRegion && (
-                  <p className="checkout-region-note">
-                    Card payments aren&apos;t available in your region — please pay
-                    with PayPal.
-                  </p>
+              )}
+              <div className="checkout-payment">
+                {config.paymentMethods.includes("card") && (
+                  <PaymentOption
+                    value="card"
+                    selected={paymentMethod}
+                    onSelect={selectPaymentMethod}
+                    label="Card, Apple Pay or Google Pay"
+                    badge={<CardBrandIcons />}>
+                    You&apos;ll pay on a secure Stripe page by card, Apple Pay or
+                    Google Pay. We never see or store your card details.
+                  </PaymentOption>
                 )}
-                <div className="checkout-payment">
-                  {config.paymentMethods.includes("card") && (
-                    <PaymentOption
-                      value="card"
-                      selected={paymentMethod}
-                      onSelect={selectPaymentMethod}
-                      label="Card, Apple Pay or Google Pay"
-                      badge={<CardBrandIcons />}>
-                      You&apos;ll pay on a secure Stripe page by card, Apple Pay or
-                      Google Pay. We never see or store your card details.
-                    </PaymentOption>
-                  )}
-                  {config.paymentMethods.includes("paypal") && (
-                    <PaymentOption
-                      value="paypal"
-                      selected={paymentMethod}
-                      onSelect={selectPaymentMethod}
-                      label="PayPal"
-                      badge={<PayPalLogo />}>
-                      After clicking &ldquo;Pay with PayPal&rdquo;, you&apos;ll be
-                      redirected to PayPal to complete your purchase securely.
-                    </PaymentOption>
-                  )}
-                </div>
-                <div className="checkout-mor-note">
-                  <p>
-                    <strong>Disclaimer.</strong> We&apos;re a small handmade studio
-                    based in Ukraine. {MOR_DISCLAIMER}
-                  </p>
-                </div>
-                {paymentMethod === "card" && <CardPaymentPreview total={totals.total} />}
-              </fieldset>
-            )}
+                {config.paymentMethods.includes("paypal") && (
+                  <PaymentOption
+                    value="paypal"
+                    selected={paymentMethod}
+                    onSelect={selectPaymentMethod}
+                    label="PayPal"
+                    badge={<PayPalLogo />}>
+                    After clicking &ldquo;Pay with PayPal&rdquo;, you&apos;ll be
+                    redirected to PayPal to complete your purchase securely.
+                  </PaymentOption>
+                )}
+              </div>
+              <div className="checkout-mor-note">
+                <p>
+                  <strong>Disclaimer.</strong> We&apos;re a small handmade studio
+                  based in Ukraine. {MOR_DISCLAIMER}
+                </p>
+              </div>
+              {paymentMethod === "card" && <CardPaymentPreview total={totals.total} />}
+            </fieldset>
 
             {submitError && (
               <p className="checkout-error" role="alert">
@@ -566,7 +523,7 @@ function CheckoutPage() {
                 : isSubmitting
                   ? "Redirecting to payment…"
                   : paymentMethod === "paypal"
-                    ? `Continue to PayPal · ${money(totals.total)}`
+                    ? `Pay with PayPal · ${money(totals.total)}`
                     : `Continue to secure payment · ${money(totals.total)}`}
             </button>
             {!isSoldOut && (
