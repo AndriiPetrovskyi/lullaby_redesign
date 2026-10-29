@@ -30,17 +30,18 @@ const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 // Leaving our site for a page with another company's name on it is where
 // buyers hesitate, so the checkout says up front that it's coming.
 function CheckoutSteps() {
+  const steps = ["Email", "Shipping & payment", "Confirmation"];
   return (
     <ol className="checkout-steps" aria-label="Checkout steps">
-      <li className="checkout-steps-item checkout-steps-item--current" aria-current="step">
-        <span className="checkout-steps-number">1</span> Email
-      </li>
-      <li className="checkout-steps-item">
-        <span className="checkout-steps-number">2</span> Shipping &amp; payment
-      </li>
-      <li className="checkout-steps-item">
-        <span className="checkout-steps-number">3</span> Confirmation
-      </li>
+      {steps.map((label, i) => (
+        <li
+          key={label}
+          className={`checkout-steps-item${i === 0 ? " checkout-steps-item--current" : ""}`}
+          aria-current={i === 0 ? "step" : undefined}>
+          <span className="checkout-steps-number">{i + 1}</span>
+          <span className="checkout-steps-label">{label}</span>
+        </li>
+      ))}
     </ol>
   );
 }

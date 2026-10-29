@@ -210,46 +210,6 @@
   }
 }
 
-/* ---- what happens next: steps, payment page preview, hand-off ---- */
-
-.checkout-steps {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 20px;
-  margin: calc(-1 * var(--spacing-md)) 0 var(--spacing-lg);
-  padding: 0;
-  list-style: none;
-  font-size: 14px;
-  color: rgba(74, 42, 18, 0.65);
-}
-
-.checkout-steps-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.checkout-steps-item--current {
-  font-weight: 700;
-  color: var(--color-text-dark);
-}
-
-.checkout-steps-number {
-  display: inline-grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  font-size: 12px;
-}
-
-.checkout-steps-item--current .checkout-steps-number {
-  border-color: var(--color-accent-cobalt);
-  background: var(--color-accent-cobalt);
-  color: #fff;
-}
-
 /* ---- email-only checkout: the rest is asked on the payment page ---- */
 
 .checkout-form {
@@ -335,15 +295,79 @@
   height: 19px;
 }
 
-/* On phones the email and the pay button come first (the button already
-   shows the total); the summary follows below. */
+/* ---- steps: numbered circles joined by a line, labels underneath ---- */
+
+.checkout-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: calc(-1 * var(--spacing-md)) 0 var(--spacing-lg);
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  line-height: 1.3;
+  color: rgba(74, 42, 18, 0.55);
+  text-align: center;
+}
+
+.checkout-steps-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px;
+}
+
+/* The line from the previous step's circle to this one's. */
+.checkout-steps-item + .checkout-steps-item::before {
+  content: "";
+  position: absolute;
+  top: 15px;
+  right: calc(50% + 22px);
+  left: calc(-50% + 22px);
+  height: 2px;
+  background: rgba(74, 42, 18, 0.2);
+}
+
+.checkout-steps-item--current {
+  font-weight: 700;
+  color: var(--color-text-dark);
+}
+
+.checkout-steps-number {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(74, 42, 18, 0.15);
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(74, 42, 18, 0.65);
+}
+
+.checkout-steps-item--current .checkout-steps-number {
+  background: var(--color-accent-cobalt);
+  color: #fff;
+}
+
+/* On phones the order summary comes first, kept compact, so the buyer sees
+   what they're paying for; the email and pay button follow right after. */
 @media (max-width: 767px) {
   .checkout-steps {
-    gap: 6px 12px;
-    font-size: 13px;
+    font-size: 12px;
   }
 
-  .checkout-steps-item {
-    gap: 6px;
+  .checkout-summary {
+    order: -1;
+  }
+
+  .checkout-item-image {
+    width: 64px;
+    height: 64px;
+  }
+
+  .checkout-delivery {
+    display: none;
   }
 }
