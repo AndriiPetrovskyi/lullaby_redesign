@@ -1,4 +1,20 @@
 import { API_BASE_URL } from "./api.js";
+import { hasTrackingConsent } from "../utils/consent.js";
+import { getGaIds } from "../utils/googleAnalytics.js";
+
+const readCookie = (name) =>
+  document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(`${name}=`))
+    ?.split("=")[1];
+
+// Ad and analytics ids the backend needs to report the purchase later.
+export const orderTrackingFields = () => ({
+  fbp: readCookie("_fbp"),
+  fbc: readCookie("_fbc"),
+  ...getGaIds(),
+  trackingConsent: hasTrackingConsent(),
+});
 
 export async function getCheckoutConfig() {
   const res = await fetch(`${API_BASE_URL}/orders/config`);
