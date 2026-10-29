@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import { useProduct } from "../hooks/useProducts.js";
 import LoadingScreen from "../components/LoadingScreen.jsx";
@@ -104,15 +104,12 @@ function ProductPage() {
   const [searchParams] = useSearchParams();
   const adPhoto = searchParams.get("photo");
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const { product, isLoading, error } = useProduct(slug);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const [openInfoSections, setOpenInfoSections] = useState(() => new Set());
   const [isDirectOrderModalOpen, setIsDirectOrderModalOpen] = useState(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
-  // Card payments need the buyer's email before the payment page (Western
-  // Bid passes it on to Stripe); everything else is asked there.
-  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
-  const [email, setEmail] = useState("");
   // Going to the payment page: null, or { method, error } while the order is
   // created (error set if that failed).
   const [payment, setPayment] = useState(null);
@@ -199,9 +196,9 @@ function ProductPage() {
   );
 
   // "Buy now" records purchase intent (InitiateCheckout — the ad campaign
-  // optimizes for it, so its payload is unchanged), then goes straight to
-  // the card payment page, or — until checkout is switched on — to the Etsy
-  // step. Stock only gates the site's own checkout; Etsy keeps its own count.
+  // optimizes for it, so its payload is unchanged), then goes to the site's
+  // own checkout, or — until that is switched on — to the Etsy step.
+  // Stock only gates the site's own checkout; Etsy keeps its own count.
   const isSoldOut = CHECKOUT_ENABLED && product.stock < 1;
   const canBuy = !ORDERING_PAUSED && !isSoldOut;
   const buyLabel = ORDERING_PAUSED
@@ -210,12 +207,13 @@ function ProductPage() {
       ? "Sold out"
       : "Buy now";
 
-  // Both buttons go straight to the payment page, with no form here: it
-  // asks for the buyer's details and shipping address and sends them back
-  // with the payment (the backend's "express" order).
+  // PayPal goes straight to PayPal, with no form here: it asks for the
+  // buyer's details and shipping address and sends them back with the
+  // payment (the backend's "express" order). Card buyers stop at the
+  // checkout first, which only asks for the email.
   const canPayWithPayPal = CHECKOUT_ENABLED && canBuy;
 
-  const payDirect = async (method, customerEmail) => {
+  const payDirect = async (method) => {
     setPayment({ method, error: null });
     try {
       const order = await createOrder({
@@ -223,7 +221,6 @@ function ProductPage() {
         quantity: 1,
         paymentMethod: method,
         express: true,
-        ...(customerEmail ? { customer: { email: customerEmail } } : {}),
         ...orderTrackingFields(),
       });
       trackEvent("AddPaymentInfo", {
@@ -251,7 +248,7 @@ function ProductPage() {
     if (CHECKOUT_ENABLED && (paymentMethod === "paypal" || !cardAvailable)) {
       payDirect("paypal");
     } else if (CHECKOUT_ENABLED) {
-      setIsEmailModalOpen(true);
+      navigate(`/checkout/${product.slug}`);
     } else {
       setIsCheckoutModalOpen(true);
     }
@@ -290,48 +287,6 @@ function ProductPage() {
         Continue to checkout →
       </a>
       <p className="modal-checkout-note">Free shipping · {DELIVERY_TIME}</p>
-    </Modal>
-  );
-
-  const handleEmailSubmit = (event) => {
-    event.preventDefault();
-    setIsEmailModalOpen(false);
-    payDirect("card", email.trim());
-  };
-
-  const emailModal = (
-    <Modal
-      isOpen={isEmailModalOpen}
-      onClose={() => setIsEmailModalOpen(false)}
-      labelledBy="email-modal-title">
-      <form onSubmit={handleEmailSubmit}>
-        <p id="email-modal-title" className="modal-title">
-          Your email
-        </p>
-        <p className="body-text modal-text">
-          For your order confirmation and delivery updates. Card details and
-          the shipping address go on the next page.
-        </p>
-        <input
-          type="email"
-          name="email"
-          autoComplete="email"
-          inputMode="email"
-          required
-          placeholder="you@example.com"
-          aria-labelledby="email-modal-title"
-          className="modal-email-input"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-        <button type="submit" className="modal-checkout-button modal-email-submit">
-          Continue to secure payment · ${product.price}
-        </button>
-        <p className="modal-checkout-note">
-          Payment page by our partner Western Bid, powered by Stripe. Pick USD ($)
-          to pay the exact price.
-        </p>
-      </form>
     </Modal>
   );
 
@@ -622,7 +577,6 @@ function ProductPage() {
         )}
 
         {checkoutModal}
-        {emailModal}
         {payment && (
           <RedirectNotice
             paymentMethod={payment.method}
@@ -995,7 +949,6 @@ function ProductPage() {
       )}
 
       {checkoutModal}
-      {emailModal}
       {payment && (
         <RedirectNotice
           paymentMethod={payment.method}

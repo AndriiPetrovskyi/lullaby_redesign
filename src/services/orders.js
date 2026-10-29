@@ -59,3 +59,26 @@ export function redirectToPayment({ action, fields }) {
   document.body.appendChild(form);
   form.submit();
 }
+
+// The checkout's email and quantity as last submitted, so coming back from
+// the payment page (or retrying after cancelling) doesn't mean typing it
+// again. Session storage only: it dies with the tab and never leaves the
+// browser.
+const DRAFT_KEY = "checkout-draft";
+
+export function saveCheckoutDraft(productSlug, draft) {
+  try {
+    sessionStorage.setItem(DRAFT_KEY, JSON.stringify({ productSlug, ...draft }));
+  } catch {
+    // storage unavailable — the form just starts empty next time
+  }
+}
+
+export function readCheckoutDraft(productSlug) {
+  try {
+    const draft = JSON.parse(sessionStorage.getItem(DRAFT_KEY) ?? "null");
+    return draft?.productSlug === productSlug ? draft : null;
+  } catch {
+    return null;
+  }
+}

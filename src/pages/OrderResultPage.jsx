@@ -176,13 +176,13 @@ export function OrderCancelledPage() {
           <p>
             Unsure about the payment page? It&apos;s run by our payment partner
             Western Bid through Stripe, which is why you see their name there and
-            on your statement. Pick USD ($) to pay the exact price. Prefer PayPal?
-            There&apos;s a PayPal button next to Buy now.
+            on your statement. Prefer PayPal? There&apos;s a PayPal button on
+            the checkout page too.
           </p>
           <div className="order-result-actions">
             {order && (
-              <Link to={`/products/${order.productSlug}`}>
-                Back to {order.productName}
+              <Link to={`/checkout/${order.productSlug}`}>
+                Back to checkout — {order.productName}
               </Link>
             )}
             <Link to="/products">Browse all scents</Link>

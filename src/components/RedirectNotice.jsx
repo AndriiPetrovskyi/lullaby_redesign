@@ -28,7 +28,7 @@ function RedirectNotice({ paymentMethod, error, onClose }) {
         <p className="checkout-redirect-text">
           {isPayPal
             ? "Our payment partner Western Bid will show as the payee."
-            : "Payment page by our partner Western Bid, powered by Stripe. Remember to pick USD ($)."}
+            : "Payment page by our partner Western Bid, powered by Stripe."}
         </p>
       </div>
     </div>
