@@ -194,9 +194,16 @@
   font-size: 13px;
 }
 
+/* On phones the email and the pay button come first (the button already
+   shows the total); the summary follows below. */
 @media (max-width: 767px) {
-  .checkout-summary {
-    order: -1;
+  .checkout-steps {
+    gap: 6px 12px;
+    font-size: 13px;
+  }
+
+  .checkout-steps-item {
+    gap: 6px;
   }
 }
 
