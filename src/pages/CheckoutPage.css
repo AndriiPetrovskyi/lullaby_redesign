@@ -377,6 +377,7 @@
 
   .checkout-summary {
     order: 2;
+    padding: var(--spacing-md);
   }
 
   .checkout-steps {
