@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen.jsx";
 import { CardBrandIcons, PayPalLogo } from "../components/PaymentMethods.jsx";
 import Seo from "../components/Seo.jsx";
@@ -10,7 +10,9 @@ import { CONTACT_EMAIL, DELIVERY_TIME, MOR_DISCLAIMER } from "../config/contact.
 import {
   createOrder,
   getCheckoutConfig,
+  readCheckoutDraft,
   redirectToPayment,
+  saveCheckoutDraft,
 } from "../services/orders.js";
 import { openCheckoutVisit, updateCheckoutVisit } from "../services/checkoutVisits.js";
 import { hasTrackingConsent } from "../utils/consent.js";
@@ -41,6 +43,78 @@ const readCookie = (name) =>
     ?.split("=")[1];
 
 const money = (value) => `$${value.toFixed(2)}`;
+
+// Long enough to read the hand-off message before the browser leaves.
+const MIN_REDIRECT_NOTICE_MS = 900;
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// Leaving our site for a page with another company's name on it is where
+// buyers hesitate, so the checkout says up front that it's coming.
+function CheckoutSteps() {
+  return (
+    <ol className="checkout-steps" aria-label="Checkout steps">
+      <li className="checkout-steps-item checkout-steps-item--current" aria-current="step">
+        <span className="checkout-steps-number">1</span> Your details
+      </li>
+      <li className="checkout-steps-item">
+        <span className="checkout-steps-number">2</span> Secure payment
+      </li>
+      <li className="checkout-steps-item">
+        <span className="checkout-steps-number">3</span> Confirmation
+      </li>
+    </ol>
+  );
+}
+
+// A sketch of the Stripe page the card option leads to, so it looks
+// familiar when it opens: the partner's name, the currency to pick, wallets.
+function CardPaymentPreview({ total }) {
+  return (
+    <div className="checkout-preview">
+      <p className="checkout-preview-caption">Next, our secure payment page:</p>
+      <div className="checkout-preview-page" aria-hidden="true">
+        <p className="checkout-preview-merchant">Western Bid Inc</p>
+        <p className="checkout-preview-label">Choose currency</p>
+        <div className="checkout-preview-currencies">
+          <span className="checkout-preview-currency checkout-preview-currency--picked">
+            🇺🇸 {money(total)}
+          </span>
+          <span className="checkout-preview-currency">Other currency</span>
+        </div>
+        <p className="checkout-preview-methods">Card · Apple Pay · Google Pay</p>
+        <p className="checkout-preview-footer">Powered by stripe</p>
+      </div>
+      <ul className="checkout-preview-notes">
+        <li>
+          <strong>Western Bid</strong> is our payment partner. You&apos;ll see
+          their name there and on your statement.
+        </li>
+        <li>
+          Pick <strong>USD ($)</strong> so you pay exactly {money(total)}.
+        </li>
+      </ul>
+    </div>
+  );
+}
+
+function RedirectNotice({ paymentMethod }) {
+  const isPayPal = paymentMethod === "paypal";
+  return (
+    <div className="checkout-redirect" role="status" aria-live="assertive">
+      <div className="checkout-redirect-box">
+        <span className="checkout-redirect-spinner" aria-hidden="true" />
+        <p className="checkout-redirect-title">
+          {isPayPal ? "Taking you to PayPal…" : "Taking you to secure payment…"}
+        </p>
+        <p className="checkout-redirect-text">
+          {isPayPal
+            ? "Our payment partner Western Bid will show as the payee."
+            : "Payment page by our partner Western Bid, powered by Stripe. Remember to pick USD ($)."}
+        </p>
+      </div>
+    </div>
+  );
+}
 
 function Field({ label, name, form, onChange, optional, className, ...props }) {
   const id = `checkout-${name}`;
@@ -164,12 +238,17 @@ function CheckoutUnavailable({ title, children }) {
 
 function CheckoutPage() {
   const { slug } = useParams();
+  const [searchParams] = useSearchParams();
   const { product, isLoading, error } = useProduct(slug);
   const [config, setConfig] = useState(null);
   const [configError, setConfigError] = useState(false);
-  const [form, setForm] = useState(EMPTY_FORM);
-  const [quantity, setQuantity] = useState(1);
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  // Back from the payment page (or a retry link): pick up where they left.
+  const [draft] = useState(() => readCheckoutDraft(slug));
+  const [form, setForm] = useState(() => ({ ...EMPTY_FORM, ...draft?.form }));
+  const [quantity, setQuantity] = useState(draft?.quantity ?? 1);
+  const [paymentMethod, setPaymentMethod] = useState(
+    searchParams.get("method") ?? draft?.paymentMethod ?? "card",
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const checkoutVisit = useCheckoutVisit(product?.slug);
@@ -185,6 +264,11 @@ function CheckoutPage() {
       })
       .catch(() => setConfigError(true));
   }, []);
+
+  // A restored draft may ask for more than is left in stock now.
+  useEffect(() => {
+    if (product) setQuantity((q) => Math.max(1, Math.min(q, product.stock)));
+  }, [product]);
 
   const country = config?.countries.find((c) => c.code === form.country);
   const taxRate =
@@ -263,17 +347,21 @@ function CheckoutPage() {
     setIsSubmitting(true);
     checkoutVisit.flush();
     try {
-      const order = await createOrder({
-        productSlug: product.slug,
-        quantity,
-        paymentMethod,
-        customer: form,
-        fbp: readCookie("_fbp"),
-        fbc: readCookie("_fbc"),
-        ...getGaIds(),
-        trackingConsent: hasTrackingConsent(),
-        checkoutVisitId: checkoutVisit.visitId.current ?? undefined,
-      });
+      const [order] = await Promise.all([
+        createOrder({
+          productSlug: product.slug,
+          quantity,
+          paymentMethod,
+          customer: form,
+          fbp: readCookie("_fbp"),
+          fbc: readCookie("_fbc"),
+          ...getGaIds(),
+          trackingConsent: hasTrackingConsent(),
+          checkoutVisitId: checkoutVisit.visitId.current ?? undefined,
+        }),
+        wait(MIN_REDIRECT_NOTICE_MS),
+      ]);
+      saveCheckoutDraft(product.slug, { form, quantity, paymentMethod });
       trackEvent("AddPaymentInfo", {
         content_ids: [product.id],
         content_name: product.name,
@@ -313,6 +401,8 @@ function CheckoutPage() {
           <span aria-hidden="true">←</span> Back to {product.name}
         </Link>
         <h1 className="checkout-title">Checkout</h1>
+        <CheckoutSteps />
+        {isSubmitting && <RedirectNotice paymentMethod={paymentMethod} />}
 
         <div className="checkout-layout">
           <form className="checkout-form" onSubmit={handleSubmit}>
@@ -393,8 +483,7 @@ function CheckoutPage() {
                     onSelect={selectPaymentMethod}
                     label="Card, Apple Pay or Google Pay"
                     badge={<CardBrandIcons />}>
-                    After clicking &ldquo;Continue to payment&rdquo;, you&apos;ll be
-                    redirected to a secure Stripe page to pay by card, Apple Pay or
+                    You&apos;ll pay on a secure Stripe page by card, Apple Pay or
                     Google Pay. We never see or store your card details.
                   </PaymentOption>
                 )}
@@ -415,8 +504,8 @@ function CheckoutPage() {
                   <strong>Disclaimer.</strong> We&apos;re a small handmade studio
                   based in Ukraine. {MOR_DISCLAIMER}
                 </p>
-                <p>On the payment page, please make sure USD ($) is selected.</p>
               </div>
+              {paymentMethod === "card" && <CardPaymentPreview total={totals.total} />}
             </fieldset>
 
             {submitError && (
@@ -435,8 +524,16 @@ function CheckoutPage() {
                   ? "Redirecting to payment…"
                   : paymentMethod === "paypal"
                     ? `Pay with PayPal · ${money(totals.total)}`
-                    : `Continue to payment · ${money(totals.total)}`}
+                    : `Continue to secure payment · ${money(totals.total)}`}
             </button>
+            {!isSoldOut && (
+              <p className="checkout-secure-note">
+                <span aria-hidden="true">🔒</span>{" "}
+                {paymentMethod === "paypal"
+                  ? "You'll finish your payment securely on PayPal."
+                  : "Secure payment powered by Stripe. We never see your card details."}
+              </p>
+            )}
           </form>
 
           <aside className="checkout-summary" aria-label="Order summary">
