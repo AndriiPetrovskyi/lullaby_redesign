@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen.jsx";
 import { CardBrandIcons, PayPalLogo } from "../components/PaymentMethods.jsx";
+import RedirectNotice from "../components/RedirectNotice.jsx";
 import Seo from "../components/Seo.jsx";
 import Select from "../components/ui/Select.jsx";
 import { useProduct } from "../hooks/useProducts.js";
@@ -10,15 +11,15 @@ import { CONTACT_EMAIL, DELIVERY_TIME, MOR_DISCLAIMER } from "../config/contact.
 import {
   createOrder,
   getCheckoutConfig,
+  orderTrackingFields,
   readCheckoutDraft,
   redirectToPayment,
   saveCheckoutDraft,
 } from "../services/orders.js";
 import { openCheckoutVisit, updateCheckoutVisit } from "../services/checkoutVisits.js";
-import { hasTrackingConsent } from "../utils/consent.js";
 import { getTrafficSource } from "../utils/trafficSource.js";
 import { trackEvent } from "../utils/metaPixel.js";
-import { gaItem, getGaIds, trackGaEvent } from "../utils/googleAnalytics.js";
+import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
 import { responsiveImage } from "../utils/images.js";
 import "./SimplePage.css";
 import "./CheckoutPage.css";
@@ -35,12 +36,6 @@ const EMPTY_FORM = {
   address2: "",
   zip: "",
 };
-
-const readCookie = (name) =>
-  document.cookie
-    .split("; ")
-    .find((row) => row.startsWith(`${name}=`))
-    ?.split("=")[1];
 
 const money = (value) => `$${value.toFixed(2)}`;
 
@@ -93,25 +88,6 @@ function CardPaymentPreview({ total }) {
           Pick <strong>USD ($)</strong> so you pay exactly {money(total)}.
         </li>
       </ul>
-    </div>
-  );
-}
-
-function RedirectNotice({ paymentMethod }) {
-  const isPayPal = paymentMethod === "paypal";
-  return (
-    <div className="checkout-redirect" role="status" aria-live="assertive">
-      <div className="checkout-redirect-box">
-        <span className="checkout-redirect-spinner" aria-hidden="true" />
-        <p className="checkout-redirect-title">
-          {isPayPal ? "Taking you to PayPal…" : "Taking you to secure payment…"}
-        </p>
-        <p className="checkout-redirect-text">
-          {isPayPal
-            ? "Our payment partner Western Bid will show as the payee."
-            : "Payment page by our partner Western Bid, powered by Stripe. Remember to pick USD ($)."}
-        </p>
-      </div>
     </div>
   );
 }
@@ -265,6 +241,14 @@ function CheckoutPage() {
       .catch(() => setConfigError(true));
   }, []);
 
+  // Back from the payment page via the browser's back button restores this
+  // page from the back-forward cache, still mid-redirect.
+  useEffect(() => {
+    const onPageShow = (event) => event.persisted && setIsSubmitting(false);
+    window.addEventListener("pageshow", onPageShow);
+    return () => window.removeEventListener("pageshow", onPageShow);
+  }, []);
+
   // A restored draft may ask for more than is left in stock now.
   useEffect(() => {
     if (product) setQuantity((q) => Math.max(1, Math.min(q, product.stock)));
@@ -353,10 +337,7 @@ function CheckoutPage() {
           quantity,
           paymentMethod,
           customer: form,
-          fbp: readCookie("_fbp"),
-          fbc: readCookie("_fbc"),
-          ...getGaIds(),
-          trackingConsent: hasTrackingConsent(),
+          ...orderTrackingFields(),
           checkoutVisitId: checkoutVisit.visitId.current ?? undefined,
         }),
         wait(MIN_REDIRECT_NOTICE_MS),
