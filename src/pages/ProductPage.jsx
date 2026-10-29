@@ -109,6 +109,10 @@ function ProductPage() {
   const [openInfoSections, setOpenInfoSections] = useState(() => new Set());
   const [isDirectOrderModalOpen, setIsDirectOrderModalOpen] = useState(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
+  // Card payments need the buyer's email before the payment page (Western
+  // Bid passes it on to Stripe); everything else is asked there.
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
+  const [email, setEmail] = useState("");
   // Going to the payment page: null, or { method, error } while the order is
   // created (error set if that failed).
   const [payment, setPayment] = useState(null);
@@ -211,7 +215,7 @@ function ProductPage() {
   // with the payment (the backend's "express" order).
   const canPayWithPayPal = CHECKOUT_ENABLED && canBuy;
 
-  const payDirect = async (method) => {
+  const payDirect = async (method, customerEmail) => {
     setPayment({ method, error: null });
     try {
       const order = await createOrder({
@@ -219,6 +223,7 @@ function ProductPage() {
         quantity: 1,
         paymentMethod: method,
         express: true,
+        ...(customerEmail ? { customer: { email: customerEmail } } : {}),
         ...orderTrackingFields(),
       });
       trackEvent("AddPaymentInfo", {
@@ -243,8 +248,10 @@ function ProductPage() {
       currency: "USD",
     });
     trackGaEvent("begin_checkout", gaItem(product));
-    if (CHECKOUT_ENABLED) {
-      payDirect(paymentMethod === "paypal" || !cardAvailable ? "paypal" : "card");
+    if (CHECKOUT_ENABLED && (paymentMethod === "paypal" || !cardAvailable)) {
+      payDirect("paypal");
+    } else if (CHECKOUT_ENABLED) {
+      setIsEmailModalOpen(true);
     } else {
       setIsCheckoutModalOpen(true);
     }
@@ -283,6 +290,48 @@ function ProductPage() {
         Continue to checkout →
       </a>
       <p className="modal-checkout-note">Free shipping · {DELIVERY_TIME}</p>
+    </Modal>
+  );
+
+  const handleEmailSubmit = (event) => {
+    event.preventDefault();
+    setIsEmailModalOpen(false);
+    payDirect("card", email.trim());
+  };
+
+  const emailModal = (
+    <Modal
+      isOpen={isEmailModalOpen}
+      onClose={() => setIsEmailModalOpen(false)}
+      labelledBy="email-modal-title">
+      <form onSubmit={handleEmailSubmit}>
+        <p id="email-modal-title" className="modal-title">
+          Your email
+        </p>
+        <p className="body-text modal-text">
+          For your order confirmation and delivery updates. Card details and
+          the shipping address go on the next page.
+        </p>
+        <input
+          type="email"
+          name="email"
+          autoComplete="email"
+          inputMode="email"
+          required
+          placeholder="you@example.com"
+          aria-labelledby="email-modal-title"
+          className="modal-email-input"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+        />
+        <button type="submit" className="modal-checkout-button modal-email-submit">
+          Continue to secure payment · ${product.price}
+        </button>
+        <p className="modal-checkout-note">
+          Payment page by our partner Western Bid, powered by Stripe. Pick USD ($)
+          to pay the exact price.
+        </p>
+      </form>
     </Modal>
   );
 
@@ -573,6 +622,7 @@ function ProductPage() {
         )}
 
         {checkoutModal}
+        {emailModal}
         {payment && (
           <RedirectNotice
             paymentMethod={payment.method}
@@ -945,6 +995,7 @@ function ProductPage() {
       )}
 
       {checkoutModal}
+      {emailModal}
       {payment && (
         <RedirectNotice
           paymentMethod={payment.method}

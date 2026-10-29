@@ -117,3 +117,29 @@
   line-height: 1.4;
   color: var(--m-product-text, var(--color-text-dark));
 }
+
+/* --- card payment: the email Western Bid needs before the payment page --- */
+
+.modal-email-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 0;
+  background: #fff;
+  font-family: var(--font-family-body);
+  font-size: 16px;
+  color: var(--color-text-dark);
+}
+
+.modal-email-input:focus-visible {
+  outline: 2px solid var(--color-accent-cobalt);
+  outline-offset: 1px;
+}
+
+.modal-email-submit {
+  width: 100%;
+  border: none;
+  cursor: pointer;
+}
