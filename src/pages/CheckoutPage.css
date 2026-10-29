@@ -352,9 +352,33 @@
   color: #fff;
 }
 
-/* On phones the order summary comes first, kept compact, so the buyer sees
-   what they're paying for; the email and pay button follow right after. */
+/* On phones: the email right under the steps, then the compact order
+   summary, then the pay button and the rest. The wrappers step aside
+   (display: contents) so all of these can be ordered in one column. */
 @media (max-width: 767px) {
+  .checkout-layout {
+    gap: var(--spacing-md);
+  }
+
+  .checkout-main,
+  .checkout-form {
+    display: contents;
+  }
+
+  .checkout-main > *,
+  .checkout-form > * {
+    order: 3;
+  }
+
+  .checkout-form > .checkout-field,
+  .checkout-main > .checkout-region-note {
+    order: 1;
+  }
+
+  .checkout-summary {
+    order: 2;
+  }
+
   .checkout-steps {
     font-size: 12px;
   }
@@ -365,10 +389,6 @@
 
   .checkout-steps-label {
     white-space: nowrap;
-  }
-
-  .checkout-summary {
-    order: -1;
   }
 
   .checkout-item-image {
