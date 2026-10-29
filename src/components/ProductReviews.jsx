@@ -28,7 +28,7 @@ function formatDate(isoDate) {
   });
 }
 
-export function ReviewsSummaryLink({ reviews }) {
+export function ReviewsSummaryLink({ reviews, className = "" }) {
   if (reviews.length === 0) return null;
 
   const scrollToReviews = (event) => {
@@ -41,7 +41,7 @@ export function ReviewsSummaryLink({ reviews }) {
   return (
     <a
       href={`#${REVIEWS_SECTION_ID}`}
-      className="reviews-summary-link"
+      className={`reviews-summary-link ${className}`.trim()}
       onClick={scrollToReviews}>
       <Stars rating={averageRating(reviews)} />
       <span>

@@ -48,3 +48,33 @@ export function PayPalLogo() {
     </svg>
   );
 }
+
+// Shown under the buy buttons on product pages, so buyers know before they
+// click that Western Bid runs the payment page and appears on statements.
+export function SecureCheckoutBox() {
+  return (
+    <div className="secure-checkout-box">
+      <p className="secure-checkout-box-title">
+        <svg className="secure-checkout-box-lock" viewBox="0 0 16 16" aria-hidden="true">
+          <path
+            fill="currentColor"
+            d="M8 1a3.5 3.5 0 0 0-3.5 3.5V6H4a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 15h8a1.5 1.5 0 0 0 1.5-1.5v-6A1.5 1.5 0 0 0 12 6h-.5V4.5A3.5 3.5 0 0 0 8 1zm2 5H6V4.5a2 2 0 1 1 4 0V6z"
+          />
+        </svg>
+        Secure checkout by Western Bid
+      </p>
+      <p className="secure-checkout-box-text">
+        Our payment partner. It&apos;s the name you&apos;ll see on your statement.
+      </p>
+      <span className="secure-checkout-box-icons">
+        <CardBrandIcons />
+        <svg className="secure-checkout-box-paypal" viewBox="0 0 38 24" role="img" aria-label="PayPal">
+          <rect x="0.5" y="0.5" width="37" height="23" rx="3" fill="#fff" stroke="#c9c9c9" />
+          <text x="19" y="15.5" textAnchor="middle" fontFamily="Verdana, Arial, sans-serif" fontWeight="700" fontStyle="italic" fontSize="8.5" fill="#003087">
+            Pay<tspan fill="#009cde">Pal</tspan>
+          </text>
+        </svg>
+      </span>
+    </div>
+  );
+}

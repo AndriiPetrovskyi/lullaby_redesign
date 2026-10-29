@@ -507,7 +507,7 @@
 }
 
 .d-product-page-price {
-  margin: 0 0 var(--spacing-md);
+  margin: 0 0 var(--spacing-sm);
   font-family: var(--font-family-body);
   font-size: 22px;
   font-weight: 800;
@@ -901,4 +901,9 @@
 .product-page-paypal .paypal-logo {
   width: 70px;
   height: 19px;
+}
+
+/* Rating sits above the product name as a small overline. */
+.reviews-summary-link.product-page-rating-top {
+  margin: 0 0 6px;
 }

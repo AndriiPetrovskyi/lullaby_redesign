@@ -20,7 +20,7 @@ import { DEFAULT_OG_IMAGE, absoluteUrl } from "../config/seo.js";
 import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
 import { trackCustomEvent, trackEvent } from "../utils/metaPixel.js";
 import { CHECKOUT_ENABLED, ORDERING_PAUSED } from "../config/ordering.js";
-import { PayPalLogo } from "../components/PaymentMethods.jsx";
+import { PayPalLogo, SecureCheckoutBox } from "../components/PaymentMethods.jsx";
 import RedirectNotice from "../components/RedirectNotice.jsx";
 import { createOrder, orderTrackingFields, redirectToPayment } from "../services/orders.js";
 import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
@@ -312,9 +312,9 @@ function ProductPage() {
           ))}
         />
         <div className="m-product-page-info">
+          <ReviewsSummaryLink reviews={reviews} className="product-page-rating-top" />
           <p className="m-product-page-name">{product.name}</p>
           <p className="m-product-page-price">${product.price}</p>
-          <ReviewsSummaryLink reviews={reviews} />
           <ul className="m-product-page-perks">
             <li>
               Message in a Vial — a handwritten note inside
@@ -341,6 +341,7 @@ function ProductPage() {
                 <span aria-hidden="true">Pay with</span> <PayPalLogo />
               </button>
             )}
+            {CHECKOUT_ENABLED && <SecureCheckoutBox />}
             {!ORDERING_PAUSED && (
               <p className="m-product-page-direct-line">
                 Prefer another way to pay?{" "}
@@ -527,6 +528,7 @@ function ProductPage() {
                   <span aria-hidden="true">Pay with</span> <PayPalLogo />
                 </button>
               )}
+              {CHECKOUT_ENABLED && <SecureCheckoutBox />}
             {!ORDERING_PAUSED && (
               <p className="m-product-page-direct-line">
                 Prefer another way to pay?{" "}
@@ -675,9 +677,9 @@ function ProductPage() {
         </div>
 
         <div className="d-product-page-info">
+          <ReviewsSummaryLink reviews={reviews} className="product-page-rating-top" />
           <h1 className="d-product-page-name">{product.name}</h1>
           <p className="d-product-page-price">${product.price}</p>
-          <ReviewsSummaryLink reviews={reviews} />
           <ul className="d-product-page-perks">
             <li>Message in a Vial — a handwritten note inside</li>
             <li>Free shipping to US, Canada &amp; Europe · {DELIVERY_TIME}</li>
@@ -701,6 +703,7 @@ function ProductPage() {
                 <span aria-hidden="true">Pay with</span> <PayPalLogo />
               </button>
             )}
+            {CHECKOUT_ENABLED && <SecureCheckoutBox />}
             {!ORDERING_PAUSED && (
               <p className="d-product-page-direct-line">
                 Prefer another way to pay?{" "}
@@ -897,6 +900,7 @@ function ProductPage() {
                 <span aria-hidden="true">Pay with</span> <PayPalLogo />
               </button>
             )}
+            {CHECKOUT_ENABLED && <SecureCheckoutBox />}
             {!ORDERING_PAUSED && (
               <p className="d-product-page-direct-line">
                 Prefer another way to pay?{" "}
