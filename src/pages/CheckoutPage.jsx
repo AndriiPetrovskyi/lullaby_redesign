@@ -31,16 +31,23 @@ const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 // Leaving our site for a page with another company's name on it is where
 // buyers hesitate, so the checkout says up front that it's coming.
 function CheckoutSteps() {
-  const steps = ["Email", "Shipping & payment", "Confirmation"];
+  // The middle step names the partner whose page it is, so the hand-off to
+  // Western Bid is expected.
+  const steps = [
+    { label: "Email" },
+    { label: "Shipping & payment", note: "on Western Bid" },
+    { label: "Confirmation" },
+  ];
   return (
     <ol className="checkout-steps" aria-label="Checkout steps">
-      {steps.map((label, i) => (
+      {steps.map(({ label, note }, i) => (
         <li
           key={label}
           className={`checkout-steps-item${i === 0 ? " checkout-steps-item--current" : ""}`}
           aria-current={i === 0 ? "step" : undefined}>
           <span className="checkout-steps-dot" aria-hidden="true" />
           <span className="checkout-steps-label">{label}</span>
+          {note && <span className="checkout-steps-note">{note}</span>}
         </li>
       ))}
     </ol>
