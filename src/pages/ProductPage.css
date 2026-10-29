@@ -30,7 +30,7 @@
 }
 
 .m-product-page-price {
-  margin: 0 0 var(--spacing-sm);
+  margin: 0 0 var(--spacing-md);
   font-family: var(--font-family-body);
   font-size: 22px;
   font-weight: 800;
@@ -507,7 +507,7 @@
 }
 
 .d-product-page-price {
-  margin: 0 0 var(--spacing-sm);
+  margin: 0 0 var(--spacing-md);
   font-family: var(--font-family-body);
   font-size: 22px;
   font-weight: 800;
@@ -906,4 +906,20 @@
 /* Rating sits above the product name as a small overline. */
 .reviews-summary-link.product-page-rating-top {
   margin: 0 0 6px;
+}
+
+/* The buttons around it are centred on mobile and in the closing block, so
+   the box follows; next to the left-aligned perks it stays left-aligned. */
+.m-product-page-cta-row .secure-checkout-box,
+.d-product-page-cta-row--closing .secure-checkout-box {
+  text-align: center;
+}
+
+.m-product-page-cta-row .secure-checkout-box-title,
+.m-product-page-cta-row .secure-checkout-box-icons,
+.d-product-page-cta-row--closing .secure-checkout-box-title,
+.d-product-page-cta-row--closing .secure-checkout-box-icons,
+.m-product-page-cta-row .secure-checkout-box-icons .payment-icons,
+.d-product-page-cta-row--closing .secure-checkout-box-icons .payment-icons {
+  justify-content: center;
 }

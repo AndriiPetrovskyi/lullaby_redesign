@@ -42,7 +42,6 @@
   flex: none;
   width: 14px;
   height: 14px;
-  color: #c0451b;
 }
 
 .secure-checkout-box-text {
@@ -51,6 +50,7 @@
   line-height: 1.4;
   color: var(--color-text-dark);
   opacity: 0.85;
+  text-wrap: pretty;
 }
 
 .secure-checkout-box-icons {
