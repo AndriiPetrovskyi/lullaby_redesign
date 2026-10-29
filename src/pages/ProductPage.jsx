@@ -21,6 +21,7 @@ import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
 import { trackCustomEvent, trackEvent } from "../utils/metaPixel.js";
 import { CHECKOUT_ENABLED, ORDERING_PAUSED } from "../config/ordering.js";
 import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
+import { PayPalLogo } from "../components/PaymentMethods.jsx";
 import { responsiveImage, uniquePhotos, withPhotoFirst } from "../utils/images.js";
 import {
   CONTACT_EMAIL,
@@ -179,7 +180,9 @@ function ProductPage() {
       ? "Sold out"
       : "Buy now";
 
-  const handleBuyClick = () => {
+  // `method` preselects the checkout's payment option ("paypal" from the
+  // PayPal button); the shipping form still comes first either way.
+  const handleBuyClick = (method) => {
     if (!canBuy) return;
     trackEvent("InitiateCheckout", {
       content_ids: [product.id],
@@ -189,7 +192,11 @@ function ProductPage() {
     });
     trackGaEvent("begin_checkout", gaItem(product));
     if (CHECKOUT_ENABLED) {
-      navigate(`/checkout/${product.slug}`);
+      navigate(
+        method === "paypal"
+          ? `/checkout/${product.slug}?method=paypal`
+          : `/checkout/${product.slug}`,
+      );
     } else {
       setIsCheckoutModalOpen(true);
     }
@@ -206,6 +213,19 @@ function ProductPage() {
     });
     trackGaEvent("continue_to_etsy", gaItem(product));
   };
+
+  // Only the site's own checkout takes PayPal; the Etsy step has its own.
+  const showPayPalButton = CHECKOUT_ENABLED && canBuy;
+  const paypalButton = (prefix) =>
+    showPayPalButton && (
+      <button
+        type="button"
+        onClick={() => handleBuyClick("paypal")}
+        aria-label="Pay with PayPal"
+        className={`${prefix}-product-page-buy-paypal`}>
+        <PayPalLogo />
+      </button>
+    );
 
   const checkoutModal = (
     <Modal
@@ -288,6 +308,7 @@ function ProductPage() {
               className="m-product-page-buy-etsy">
               {buyLabel}
             </button>
+            {paypalButton("m")}
             {!ORDERING_PAUSED && (
               <p className="m-product-page-direct-line">
                 Prefer another way to pay?{" "}
@@ -464,6 +485,7 @@ function ProductPage() {
               className="m-product-page-buy-etsy">
               {buyLabel}
             </button>
+            {paypalButton("m")}
             {!ORDERING_PAUSED && (
               <p className="m-product-page-direct-line">
                 Prefer another way to pay?{" "}
@@ -621,6 +643,7 @@ function ProductPage() {
               className="d-product-page-buy-etsy">
               {buyLabel}
             </button>
+            {paypalButton("d")}
             {!ORDERING_PAUSED && (
               <p className="d-product-page-direct-line">
                 Prefer another way to pay?{" "}
@@ -807,6 +830,7 @@ function ProductPage() {
               className="d-product-page-buy-etsy">
               {buyLabel}
             </button>
+            {paypalButton("d")}
             {!ORDERING_PAUSED && (
               <p className="d-product-page-direct-line">
                 Prefer another way to pay?{" "}

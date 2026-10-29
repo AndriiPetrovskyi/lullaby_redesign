@@ -81,6 +81,29 @@
   cursor: not-allowed;
 }
 
+/* PayPal's own gold button — goes to checkout with PayPal preselected. */
+.m-product-page-buy-paypal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 15px var(--spacing-md);
+  border: none;
+  background: #ffc439;
+  cursor: pointer;
+}
+
+.m-product-page-buy-paypal:hover {
+  background: #f2ba36;
+}
+
+.m-product-page-buy-paypal .paypal-logo {
+  width: 84px;
+  height: 23px;
+}
+
 .m-product-page-checkout-note {
   margin: 8px 0 0;
   font-family: var(--font-family-body);
@@ -562,6 +585,29 @@
   background: #b0a9a0;
   cursor: not-allowed;
   opacity: 1;
+}
+
+/* PayPal's own gold button — goes to checkout with PayPal preselected. */
+.d-product-page-buy-paypal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 15px var(--spacing-md);
+  border: none;
+  background: #ffc439;
+  cursor: pointer;
+}
+
+.d-product-page-buy-paypal:hover {
+  background: #f2ba36;
+}
+
+.d-product-page-buy-paypal .paypal-logo {
+  width: 84px;
+  height: 23px;
 }
 
 .d-product-page-direct-line {
