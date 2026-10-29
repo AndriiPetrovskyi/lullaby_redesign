@@ -4,6 +4,7 @@ import LoadingScreen from "../components/LoadingScreen.jsx";
 import { PayPalLogo, SecureCheckoutBox } from "../components/PaymentMethods.jsx";
 import RedirectNotice from "../components/RedirectNotice.jsx";
 import Seo from "../components/Seo.jsx";
+import Select from "../components/ui/Select.jsx";
 import { useProduct } from "../hooks/useProducts.js";
 import { CHECKOUT_ENABLED, ORDERING_PAUSED } from "../config/ordering.js";
 import { CONTACT_EMAIL, DELIVERY_TIME } from "../config/contact.js";
@@ -70,6 +71,9 @@ function CheckoutPage() {
   const [draft] = useState(() => readCheckoutDraft(slug));
   const [email, setEmail] = useState(draft?.email ?? "");
   const [quantity, setQuantity] = useState(draft?.quantity ?? 1);
+  // Where it ships, which sets the shipping price; null means the country
+  // the backend guessed from the visitor's IP.
+  const [country, setCountry] = useState(draft?.country ?? null);
   // Going to the payment page: null, or { method, error }.
   const [payment, setPayment] = useState(null);
 
@@ -92,7 +96,8 @@ function CheckoutPage() {
     if (product) setQuantity((q) => Math.max(1, Math.min(q, product.stock)));
   }, [product]);
 
-  const shipTo = config?.countries.find((c) => c.code === config.shipToCountry);
+  const shipCountry = country ?? config?.shipToCountry;
+  const shipTo = config?.countries.find((c) => c.code === shipCountry);
   const shippingCents = shipTo?.shippingCents ?? 0;
 
   // Mirrors the backend's math, which is what actually gets charged.
@@ -156,12 +161,15 @@ function CheckoutPage() {
           quantity,
           paymentMethod: method,
           express: true,
-          ...(method === "card" ? { customer: { email: email.trim() } } : {}),
+          customer: {
+            ...(method === "card" ? { email: email.trim() } : {}),
+            country: shipCountry,
+          },
           ...orderTrackingFields(),
         }),
         wait(MIN_REDIRECT_NOTICE_MS),
       ]);
-      saveCheckoutDraft(product.slug, { email, quantity });
+      saveCheckoutDraft(product.slug, { email, quantity, country: shipCountry });
       trackEvent("AddPaymentInfo", {
         content_ids: [product.id],
         content_name: product.name,
@@ -225,6 +233,19 @@ function CheckoutPage() {
                   </p>
                 </div>
 
+                <div className="checkout-field">
+                  <label htmlFor="checkout-country">Ship to</label>
+                  <Select
+                    id="checkout-country"
+                    name="country"
+                    value={shipCountry}
+                    onChange={(event) => setCountry(event.target.value)}
+                    autoComplete="country"
+                    required
+                    options={config.countries.map((c) => ({ value: c.code, label: c.name }))}
+                  />
+                </div>
+
                 <button
                   type="submit"
                   className="checkout-submit"
@@ -248,8 +269,9 @@ function CheckoutPage() {
               </h2>
               <ol className="checkout-next-list">
                 <li>
-                  On the secure payment page, enter your shipping address and pay
-                  by card, Apple Pay or Google Pay. We never see your card details.
+                  On the secure payment page, enter your shipping address (in the
+                  country you picked) and pay by card, Apple Pay or Google Pay. We
+                  never see your card details.
                 </li>
                 <li>
                   The payment page is run by our partner <strong>Western Bid</strong>{" "}
