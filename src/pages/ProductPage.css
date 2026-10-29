@@ -870,3 +870,35 @@
 .product-page-marquee {
   margin-block: clamp(32px, 5vw, 64px);
 }
+
+/* --- "Pay with PayPal" under "Buy now": PayPal's own yellow, so it reads
+   as PayPal at a glance --- */
+
+.product-page-paypal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 14px var(--spacing-md);
+  border: none;
+  border-radius: 0;
+  background: #ffc439;
+  font-family: var(--font-family-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: #111;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.product-page-paypal:hover {
+  filter: brightness(0.96);
+}
+
+.product-page-paypal .paypal-logo {
+  width: 70px;
+  height: 19px;
+}
