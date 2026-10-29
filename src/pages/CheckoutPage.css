@@ -44,7 +44,7 @@
   font-weight: 600;
 }
 
-.checkout-field input {
+.checkout-input {
   width: 100%;
   min-height: 48px;
   box-sizing: border-box;
@@ -57,15 +57,15 @@
   color: var(--color-text-dark);
 }
 
-.checkout-field input:-webkit-autofill,
-.checkout-field input:-webkit-autofill:hover,
-.checkout-field input:-webkit-autofill:focus {
+.checkout-input:-webkit-autofill,
+.checkout-input:-webkit-autofill:hover,
+.checkout-input:-webkit-autofill:focus {
   -webkit-text-fill-color: var(--color-text-dark);
   box-shadow: 0 0 0 100px #fff8f0 inset;
   caret-color: var(--color-text-dark);
 }
 
-.checkout-field input:focus-visible {
+.checkout-input:focus-visible {
   outline: 2px solid var(--color-accent-cobalt);
   outline-offset: 1px;
   border-color: var(--color-accent-cobalt);

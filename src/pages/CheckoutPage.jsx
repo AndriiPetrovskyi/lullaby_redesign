@@ -218,6 +218,7 @@ function CheckoutPage() {
                   <label htmlFor="checkout-email">Email</label>
                   <input
                     id="checkout-email"
+                    className="checkout-input"
                     type="email"
                     name="email"
                     autoComplete="email"
