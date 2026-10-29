@@ -20,6 +20,7 @@ import { DEFAULT_OG_IMAGE, absoluteUrl } from "../config/seo.js";
 import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
 import { trackCustomEvent, trackEvent } from "../utils/metaPixel.js";
 import { CHECKOUT_ENABLED, ORDERING_PAUSED } from "../config/ordering.js";
+import { PayPalLogo } from "../components/PaymentMethods.jsx";
 import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
 import { responsiveImage, uniquePhotos, withPhotoFirst } from "../utils/images.js";
 import {
@@ -179,7 +180,12 @@ function ProductPage() {
       ? "Sold out"
       : "Buy now";
 
-  const handleBuyClick = () => {
+  // PayPal buyers get their own button, so they know from the first click
+  // that it's an option; it opens the same checkout with PayPal picked
+  // (the address still comes from our form).
+  const canPayWithPayPal = CHECKOUT_ENABLED && canBuy;
+
+  const handleBuyClick = (paymentMethod) => {
     if (!canBuy) return;
     trackEvent("InitiateCheckout", {
       content_ids: [product.id],
@@ -189,7 +195,11 @@ function ProductPage() {
     });
     trackGaEvent("begin_checkout", gaItem(product));
     if (CHECKOUT_ENABLED) {
-      navigate(`/checkout/${product.slug}`);
+      navigate(
+        paymentMethod === "paypal"
+          ? `/checkout/${product.slug}?method=paypal`
+          : `/checkout/${product.slug}`,
+      );
     } else {
       setIsCheckoutModalOpen(true);
     }
@@ -283,11 +293,20 @@ function ProductPage() {
           <div className="m-product-page-cta-row m-product-page-cta-row--top">
             <button
               type="button"
-              onClick={handleBuyClick}
+              onClick={() => handleBuyClick()}
               disabled={!canBuy}
               className="m-product-page-buy-etsy">
               {buyLabel}
             </button>
+            {canPayWithPayPal && (
+              <button
+                type="button"
+                onClick={() => handleBuyClick("paypal")}
+                className="product-page-paypal m-product-page-paypal"
+                aria-label="Pay with PayPal">
+                <span aria-hidden="true">Pay with</span> <PayPalLogo />
+              </button>
+            )}
             {!ORDERING_PAUSED && (
               <p className="m-product-page-direct-line">
                 Prefer another way to pay?{" "}
@@ -459,11 +478,20 @@ function ProductPage() {
             <div className="m-product-page-cta-row m-product-page-cta-row--closing">
               <button
               type="button"
-              onClick={handleBuyClick}
+              onClick={() => handleBuyClick()}
               disabled={!canBuy}
               className="m-product-page-buy-etsy">
               {buyLabel}
             </button>
+              {canPayWithPayPal && (
+                <button
+                  type="button"
+                  onClick={() => handleBuyClick("paypal")}
+                  className="product-page-paypal m-product-page-paypal"
+                  aria-label="Pay with PayPal">
+                  <span aria-hidden="true">Pay with</span> <PayPalLogo />
+                </button>
+              )}
             {!ORDERING_PAUSED && (
               <p className="m-product-page-direct-line">
                 Prefer another way to pay?{" "}
@@ -489,7 +517,7 @@ function ProductPage() {
           <BuyBar
             name={product.name}
             price={product.price}
-            onBuy={handleBuyClick}
+            onBuy={() => handleBuyClick()}
             firstCtaSelector=".m-product-page-cta-row--top"
             lastCtaSelector=".m-product-page-cta-row--closing"
           />
@@ -616,11 +644,20 @@ function ProductPage() {
           <div className="d-product-page-cta-row d-product-page-cta-row--top">
             <button
               type="button"
-              onClick={handleBuyClick}
+              onClick={() => handleBuyClick()}
               disabled={!canBuy}
               className="d-product-page-buy-etsy">
               {buyLabel}
             </button>
+            {canPayWithPayPal && (
+              <button
+                type="button"
+                onClick={() => handleBuyClick("paypal")}
+                className="product-page-paypal d-product-page-paypal"
+                aria-label="Pay with PayPal">
+                <span aria-hidden="true">Pay with</span> <PayPalLogo />
+              </button>
+            )}
             {!ORDERING_PAUSED && (
               <p className="d-product-page-direct-line">
                 Prefer another way to pay?{" "}
@@ -802,11 +839,20 @@ function ProductPage() {
         <div className="d-product-page-cta-row d-product-page-cta-row--closing">
             <button
               type="button"
-              onClick={handleBuyClick}
+              onClick={() => handleBuyClick()}
               disabled={!canBuy}
               className="d-product-page-buy-etsy">
               {buyLabel}
             </button>
+            {canPayWithPayPal && (
+              <button
+                type="button"
+                onClick={() => handleBuyClick("paypal")}
+                className="product-page-paypal d-product-page-paypal"
+                aria-label="Pay with PayPal">
+                <span aria-hidden="true">Pay with</span> <PayPalLogo />
+              </button>
+            )}
             {!ORDERING_PAUSED && (
               <p className="d-product-page-direct-line">
                 Prefer another way to pay?{" "}
@@ -832,7 +878,7 @@ function ProductPage() {
         <BuyBar
           name={product.name}
           price={product.price}
-          onBuy={handleBuyClick}
+          onBuy={() => handleBuyClick()}
           firstCtaSelector=".d-product-page-cta-row--top"
           lastCtaSelector=".d-product-page-cta-row--closing"
         />
