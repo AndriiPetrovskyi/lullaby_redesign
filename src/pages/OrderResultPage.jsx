@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Seo from "../components/Seo.jsx";
 import { CONTACT_EMAIL, DISPATCH_TIME, DELIVERY_TIME } from "../config/contact.js";
-import { getOrderStatus } from "../services/orders.js";
+import { clearCheckoutDraft, getOrderStatus } from "../services/orders.js";
 import { trackEvent } from "../utils/metaPixel.js";
 import "./SimplePage.css";
 import "./CheckoutPage.css";
@@ -86,7 +86,10 @@ export function OrderSuccessPage() {
   const { order, state } = useOrder(searchParams.get("order"), { poll: true });
 
   useEffect(() => {
-    if (state === "paid" && order) trackPurchaseOnce(order);
+    if (state === "paid" && order) {
+      trackPurchaseOnce(order);
+      clearCheckoutDraft();
+    }
   }, [state, order]);
 
   return (
@@ -170,15 +173,34 @@ export function OrderCancelledPage() {
       <main className="simple-page">
         <h1 className="h1-heading">Payment cancelled</h1>
         <div className="simple-page-content">
-          <p>No payment was taken. Your candle is still waiting for you.</p>
+          <p>
+            No payment was taken. Your candle is still waiting for you, and your
+            details are saved, so finishing takes a moment.
+          </p>
+          <p>
+            Unsure about the payment page? It&apos;s run by our payment partner
+            Western Bid through Stripe, which is why you see their name there and
+            on your statement. Pick USD ($) to pay the exact price. Prefer PayPal?
+            You can switch below.
+          </p>
           <div className="order-result-actions">
             {order && (
-              <Link to={`/checkout/${order.productSlug}`}>
-                Try again — {order.productName}
-              </Link>
+              <>
+                <Link to={`/checkout/${order.productSlug}`}>
+                  Back to checkout — {order.productName}
+                </Link>
+                <Link to={`/checkout/${order.productSlug}?method=paypal`}>
+                  Pay with PayPal instead
+                </Link>
+              </>
             )}
             <Link to="/products">Browse all scents</Link>
           </div>
+          <p>
+            Something not working? Write to{" "}
+            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> and we&apos;ll
+            help.
+          </p>
         </div>
       </main>
     </>
