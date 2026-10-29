@@ -295,18 +295,18 @@
   height: 19px;
 }
 
-/* ---- steps: numbered circles joined by a line, labels underneath ---- */
+/* ---- steps: small dots joined by a line, labels underneath ---- */
 
 .checkout-steps {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  max-width: 560px;
+  max-width: 480px;
   margin: calc(-1 * var(--spacing-md)) 0 var(--spacing-lg);
   padding: 0;
   list-style: none;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.3;
-  color: rgba(74, 42, 18, 0.55);
+  color: var(--color-accent-coral);
   text-align: center;
 }
 
@@ -315,41 +315,35 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   padding: 0 4px;
 }
 
-/* The line from the previous step's circle to this one's. */
+/* The line from the previous step's dot to this one's. */
 .checkout-steps-item + .checkout-steps-item::before {
   content: "";
   position: absolute;
-  top: 15px;
-  right: calc(50% + 22px);
-  left: calc(-50% + 22px);
+  top: 4px;
+  right: calc(50% + 11px);
+  left: calc(-50% + 11px);
   height: 2px;
-  background: rgba(74, 42, 18, 0.2);
+  background: rgba(235, 124, 70, 0.3);
 }
 
 .checkout-steps-item--current {
   font-weight: 700;
-  color: var(--color-text-dark);
+  color: var(--color-accent-cobalt);
 }
 
-.checkout-steps-number {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
+.checkout-steps-dot {
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: rgba(74, 42, 18, 0.15);
-  font-size: 14px;
-  font-weight: 700;
-  color: rgba(74, 42, 18, 0.65);
+  background: rgba(235, 124, 70, 0.35);
 }
 
-.checkout-steps-item--current .checkout-steps-number {
+.checkout-steps-item--current .checkout-steps-dot {
   background: var(--color-accent-cobalt);
-  color: #fff;
 }
 
 /* On phones: the email right under the steps, then the compact order

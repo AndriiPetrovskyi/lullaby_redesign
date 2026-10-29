@@ -38,7 +38,7 @@ function CheckoutSteps() {
           key={label}
           className={`checkout-steps-item${i === 0 ? " checkout-steps-item--current" : ""}`}
           aria-current={i === 0 ? "step" : undefined}>
-          <span className="checkout-steps-number">{i + 1}</span>
+          <span className="checkout-steps-dot" aria-hidden="true" />
           <span className="checkout-steps-label">{label}</span>
         </li>
       ))}
