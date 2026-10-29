@@ -1,0 +1,12 @@
+/* Order result pages (thank you / cancelled). */
+
+.order-result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.order-result-number {
+  font-variant-numeric: tabular-nums;
+}

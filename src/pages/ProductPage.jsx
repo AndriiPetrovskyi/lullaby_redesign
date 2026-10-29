@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import { useProduct } from "../hooks/useProducts.js";
 import LoadingScreen from "../components/LoadingScreen.jsx";
@@ -22,7 +22,12 @@ import { trackCustomEvent, trackEvent } from "../utils/metaPixel.js";
 import { CHECKOUT_ENABLED, ORDERING_PAUSED } from "../config/ordering.js";
 import { PayPalLogo, SecureCheckoutBox } from "../components/PaymentMethods.jsx";
 import RedirectNotice from "../components/RedirectNotice.jsx";
-import { createOrder, orderTrackingFields, redirectToPayment } from "../services/orders.js";
+import {
+  createOrder,
+  getCheckoutConfig,
+  orderTrackingFields,
+  redirectToPayment,
+} from "../services/orders.js";
 import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
 import { responsiveImage, uniquePhotos, withPhotoFirst } from "../utils/images.js";
 import {
@@ -99,19 +104,28 @@ function ProductPage() {
   const [searchParams] = useSearchParams();
   const adPhoto = searchParams.get("photo");
   const isMobile = useIsMobile();
-  const navigate = useNavigate();
   const { product, isLoading, error } = useProduct(slug);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const [openInfoSections, setOpenInfoSections] = useState(() => new Set());
   const [isDirectOrderModalOpen, setIsDirectOrderModalOpen] = useState(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
-  // Express PayPal: null, "redirecting", or an error message to show.
-  const [payPalState, setPayPalState] = useState(null);
+  // Going to the payment page: null, or { method, error } while the order is
+  // created (error set if that failed).
+  const [payment, setPayment] = useState(null);
+  // Visitors where card payments aren't allowed (Ukraine) pay with PayPal.
+  const [cardAvailable, setCardAvailable] = useState(true);
 
-  // Back from PayPal via the browser's back button restores this page from
-  // the back-forward cache, still showing "Taking you to PayPal…".
   useEffect(() => {
-    const onPageShow = (event) => event.persisted && setPayPalState(null);
+    if (!CHECKOUT_ENABLED) return;
+    getCheckoutConfig()
+      .then((config) => setCardAvailable(!config.cardUnavailableInRegion))
+      .catch(() => {});
+  }, []);
+
+  // Back from the payment page via the browser's back button restores this
+  // page from the back-forward cache, still showing "Taking you to…".
+  useEffect(() => {
+    const onPageShow = (event) => event.persisted && setPayment(null);
     window.addEventListener("pageshow", onPageShow);
     return () => window.removeEventListener("pageshow", onPageShow);
   }, []);
@@ -181,9 +195,9 @@ function ProductPage() {
   );
 
   // "Buy now" records purchase intent (InitiateCheckout — the ad campaign
-  // optimizes for it, so its payload is unchanged), then goes to the site's
-  // own checkout, or — until that is switched on — to the Etsy step.
-  // Stock only gates the site's own checkout; Etsy keeps its own count.
+  // optimizes for it, so its payload is unchanged), then goes straight to
+  // the card payment page, or — until checkout is switched on — to the Etsy
+  // step. Stock only gates the site's own checkout; Etsy keeps its own count.
   const isSoldOut = CHECKOUT_ENABLED && product.stock < 1;
   const canBuy = !ORDERING_PAUSED && !isSoldOut;
   const buyLabel = ORDERING_PAUSED
@@ -192,18 +206,18 @@ function ProductPage() {
       ? "Sold out"
       : "Buy now";
 
-  // PayPal buyers get their own button that goes straight to PayPal: no
-  // form here, PayPal asks for the shipping address and sends it back with
-  // the payment (the backend's "express" order).
+  // Both buttons go straight to the payment page, with no form here: it
+  // asks for the buyer's details and shipping address and sends them back
+  // with the payment (the backend's "express" order).
   const canPayWithPayPal = CHECKOUT_ENABLED && canBuy;
 
-  const payWithPayPal = async () => {
-    setPayPalState("redirecting");
+  const payDirect = async (method) => {
+    setPayment({ method, error: null });
     try {
       const order = await createOrder({
         productSlug: product.slug,
         quantity: 1,
-        paymentMethod: "paypal",
+        paymentMethod: method,
         express: true,
         ...orderTrackingFields(),
       });
@@ -213,10 +227,10 @@ function ProductPage() {
         value: product.price,
         currency: "USD",
       });
-      trackGaEvent("add_payment_info", { ...gaItem(product), payment_type: "paypal" });
+      trackGaEvent("add_payment_info", { ...gaItem(product), payment_type: method });
       redirectToPayment(order);
     } catch (err) {
-      setPayPalState(err.message);
+      setPayment({ method, error: err.message });
     }
   };
 
@@ -229,10 +243,8 @@ function ProductPage() {
       currency: "USD",
     });
     trackGaEvent("begin_checkout", gaItem(product));
-    if (CHECKOUT_ENABLED && paymentMethod === "paypal") {
-      payWithPayPal();
-    } else if (CHECKOUT_ENABLED) {
-      navigate(`/checkout/${product.slug}`);
+    if (CHECKOUT_ENABLED) {
+      payDirect(paymentMethod === "paypal" || !cardAvailable ? "paypal" : "card");
     } else {
       setIsCheckoutModalOpen(true);
     }
@@ -327,7 +339,7 @@ function ProductPage() {
             <button
               type="button"
               onClick={() => handleBuyClick()}
-              disabled={!canBuy || Boolean(payPalState)}
+              disabled={!canBuy || Boolean(payment)}
               className="m-product-page-buy-etsy">
               {buyLabel}
             </button>
@@ -335,7 +347,7 @@ function ProductPage() {
               <button
                 type="button"
                 onClick={() => handleBuyClick("paypal")}
-                disabled={Boolean(payPalState)}
+                disabled={Boolean(payment)}
                 className="product-page-paypal m-product-page-paypal"
                 aria-label="Pay with PayPal">
                 <span aria-hidden="true">Pay with</span> <PayPalLogo />
@@ -514,7 +526,7 @@ function ProductPage() {
               <button
               type="button"
               onClick={() => handleBuyClick()}
-              disabled={!canBuy || Boolean(payPalState)}
+              disabled={!canBuy || Boolean(payment)}
               className="m-product-page-buy-etsy">
               {buyLabel}
             </button>
@@ -522,7 +534,7 @@ function ProductPage() {
                 <button
                   type="button"
                   onClick={() => handleBuyClick("paypal")}
-                  disabled={Boolean(payPalState)}
+                  disabled={Boolean(payment)}
                   className="product-page-paypal m-product-page-paypal"
                   aria-label="Pay with PayPal">
                   <span aria-hidden="true">Pay with</span> <PayPalLogo />
@@ -561,11 +573,11 @@ function ProductPage() {
         )}
 
         {checkoutModal}
-        {payPalState && (
+        {payment && (
           <RedirectNotice
-            paymentMethod="paypal"
-            error={payPalState === "redirecting" ? null : payPalState}
-            onClose={() => setPayPalState(null)}
+            paymentMethod={payment.method}
+            error={payment.error}
+            onClose={() => setPayment(null)}
           />
         )}
 
@@ -689,7 +701,7 @@ function ProductPage() {
             <button
               type="button"
               onClick={() => handleBuyClick()}
-              disabled={!canBuy || Boolean(payPalState)}
+              disabled={!canBuy || Boolean(payment)}
               className="d-product-page-buy-etsy">
               {buyLabel}
             </button>
@@ -697,7 +709,7 @@ function ProductPage() {
               <button
                 type="button"
                 onClick={() => handleBuyClick("paypal")}
-                disabled={Boolean(payPalState)}
+                disabled={Boolean(payment)}
                 className="product-page-paypal d-product-page-paypal"
                 aria-label="Pay with PayPal">
                 <span aria-hidden="true">Pay with</span> <PayPalLogo />
@@ -886,7 +898,7 @@ function ProductPage() {
             <button
               type="button"
               onClick={() => handleBuyClick()}
-              disabled={!canBuy || Boolean(payPalState)}
+              disabled={!canBuy || Boolean(payment)}
               className="d-product-page-buy-etsy">
               {buyLabel}
             </button>
@@ -894,7 +906,7 @@ function ProductPage() {
               <button
                 type="button"
                 onClick={() => handleBuyClick("paypal")}
-                disabled={Boolean(payPalState)}
+                disabled={Boolean(payment)}
                 className="product-page-paypal d-product-page-paypal"
                 aria-label="Pay with PayPal">
                 <span aria-hidden="true">Pay with</span> <PayPalLogo />
@@ -933,11 +945,11 @@ function ProductPage() {
       )}
 
       {checkoutModal}
-      {payPalState && (
+      {payment && (
         <RedirectNotice
-          paymentMethod="paypal"
-          error={payPalState === "redirecting" ? null : payPalState}
-          onClose={() => setPayPalState(null)}
+          paymentMethod={payment.method}
+          error={payment.error}
+          onClose={() => setPayment(null)}
         />
       )}
 
