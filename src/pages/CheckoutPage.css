@@ -194,19 +194,6 @@
   font-size: 13px;
 }
 
-/* On phones the email and the pay button come first (the button already
-   shows the total); the summary follows below. */
-@media (max-width: 767px) {
-  .checkout-steps {
-    gap: 6px 12px;
-    font-size: 13px;
-  }
-
-  .checkout-steps-item {
-    gap: 6px;
-  }
-}
-
 @media (min-width: 768px) {
   .checkout {
     padding-inline: 40px;
@@ -262,7 +249,6 @@
   background: var(--color-accent-cobalt);
   color: #fff;
 }
-
 
 /* ---- email-only checkout: the rest is asked on the payment page ---- */
 
@@ -347,4 +333,17 @@
 .checkout-paypal-button .paypal-logo {
   width: 70px;
   height: 19px;
+}
+
+/* On phones the email and the pay button come first (the button already
+   shows the total); the summary follows below. */
+@media (max-width: 767px) {
+  .checkout-steps {
+    gap: 6px 12px;
+    font-size: 13px;
+  }
+
+  .checkout-steps-item {
+    gap: 6px;
+  }
 }
