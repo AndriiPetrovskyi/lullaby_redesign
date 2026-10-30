@@ -9,6 +9,13 @@
   padding: var(--spacing-md);
   display: flex;
   justify-content: flex-end;
+  /* The bar spans the full width but only its contents are clickable, so
+     links under it (e.g. the checkout's "Back to …") still work. */
+  pointer-events: none;
+}
+
+.m-navbar > * {
+  pointer-events: auto;
 }
 
 .m-navbar-toggle {
