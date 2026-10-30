@@ -3,7 +3,7 @@
 // script so the two can never disagree.
 import { loadEnv } from "vite";
 
-const FALLBACK_SITE_URL = "https://andriipetrovskyi.github.io/lullaby_redesign";
+const FALLBACK_SITE_URL = "https://lullaby-rituals.com";
 
 export function resolveSiteUrl(mode = "production") {
   const { VITE_SITE_URL } = loadEnv(mode, process.cwd(), "VITE_");

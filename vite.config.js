@@ -14,7 +14,6 @@ export default defineConfig(({ mode }) => {
         transformIndexHtml: (html) => html.replaceAll('__SITE_URL__', siteUrl),
       },
     ],
-    base: process.env.GITHUB_PAGES ? '/lullaby_redesign/' : '/',
     define: {
       'import.meta.env.VITE_SITE_URL': JSON.stringify(siteUrl),
     },
