@@ -85,22 +85,9 @@
   transition: opacity 0.2s ease;
 }
 
-.checkout-submit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  padding: 10px 16px;
-}
-
-.checkout-submit-secure {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 13px;
-  font-weight: 500;
-  opacity: 0.9;
+/* Sits right above the button; the form's gap would push it too far. */
+.checkout-secure {
+  margin-bottom: calc(8px - var(--spacing-md));
 }
 
 .checkout-submit:hover:not(:disabled) {

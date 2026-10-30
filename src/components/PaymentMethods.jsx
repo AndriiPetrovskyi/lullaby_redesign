@@ -62,7 +62,8 @@ export function LockIcon() {
   );
 }
 
-// One line in the footer of every page, where the full box is too much.
+// One line, where the full box is too much: in the footer of every page and
+// above the card checkout's button.
 export function SecureCheckoutLine({ className = "" }) {
   return (
     <p className={`secure-checkout-line ${className}`.trim()}>
