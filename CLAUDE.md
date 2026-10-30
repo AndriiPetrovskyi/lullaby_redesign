@@ -53,10 +53,11 @@ update it in the same change whenever something below stops being true.
     apartment, city, ZIP, state for US/CA; sent as a regular non-express
     order).
 - Checkout page (`src/pages/CheckoutPage.jsx`), card: deliberately minimal
-  (Andrii's ask): the email field (required), a "🔒 Secure payment by
-  Western Bid" line right above the button "Continue to payment · $X", and a
-  small "Prefer PayPal? Pay with PayPal" link. No stepper, no "What happens
-  next".
+  (Andrii's ask): a dot stepper (Email, Shipping & payment "on Western Bid",
+  Confirmation; it tells buyers the address is asked on the next page), the
+  email field (required), a "🔒 Secure payment by Western Bid" line right
+  above the button "Continue to payment · $X", and a small "Prefer PayPal?
+  Pay with PayPal" link. No "What happens next".
 - PayPal checkout: dot stepper (Shipping, Payment "on PayPal",
   Confirmation), the address choice, the PayPal button, the Western Bid
   trust box, "What happens next" and "Prefer to pay by card?".

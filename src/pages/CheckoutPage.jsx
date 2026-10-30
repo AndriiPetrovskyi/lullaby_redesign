@@ -37,16 +37,18 @@ const splitName = (fullName) => {
 const MIN_REDIRECT_NOTICE_MS = 900;
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// Leaving our site for PayPal is where buyers hesitate, so the PayPal
-// checkout says up front that it's coming. The card checkout is only the
-// email, so it has no steps.
-function CheckoutSteps() {
+// Leaving our site for the payment page is where buyers hesitate, so the
+// checkout says up front that it's coming, and that card buyers give their
+// address there.
+function CheckoutSteps({ isPayPal }) {
   // The middle step names whose page it is, so the hand-off is expected.
-  const steps = [
-    { label: "Shipping" },
-    { label: "Payment", note: "on PayPal" },
-    { label: "Confirmation" },
-  ];
+  const steps = isPayPal
+    ? [{ label: "Shipping" }, { label: "Payment", note: "on PayPal" }, { label: "Confirmation" }]
+    : [
+        { label: "Email" },
+        { label: "Shipping & payment", note: "on Western Bid" },
+        { label: "Confirmation" },
+      ];
   return (
     <ol className="checkout-steps" aria-label="Checkout steps">
       {steps.map(({ label, note }, i) => (
@@ -373,7 +375,7 @@ function CheckoutPage() {
           <span aria-hidden="true">←</span> Back to {product.name}
         </Link>
         <h1 className="checkout-title">Checkout</h1>
-        {isPayPal && <CheckoutSteps />}
+        <CheckoutSteps isPayPal={isPayPal} />
         {payment && (
           <RedirectNotice
             paymentMethod={payment.method}

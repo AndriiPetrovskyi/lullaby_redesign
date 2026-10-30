@@ -518,3 +518,10 @@
     display: none;
   }
 }
+
+/* The narrowest phones: a long step label wraps rather than touch the next. */
+@media (max-width: 359px) {
+  .checkout-steps-label {
+    white-space: normal;
+  }
+}
