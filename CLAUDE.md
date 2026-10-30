@@ -10,6 +10,8 @@ The project is two repos:
 
 Andrii works on it from more than one computer. This file is the shared memory:
 update it in the same change whenever something below stops being true.
+Per-session work logs (what was done, what's left) are in `docs/worklog-*.md`;
+read the latest one when starting.
 
 ## Rules from Andrii
 
