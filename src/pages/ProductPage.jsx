@@ -40,7 +40,6 @@ import {
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
   MOR_DISCLAIMER,
-  PAID_SHIPPING_NOTE,
   RETURN_WINDOW_DAYS,
 } from "../config/contact.js";
 import jarProcessVideo from "../assets/process.mp4";
@@ -73,7 +72,7 @@ const PRODUCT_INFO_SECTIONS = [
   },
   {
     title: "Shipping & Delivery",
-    content: `Free shipping to ${FREE_SHIPPING_REGIONS} (${PAID_SHIPPING_NOTE}). Orders ship within ${DISPATCH_TIME}; delivery typically takes ${DELIVERY_TIME} depending on location.`,
+    content: `Free shipping to ${FREE_SHIPPING_REGIONS}. Orders ship within ${DISPATCH_TIME}; delivery typically takes ${DELIVERY_TIME} depending on location.`,
   },
   {
     title: "Payment",
@@ -336,7 +335,7 @@ function ProductPage() {
               Message in a Vial — a handwritten note inside
             </li>
             <li>
-              Free shipping to US, Canada &amp; Europe · {DELIVERY_TIME}
+              Free shipping · {DELIVERY_TIME}
             </li>
           </ul>
           <div className="m-product-page-cta-row m-product-page-cta-row--top">
@@ -698,7 +697,7 @@ function ProductPage() {
           <p className="d-product-page-price">${product.price}</p>
           <ul className="d-product-page-perks">
             <li>Message in a Vial — a handwritten note inside</li>
-            <li>Free shipping to US, Canada &amp; Europe · {DELIVERY_TIME}</li>
+            <li>Free shipping · {DELIVERY_TIME}</li>
           </ul>
 
           <div className="d-product-page-cta-row d-product-page-cta-row--top">

@@ -10,7 +10,6 @@ import {
   FREE_SHIPPING_REGIONS,
   LEGAL_LAST_UPDATED,
   MOR_DISCLAIMER,
-  PAID_SHIPPING_NOTE,
   RETURN_WINDOW_DAYS,
   SELLER_ADDRESS,
   SELLER_EMAIL,
@@ -101,9 +100,7 @@ function TermsPage() {
           <h2>4. Shipping</h2>
           <ul>
             <li>
-              Shipping is free to {FREE_SHIPPING_REGIONS}. A few farther
-              destinations have a delivery fee ({PAID_SHIPPING_NOTE}), shown
-              at checkout before you pay.
+              Shipping is free on every order, to {FREE_SHIPPING_REGIONS}.
             </li>
             <li>
               We can only ship to the countries listed at checkout.
