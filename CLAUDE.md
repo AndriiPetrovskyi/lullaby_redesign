@@ -18,6 +18,8 @@ update it in the same change whenever something below stops being true.
 - After every change, verify every detail yourself, on desktop and on a phone
   width: that it works and that nothing else broke (no horizontal scroll, no
   console errors).
+- Change only what he asked for. Don't touch `.env` files or the production
+  database unless he asks.
 - Don't propose asking Western Bid anything; work with what their gateway does.
 - He checks designs on his phone, so mobile layout matters first.
 
