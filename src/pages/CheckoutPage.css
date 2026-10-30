@@ -441,14 +441,8 @@
   background: var(--color-accent-cobalt);
 }
 
-/* ---- Card checkout: the email, a country line and the button ---- */
+/* ---- Card checkout: the email and the button ---- */
 
-.checkout-shipto {
-  margin: 0;
-  font-size: 14px;
-}
-
-.checkout-shipto-change,
 .checkout-switch-link {
   padding: 0;
   border: 0;
@@ -491,7 +485,6 @@
   }
 
   .checkout-form > .checkout-field,
-  .checkout-form > .checkout-shipto,
   .checkout-form > .checkout-choice,
   .checkout-form > .checkout-row,
   .checkout-form > .checkout-field-note,

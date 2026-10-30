@@ -107,11 +107,10 @@ function CheckoutUnavailable({ title, children }) {
 }
 
 // Card checkout asks us for the email only: Western Bid passes it on to
-// Stripe, whose page then asks for the shipping address and the card. The
-// country (which prices the shipping) is guessed from the IP and shown as one
-// line the buyer can change.
-// PayPal checkout (?pay=paypal) needs nothing but the country to price the
-// shipping, unless the buyer ships to an address other than their PayPal one.
+// Stripe, whose page then asks for the shipping address and the card.
+// PayPal checkout (?pay=paypal) asks for nothing, unless the buyer ships to
+// an address other than their PayPal one. Shipping is free everywhere, so
+// the country isn't asked; the backend guesses it from the IP.
 function CheckoutPage() {
   const { slug } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -129,8 +128,6 @@ function CheckoutPage() {
   // Where it ships, which sets the shipping price; null means the country
   // the backend guessed from the visitor's IP.
   const [country, setCountry] = useState(draft?.country ?? null);
-  // Card checkout shows the country as a line until the buyer opens it.
-  const [isChangingCountry, setIsChangingCountry] = useState(false);
   // Going to the payment page: null, or { method, error }.
   const [payment, setPayment] = useState(null);
 
@@ -329,19 +326,6 @@ function CheckoutPage() {
                 </div>
               )}
 
-              {!isPayPal && !isChangingCountry && (
-                <p className="checkout-shipto">
-                  Shipping to {shipTo?.name} ·{" "}
-                  <button
-                    type="button"
-                    className="checkout-shipto-change"
-                    aria-label={`Change shipping country (${shipTo?.name})`}
-                    onClick={() => setIsChangingCountry(true)}>
-                    Change
-                  </button>
-                </p>
-              )}
-
               {isPayPal && (
                 <fieldset className="checkout-choice">
                   <legend>Where should we send it?</legend>
@@ -380,11 +364,9 @@ function CheckoutPage() {
                 <Field label="Full name" name="fullName" autoComplete="name" maxLength={200} {...addressProps} />
               )}
 
-              {(isPayPal || isChangingCountry) && (
+              {isPayPal && shipToAddress === "other" && (
                 <div className="checkout-field">
-                  <label htmlFor="checkout-country">
-                    {isPayPal && shipToAddress === "home" ? "Country" : "Ship to"}
-                  </label>
+                  <label htmlFor="checkout-country">Country</label>
                   <Select
                     id="checkout-country"
                     name="country"
@@ -552,7 +534,7 @@ function CheckoutPage() {
                 <dd>{money(totals.subtotal)}</dd>
               </div>
               <div>
-                <dt>Shipping{shipTo ? ` to ${shipTo.name}` : ""}</dt>
+                <dt>Shipping</dt>
                 <dd>{totals.shipping > 0 ? money(totals.shipping) : "Free"}</dd>
               </div>
               <div className="checkout-totals-total">

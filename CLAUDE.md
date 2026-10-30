@@ -38,24 +38,26 @@ update it in the same change whenever something below stops being true.
 ## Buying flow
 
 - Product page "Buy now":
-  - card: goes to `/checkout/:slug`, which asks only for the email (the
-    country is a changeable line); Stripe asks for the address;
-  - PayPal button, or card unavailable in the buyer's region (e.g. Ukraine):
+  - card: goes to `/checkout/:slug`, which asks only for the email; Stripe
+    asks for the address. Shipping is free everywhere, so no country is
+    asked; the backend guesses it from the IP.
+  - PayPal button, or card unavailable in the buyer's region (e.g. Ukraine,
+    which is why Andrii sees the PayPal page from both buttons):
     goes to `/checkout/:slug?pay=paypal` (no email, no phone). PayPal only
     ships to the address saved on the buyer's PayPal account (Western Bid
     turns its address step off), so the page asks "Where should we send it?":
     "My home address" (default, the one saved in PayPal, nothing to fill in,
-    express order) or "A different address" (full name, address, apartment,
-    city, ZIP, state for US/CA; sent as a regular non-express order).
+    express order) or "A different address" (full name, country, address,
+    apartment, city, ZIP, state for US/CA; sent as a regular non-express
+    order).
 - Checkout page (`src/pages/CheckoutPage.jsx`), card: deliberately minimal
-  (Andrii's ask): the email field (required), a "Shipping to <country> ·
-  Change" line (country guessed from IP; Change opens the "Ship to" select,
-  which sets the shipping price), a "🔒 Secure payment by Western Bid" line
-  right above the button "Continue to payment · $X", and a small
-  "Prefer PayPal? Pay with PayPal" link. No stepper, no "What happens next".
+  (Andrii's ask): the email field (required), a "🔒 Secure payment by
+  Western Bid" line right above the button "Continue to payment · $X", and a
+  small "Prefer PayPal? Pay with PayPal" link. No stepper, no "What happens
+  next".
 - PayPal checkout: dot stepper (Shipping, Payment "on PayPal",
-  Confirmation), the address choice, country, the PayPal button, the Western
-  Bid trust box, "What happens next" and "Prefer to pay by card?".
+  Confirmation), the address choice, the PayPal button, the Western Bid
+  trust box, "What happens next" and "Prefer to pay by card?".
 - Both have the order summary with a quantity stepper. On mobile the CSS
   reorders blocks with `display: contents`; the mobile media block must stay at
   the end of the CSS file.
