@@ -5,7 +5,7 @@ import "./GuaranteesMarquee.css";
 // "Secure checkout" is only true once the site's own checkout is live; until
 // then that slot promises the gift box instead.
 const GUARANTEES = [
-  "Free shipping to the US, Canada & Europe",
+  "Free shipping on every order",
   `Handmade in ${BUSINESS_COUNTRY}`,
   "Message in a Vial in every box",
   CHECKOUT_ENABLED ? "Secure checkout" : "Ready to gift",
