@@ -321,7 +321,6 @@ function CheckoutPage() {
                     inputMode="email"
                     maxLength={200}
                     required
-                    placeholder="you@example.com"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
                   />
