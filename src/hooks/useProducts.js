@@ -33,8 +33,6 @@ export function useProduct(slug) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  console.log(product);
-
   useEffect(() => {
     if (!slug) {
       setProduct(null);
