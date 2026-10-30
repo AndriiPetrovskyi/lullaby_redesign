@@ -38,10 +38,12 @@ update it in the same change whenever something below stops being true.
   - card: goes to `/checkout/:slug`, which asks only for the email and the
     "Ship to" country; Stripe asks for the address;
   - PayPal button, or card unavailable in the buyer's region (e.g. Ukraine):
-    goes to `/checkout/:slug?pay=paypal`, which also asks for the name, the
-    shipping address and a phone. PayPal itself only ships to the address on
-    the buyer's PayPal account (Western Bid turns its address step off), so
-    the address is taken here and sent as a regular (non-express) order.
+    goes to `/checkout/:slug?pay=paypal` (no email, no phone). PayPal only
+    ships to the address saved on the buyer's PayPal account (Western Bid
+    turns its address step off), so the page asks "Where should we send it?":
+    "My home address" (default, the one saved in PayPal, nothing to fill in,
+    express order) or "A different address" (full name, address, apartment,
+    city, ZIP, state for US/CA; sent as a regular non-express order).
 - Checkout page (`src/pages/CheckoutPage.jsx`): dot stepper (card: Email,
   then "Shipping & payment" with the note "on Western Bid", then
   Confirmation; PayPal: Shipping, Payment "on PayPal", Confirmation),
@@ -52,7 +54,8 @@ update it in the same change whenever something below stops being true.
   the end of the CSS file.
 - `SecureCheckoutBox` (`src/components/PaymentMethods.jsx`): "Secure checkout
   by Western Bid", shown under the buy buttons and on checkout.
-- The checkout draft (product, email, quantity, country) is kept in
+- The checkout draft (product, email, quantity, country, PayPal address
+  choice, method) is kept in
   sessionStorage `checkout-draft`, so the cancel page can link back to it.
 - Prices show in USD; the payment page also shows the local currency, which is
   fine. Don't add currency hints.

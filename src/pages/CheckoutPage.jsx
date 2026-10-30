@@ -24,6 +24,13 @@ import "./CheckoutPage.css";
 
 const money = (value) => `$${value.toFixed(2)}`;
 
+// One "Full name" field is quicker to fill than two; the backend keeps first
+// and last name apart.
+const splitName = (fullName) => {
+  const [firstName = "", ...rest] = fullName.trim().split(/\s+/);
+  return { firstName, lastName: rest.join(" ") };
+};
+
 // Long enough to read the hand-off message before the browser leaves.
 const MIN_REDIRECT_NOTICE_MS = 900;
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -55,17 +62,16 @@ function CheckoutSteps({ isPayPal }) {
   );
 }
 
-// The PayPal page doesn't let the buyer pick where it ships (it uses the
-// address on their PayPal account), so PayPal buyers give it here.
+// PayPal ships to the address saved in the buyer's PayPal account and
+// doesn't let them pick another, so a buyer who sends it elsewhere (a gift)
+// gives that address here.
 const EMPTY_ADDRESS = {
-  firstName: "",
-  lastName: "",
+  fullName: "",
   address1: "",
   address2: "",
   city: "",
   state: "",
   zip: "",
-  phone: "",
 };
 
 function Field({ label, name, values, onChange, optional, ...props }) {
@@ -103,8 +109,8 @@ function CheckoutUnavailable({ title, children }) {
 
 // Card checkout asks us for the email only: Western Bid passes it on to
 // Stripe, whose page then asks for the shipping address and the card.
-// PayPal checkout (?pay=paypal) asks for the email and the shipping address
-// too, since PayPal would only ship to the address on the buyer's account.
+// PayPal checkout (?pay=paypal) needs nothing but the country to price the
+// shipping, unless the buyer ships to an address other than their PayPal one.
 function CheckoutPage() {
   const { slug } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -115,6 +121,9 @@ function CheckoutPage() {
   const [draft] = useState(() => readCheckoutDraft(slug));
   const [email, setEmail] = useState(draft?.email ?? "");
   const [address, setAddress] = useState(() => ({ ...EMPTY_ADDRESS, ...draft?.address }));
+  // PayPal: "home" ships to the address saved in PayPal, "other" to the
+  // address typed here.
+  const [shipToAddress, setShipToAddress] = useState(draft?.shipToAddress ?? "home");
   const [quantity, setQuantity] = useState(draft?.quantity ?? 1);
   // Where it ships, which sets the shipping price; null means the country
   // the backend guessed from the visitor's IP.
@@ -211,6 +220,7 @@ function CheckoutPage() {
   };
 
   const pay = async (method) => {
+    const isOtherAddress = method === "paypal" && shipToAddress === "other";
     setPayment({ method, error: null });
     try {
       const [order] = await Promise.all([
@@ -218,21 +228,33 @@ function CheckoutPage() {
           productSlug: product.slug,
           quantity,
           paymentMethod: method,
-          express: method !== "paypal",
-          customer:
-            method === "paypal"
-              ? {
-                  ...address,
-                  email: email.trim(),
-                  country: shipCountry,
-                  state: regions ? address.state : "",
-                }
-              : { email: email.trim(), country: shipCountry },
+          express: !isOtherAddress,
+          customer: isOtherAddress
+            ? {
+                ...splitName(address.fullName),
+                address1: address.address1,
+                address2: address.address2,
+                city: address.city,
+                zip: address.zip,
+                country: shipCountry,
+                state: regions ? address.state : "",
+              }
+            : {
+                ...(method === "card" ? { email: email.trim() } : {}),
+                country: shipCountry,
+              },
           ...orderTrackingFields(),
         }),
         wait(MIN_REDIRECT_NOTICE_MS),
       ]);
-      saveCheckoutDraft(product.slug, { email, quantity, country: shipCountry, address, method });
+      saveCheckoutDraft(product.slug, {
+        email,
+        quantity,
+        country: shipCountry,
+        address,
+        shipToAddress,
+        method,
+      });
       trackEvent("AddPaymentInfo", {
         content_ids: [product.id],
         content_name: product.name,
@@ -285,35 +307,70 @@ function CheckoutPage() {
                 </p>
               )}
 
-              <div className="checkout-field">
-                <label htmlFor="checkout-email">Email</label>
-                <input
-                  id="checkout-email"
-                  className="checkout-input"
-                  type="email"
-                  name="email"
-                  autoComplete="email"
-                  inputMode="email"
-                  maxLength={200}
-                  required
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                />
-                <p className="checkout-field-note">
-                  For your order confirmation and delivery updates.
-                </p>
-              </div>
-
-              {isPayPal && (
-                <div className="checkout-row">
-                  <Field label="First name" name="firstName" autoComplete="given-name" maxLength={100} {...addressProps} />
-                  <Field label="Last name" name="lastName" autoComplete="family-name" maxLength={100} {...addressProps} />
+              {!isPayPal && (
+                <div className="checkout-field">
+                  <label htmlFor="checkout-email">Email</label>
+                  <input
+                    id="checkout-email"
+                    className="checkout-input"
+                    type="email"
+                    name="email"
+                    autoComplete="email"
+                    inputMode="email"
+                    maxLength={200}
+                    required
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                  />
+                  <p className="checkout-field-note">
+                    For your order confirmation and delivery updates.
+                  </p>
                 </div>
               )}
 
+              {isPayPal && (
+                <fieldset className="checkout-choice">
+                  <legend>Where should we send it?</legend>
+                  <label className="checkout-choice-option">
+                    <input
+                      type="radio"
+                      name="shipToAddress"
+                      value="home"
+                      checked={shipToAddress === "home"}
+                      onChange={() => setShipToAddress("home")}
+                    />
+                    <span>
+                      <strong>My home address</strong>
+                      <span className="checkout-choice-hint">
+                        The one saved in PayPal. Nothing to fill in.
+                      </span>
+                    </span>
+                  </label>
+                  <label className="checkout-choice-option">
+                    <input
+                      type="radio"
+                      name="shipToAddress"
+                      value="other"
+                      checked={shipToAddress === "other"}
+                      onChange={() => setShipToAddress("other")}
+                    />
+                    <span>
+                      <strong>A different address</strong>
+                      <span className="checkout-choice-hint">For example, a gift.</span>
+                    </span>
+                  </label>
+                </fieldset>
+              )}
+
+              {isPayPal && shipToAddress === "other" && (
+                <Field label="Full name" name="fullName" autoComplete="name" maxLength={200} {...addressProps} />
+              )}
+
               <div className="checkout-field">
-                <label htmlFor="checkout-country">Ship to</label>
+                <label htmlFor="checkout-country">
+                  {isPayPal && shipToAddress === "home" ? "Country" : "Ship to"}
+                </label>
                 <Select
                   id="checkout-country"
                   name="country"
@@ -325,52 +382,36 @@ function CheckoutPage() {
                 />
               </div>
 
-              {isPayPal && (
+              {isPayPal && shipToAddress === "other" && (
                 <>
                   <Field label="Address" name="address1" autoComplete="address-line1" maxLength={200} {...addressProps} />
                   <Field label="Apartment, suite, etc." name="address2" autoComplete="address-line2" maxLength={200} optional {...addressProps} />
                   <div className="checkout-row">
                     <Field label="City" name="city" autoComplete="address-level2" maxLength={100} {...addressProps} />
-                    {regions ? (
-                      <div className="checkout-field">
-                        <label htmlFor="checkout-state">
-                          {shipCountry === "CA" ? "Province" : "State"}
-                        </label>
-                        <Select
-                          id="checkout-state"
-                          name="state"
-                          value={address.state}
-                          onChange={handleAddressChange}
-                          autoComplete="address-level1"
-                          required
-                          options={regions.map((r) => ({ value: r.code, label: r.name }))}
-                        />
-                      </div>
-                    ) : (
-                      <Field
-                        label="Postal code"
-                        name="zip"
-                        autoComplete="postal-code"
-                        maxLength={20}
-                        {...addressProps}
-                      />
-                    )}
+                    <Field
+                      label={shipCountry === "US" ? "ZIP code" : "Postal code"}
+                      name="zip"
+                      autoComplete="postal-code"
+                      maxLength={20}
+                      {...addressProps}
+                    />
                   </div>
-                  <div className="checkout-row">
-                    {regions && (
-                      <Field
-                        label={shipCountry === "US" ? "ZIP code" : "Postal code"}
-                        name="zip"
-                        autoComplete="postal-code"
-                        maxLength={20}
-                        {...addressProps}
+                  {regions && (
+                    <div className="checkout-field">
+                      <label htmlFor="checkout-state">
+                        {shipCountry === "CA" ? "Province" : "State"}
+                      </label>
+                      <Select
+                        id="checkout-state"
+                        name="state"
+                        value={address.state}
+                        onChange={handleAddressChange}
+                        autoComplete="address-level1"
+                        required
+                        options={regions.map((r) => ({ value: r.code, label: r.name }))}
                       />
-                    )}
-                    <Field label="Phone" name="phone" type="tel" autoComplete="tel" maxLength={30} {...addressProps} />
-                  </div>
-                  <p className="checkout-field-note">
-                    The phone is only for the courier, if they need to reach you.
-                  </p>
+                    </div>
+                  )}
                 </>
               )}
 
@@ -412,7 +453,13 @@ function CheckoutPage() {
                     You log in to PayPal and pay. The payment goes to our partner{" "}
                     <strong>Western Bid</strong>, the name you&apos;ll see in PayPal.
                   </li>
-                  <li>We ship your candle to the address above.</li>
+                  <li>
+                    We ship your candle to{" "}
+                    {shipToAddress === "home"
+                      ? "the home address saved in your PayPal account"
+                      : "the address above"}
+                    .
+                  </li>
                   <li>
                     We email your order confirmation. Delivery takes {DELIVERY_TIME}.
                   </li>
