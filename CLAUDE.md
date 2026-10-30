@@ -15,6 +15,9 @@ update it in the same change whenever something below stops being true.
 
 - Never merge into `main` or deploy without his explicit go-ahead. Work on a
   branch, test, show him, then merge when he says so.
+- One branch per working session: create it at the start and put every task
+  of that session in it, until it is merged or he asks for a new branch.
+  Don't make a branch per task. Keep it checked out in his local folder.
 - After every change, verify every detail yourself, on desktop and on a phone
   width: that it works and that nothing else broke (no horizontal scroll, no
   console errors).
