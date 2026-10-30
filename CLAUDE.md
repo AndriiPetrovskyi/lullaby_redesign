@@ -29,6 +29,7 @@ update it in the same change whenever something below stops being true.
 ## Deploy
 
 - Vercel deploys `main` automatically on push. Branches get preview URLs.
+  It is the only host (the old GitHub Pages and Netlify setups are gone).
 - `npm run build` also generates the sitemap and prerendered meta;
   `npm run lint` runs oxlint.
 - Public config is in `.env.production` (API URL, Meta Pixel, GA4, site URL).
@@ -66,6 +67,9 @@ update it in the same change whenever something below stops being true.
   `SecureCheckoutLine` (same file): one "Secure payment by Western Bid" line
   in the footer of every page (desktop and mobile footers) and above the card
   checkout button.
+- The checkout page records an anonymous funnel (admin → CheckoutVisit):
+  opened, first keystroke, last field touched (names only), then the order
+  and payment steps from the backend (`checkoutVisitId` on the order).
 - The checkout draft (product, email, quantity, country, PayPal address
   choice, method) is kept in
   sessionStorage `checkout-draft`, so the cancel page can link back to it.
