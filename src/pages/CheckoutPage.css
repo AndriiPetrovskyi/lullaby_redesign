@@ -295,6 +295,40 @@
   height: 19px;
 }
 
+/* ---- PayPal checkout: the shipping address is asked here ---- */
+
+.checkout-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-md);
+}
+
+.checkout-optional {
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.checkout-switch-button {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid var(--color-accent-cobalt);
+  background: transparent;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-accent-cobalt);
+  cursor: pointer;
+}
+
+.checkout-switch-button:hover:not(:disabled) {
+  background: rgba(255, 98, 14, 0.06);
+}
+
+.checkout-switch-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* ---- steps: small dots joined by a line, labels underneath ---- */
 
 .checkout-steps {
@@ -373,7 +407,9 @@
   }
 
   .checkout-form > .checkout-field,
-  .checkout-main > .checkout-region-note {
+  .checkout-form > .checkout-row,
+  .checkout-form > .checkout-field-note,
+  .checkout-form > .checkout-region-note {
     order: 1;
   }
 

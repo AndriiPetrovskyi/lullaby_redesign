@@ -35,11 +35,16 @@ update it in the same change whenever something below stops being true.
 ## Buying flow
 
 - Product page "Buy now":
-  - card available: goes to `/checkout/:slug`, an email-only page;
+  - card: goes to `/checkout/:slug`, which asks only for the email and the
+    "Ship to" country; Stripe asks for the address;
   - PayPal button, or card unavailable in the buyer's region (e.g. Ukraine):
-    creates the order and goes straight to PayPal.
-- Checkout page (`src/pages/CheckoutPage.jsx`): dot stepper (Email, then
-  "Shipping & payment" with the note "on Western Bid", then Confirmation),
+    goes to `/checkout/:slug?pay=paypal`, which also asks for the name, the
+    shipping address and a phone. PayPal itself only ships to the address on
+    the buyer's PayPal account (Western Bid turns its address step off), so
+    the address is taken here and sent as a regular (non-express) order.
+- Checkout page (`src/pages/CheckoutPage.jsx`): dot stepper (card: Email,
+  then "Shipping & payment" with the note "on Western Bid", then
+  Confirmation; PayPal: Shipping, Payment "on PayPal", Confirmation),
   email field, "Ship to" country (sets shipping price), "Continue to secure
   payment · $X", the Western Bid trust box, "What happens next", "Prefer
   PayPal?", and the order summary with a quantity stepper. On mobile the CSS

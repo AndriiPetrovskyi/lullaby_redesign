@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Seo from "../components/Seo.jsx";
 import { CONTACT_EMAIL, DISPATCH_TIME, DELIVERY_TIME } from "../config/contact.js";
-import { getOrderStatus } from "../services/orders.js";
+import { getOrderStatus, readCheckoutDraft } from "../services/orders.js";
 import { trackEvent } from "../utils/metaPixel.js";
 import "./SimplePage.css";
 import "./OrderResultPage.css";
@@ -181,7 +181,10 @@ export function OrderCancelledPage() {
           </p>
           <div className="order-result-actions">
             {order && (
-              <Link to={`/checkout/${order.productSlug}`}>
+              <Link
+                to={`/checkout/${order.productSlug}${
+                  readCheckoutDraft(order.productSlug)?.method === "paypal" ? "?pay=paypal" : ""
+                }`}>
                 Back to checkout — {order.productName}
               </Link>
             )}
