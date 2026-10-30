@@ -37,6 +37,44 @@ update it in the same change whenever something below stops being true.
   dashboard, not in that file) switch buying on and off
   (`src/config/ordering.js`).
 
+## Running it locally
+
+- Andrii's own setup: the backend with `PAYMENT_REMINDERS=false railway run
+  node src/server.js` on port 3000 (production database and the real
+  Western Bid), and Vite for his phone on the same Wi-Fi. That Vite needs a
+  config that proxies `/api` to the backend, so the backend sees a loopback
+  request (`isLocalRequest`: every payment method offered, no rate limits).
+  Keep it outside the repo, e.g. in the scratchpad:
+  ```js
+  import base from '<repo>/vite.config.js'
+  export default (env) => ({ ...base(env), root: '<repo>',
+    server: { proxy: { '/api': 'http://localhost:3000' } } })
+  ```
+  `VITE_API_BASE_URL=/api VITE_ORDERING_PAUSED=false VITE_CHECKOUT_ENABLED=true
+  npx vite --config <that file> --host --port 5173`, then give him
+  `http://<Mac's IP>:5173` (`ipconfig getifaddr en0`; it changes with the
+  Wi-Fi). Orders placed this way are real: production database, real
+  payment pages.
+- Your own tests must not write to the production database: run a second
+  backend on port 3001 against a throwaway Postgres (see the backend's
+  CLAUDE.md) and Vite on 5174 with `VITE_API_BASE_URL=http://localhost:3001/api`.
+  Drive it with headless Chrome over CDP, and block requests to
+  `*westernbid*` so nothing reaches the real gateway.
+
+## Analytics
+
+Meta Pixel and GA4 run only on the deployed site, after cookie consent where
+it's required (`src/utils/consent.js`).
+- Product page: `ViewContent` / `view_item`; any buy button:
+  `InitiateCheckout` / `begin_checkout` (the Meta ad campaign optimizes for
+  InitiateCheckout, so don't change its payload); "Order directly":
+  `Contact` / `generate_lead`.
+- Leaving for the payment page: `AddPaymentInfo` / `add_payment_info` with
+  `payment_type` card or paypal. For PayPal it fires on the product page,
+  right after begin_checkout, since there is no checkout page in between.
+- Purchase: the browser pixel on the thank-you page plus Meta CAPI from the
+  backend (same event id); GA4 `purchase` only from the backend.
+
 ## Buying flow
 
 - Product page "Buy now":
@@ -75,3 +113,23 @@ update it in the same change whenever something below stops being true.
   fine. Don't add currency hints.
 - Reviews: `REVIEWS` in `src/data/reviews.js` is empty in production, so the
   rating is hidden there.
+
+## Where things stand (update or delete as it changes)
+
+As of Oct 30, 2026:
+- Branch `paypal-address-choice` (both repos, pushed, not merged): "Pay with
+  PayPal" goes straight to PayPal from the product page, the PayPal checkout
+  page and its address form are gone, the backend stops sending
+  `no_shipping=2`.
+- Before merging: one real PayPal payment where the buyer changes the
+  address on PayPal, then check (read only) that the order in the
+  production database got that address from the IPN, not the one the
+  account was registered with. Andrii refunds it. Then merge both repos,
+  push, and Andrii runs `railway up`.
+- Next, in the same branch: split analytics and the admin by payment method
+  (card "Buy now" vs PayPal): a payment method on `begin_checkout`,
+  without breaking InitiateCheckout for the ads; record PayPal clicks in
+  CheckoutVisit too; show and filter orders by `paymentGate` in the admin.
+- After that, in its own branch: some design changes Andrii will describe.
+- The ordered list is also in his Google Calendar on Oct 31, 2026
+  ("Lullaby: PayPal одразу на PayPal — тест і запуск").
