@@ -133,3 +133,8 @@ As of Oct 30, 2026:
 - After that, in its own branch: some design changes Andrii will describe.
 - The ordered list is also in his Google Calendar on Oct 31, 2026
   ("Lullaby: PayPal одразу на PayPal — тест і запуск").
+- Idea from Andrii (not scheduled yet): tell buyers what to give each candle
+  with, as a gift pairing. His examples: the brown candle with a bottle of
+  whisky or brandy; Evening Garden with chocolates with a cherry filling.
+  One pairing per candle, probably on the product page; the pairings
+  themselves come from him.
