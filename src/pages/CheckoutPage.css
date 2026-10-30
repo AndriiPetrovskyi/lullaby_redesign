@@ -85,6 +85,24 @@
   transition: opacity 0.2s ease;
 }
 
+.checkout-submit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 10px 16px;
+}
+
+.checkout-submit-secure {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
 .checkout-submit:hover:not(:disabled) {
   opacity: 0.9;
 }

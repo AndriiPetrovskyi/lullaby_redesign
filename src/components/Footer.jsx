@@ -3,6 +3,7 @@ import navLinks from "../data/navLinks.js";
 import { FacebookIcon, InstagramIcon, TikTokIcon } from "./icons/SocialIcons.jsx";
 import { INSTAGRAM_URL } from "../config/contact.js";
 import { reopenConsentBanner } from "../utils/consent.js";
+import { SecureCheckoutLine } from "./PaymentMethods.jsx";
 import "./Footer.css";
 
 const legalLinks = [
@@ -78,6 +79,8 @@ function Footer() {
             </li>
           ))}
         </ul>
+
+        <SecureCheckoutLine className="footer-secure" />
 
         <p className="footer-copyright">
           © {new Date().getFullYear()} Lullaby. All rights reserved.

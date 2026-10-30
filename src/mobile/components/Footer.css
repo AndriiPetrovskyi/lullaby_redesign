@@ -111,3 +111,10 @@
   background: none;
   cursor: pointer;
 }
+
+.secure-checkout-line.m-footer-secure {
+  margin-top: var(--spacing-lg);
+  font-family: "Inter", sans-serif;
+  color: rgba(255, 232, 207, 0.85);
+  opacity: 1;
+}

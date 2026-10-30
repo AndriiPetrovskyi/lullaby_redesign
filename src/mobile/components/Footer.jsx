@@ -7,6 +7,7 @@ import {
 } from "../../components/icons/SocialIcons.jsx";
 import { INSTAGRAM_URL } from "../../config/contact.js";
 import { reopenConsentBanner } from "../../utils/consent.js";
+import { SecureCheckoutLine } from "../../components/PaymentMethods.jsx";
 import "./Footer.css";
 
 const legalLinks = [
@@ -81,6 +82,8 @@ function Footer() {
           </li>
         ))}
       </ul>
+
+      <SecureCheckoutLine className="m-footer-secure" />
 
       <p className="m-footer-copyright">
         © {new Date().getFullYear()} Lullaby. All rights reserved.

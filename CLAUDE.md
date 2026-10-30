@@ -47,9 +47,9 @@ update it in the same change whenever something below stops being true.
 - Checkout page (`src/pages/CheckoutPage.jsx`), card: deliberately minimal
   (Andrii's ask): the email field (required), a "Shipping to <country> ·
   Change" line (country guessed from IP; Change opens the "Ship to" select,
-  which sets the shipping price), "Continue to secure payment · $X", one
-  "Secure payment by Western Bid" line and a small "Prefer PayPal? Pay with
-  PayPal" link. No stepper, no "What happens next".
+  which sets the shipping price), the button "Continue to payment · $X" with
+  a second line "🔒 Secure payment by Western Bid" inside it, and a small
+  "Prefer PayPal? Pay with PayPal" link. No stepper, no "What happens next".
 - PayPal checkout: dot stepper (Shipping, Payment "on PayPal",
   Confirmation), the address choice, country, the PayPal button, the Western
   Bid trust box, "What happens next" and "Prefer to pay by card?".
@@ -57,7 +57,9 @@ update it in the same change whenever something below stops being true.
   reorders blocks with `display: contents`; the mobile media block must stay at
   the end of the CSS file.
 - `SecureCheckoutBox` (`src/components/PaymentMethods.jsx`): "Secure checkout
-  by Western Bid", shown under the buy buttons and on checkout.
+  by Western Bid", shown under the buy buttons and on the PayPal checkout.
+  `SecureCheckoutLine` (same file): one "Secure payment by Western Bid" line
+  in the footer of every page (desktop and mobile footers).
 - The checkout draft (product, email, quantity, country, PayPal address
   choice, method) is kept in
   sessionStorage `checkout-draft`, so the cancel page can link back to it.

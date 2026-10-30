@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen.jsx";
-import { PayPalLogo, SecureCheckoutBox, SecureCheckoutLine } from "../components/PaymentMethods.jsx";
+import { LockIcon, PayPalLogo, SecureCheckoutBox } from "../components/PaymentMethods.jsx";
 import RedirectNotice from "../components/RedirectNotice.jsx";
 import Seo from "../components/Seo.jsx";
 import Select from "../components/ui/Select.jsx";
@@ -450,12 +450,20 @@ function CheckoutPage() {
                   type="submit"
                   className="checkout-submit"
                   disabled={Boolean(payment) || isSoldOut}>
-                  {isSoldOut
-                    ? "Sold out"
-                    : `Continue to secure payment · ${money(totals.total)}`}
+                  {isSoldOut ? (
+                    "Sold out"
+                  ) : (
+                    <>
+                      <span>Continue to payment · {money(totals.total)}</span>
+                      <span className="checkout-submit-secure">
+                        <LockIcon />
+                        Secure payment by Western Bid
+                      </span>
+                    </>
+                  )}
                 </button>
               )}
-              {isPayPal ? <SecureCheckoutBox /> : <SecureCheckoutLine />}
+              {isPayPal && <SecureCheckoutBox />}
             </form>
 
             {isPayPal && (
