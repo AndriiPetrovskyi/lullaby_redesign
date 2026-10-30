@@ -44,37 +44,33 @@ update it in the same change whenever something below stops being true.
     asks for the address. Shipping is free everywhere, so no country is
     asked; the backend guesses it from the IP.
   - PayPal button, or card unavailable in the buyer's region (e.g. Ukraine,
-    which is why Andrii sees the PayPal page from both buttons):
-    goes to `/checkout/:slug?pay=paypal` (no email, no phone). PayPal only
-    ships to the address saved on the buyer's PayPal account (Western Bid
-    turns its address step off), so the page asks "Where should we send it?":
-    "My home address" (default, the one saved in PayPal, nothing to fill in,
-    express order) or "A different address" (full name, country, address,
-    apartment, city, ZIP, state for US/CA; sent as a regular non-express
-    order).
+    which is why Andrii goes to PayPal from both buttons): no checkout page,
+    the order (quantity 1) is created right there and the buyer goes
+    straight to PayPal, which lets them pick or add the shipping address
+    (only because we don't send `no_shipping=2`, which locked it to the
+    account's address).
 - Checkout page (`src/pages/CheckoutPage.jsx`), card: deliberately minimal
   (Andrii's ask): a dot stepper (Email, Shipping & payment "on Western Bid",
   Confirmation; it tells buyers the address is asked on the next page), the
   email field (required), a "🔒 Secure payment by Western Bid" line right
   above the button "Continue to payment · $X", and a small "Prefer PayPal?
-  Pay with PayPal" link. No "What happens next".
-- PayPal checkout: dot stepper (Shipping, Payment "on PayPal",
-  Confirmation), the address choice, the PayPal button, the Western Bid
-  trust box, "What happens next" and "Prefer to pay by card?".
-- Both have the order summary with a quantity stepper. On mobile the CSS
+  Pay with PayPal" link that goes straight to PayPal with the chosen
+  quantity. No "What happens next". Where card is unavailable the page shows
+  a region note and a PayPal button instead of the email.
+- The order summary has a quantity stepper. On mobile the CSS
   reorders blocks with `display: contents`; the mobile media block must stay at
   the end of the CSS file.
 - `SecureCheckoutBox` (`src/components/PaymentMethods.jsx`): "Secure checkout
-  by Western Bid", shown under the buy buttons and on the PayPal checkout.
+  by Western Bid", shown under the buy buttons.
   `SecureCheckoutLine` (same file): one "Secure payment by Western Bid" line
   in the footer of every page (desktop and mobile footers) and above the card
   checkout button.
 - The checkout page records an anonymous funnel (admin → CheckoutVisit):
   opened, first keystroke, last field touched (names only), then the order
   and payment steps from the backend (`checkoutVisitId` on the order).
-- The checkout draft (product, email, quantity, country, PayPal address
-  choice, method) is kept in
-  sessionStorage `checkout-draft`, so the cancel page can link back to it.
+- The checkout draft (product, email, quantity, method) is kept in
+  sessionStorage `checkout-draft`, so the cancel page can link back: to the
+  checkout after a card attempt, to the product page after PayPal.
 - Prices show in USD; the payment page also shows the local currency, which is
   fine. Don't add currency hints.
 - Reviews: `REVIEWS` in `src/data/reviews.js` is empty in production, so the

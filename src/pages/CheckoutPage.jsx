@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen.jsx";
-import { PayPalLogo, SecureCheckoutBox, SecureCheckoutLine } from "../components/PaymentMethods.jsx";
+import { PayPalLogo, SecureCheckoutLine } from "../components/PaymentMethods.jsx";
 import RedirectNotice from "../components/RedirectNotice.jsx";
 import Seo from "../components/Seo.jsx";
-import Select from "../components/ui/Select.jsx";
 import { useProduct } from "../hooks/useProducts.js";
 import { CHECKOUT_ENABLED, ORDERING_PAUSED } from "../config/ordering.js";
 import { CONTACT_EMAIL, DELIVERY_TIME } from "../config/contact.js";
@@ -26,29 +25,20 @@ import "./CheckoutPage.css";
 
 const money = (value) => `$${value.toFixed(2)}`;
 
-// One "Full name" field is quicker to fill than two; the backend keeps first
-// and last name apart.
-const splitName = (fullName) => {
-  const [firstName = "", ...rest] = fullName.trim().split(/\s+/);
-  return { firstName, lastName: rest.join(" ") };
-};
-
 // Long enough to read the hand-off message before the browser leaves.
 const MIN_REDIRECT_NOTICE_MS = 900;
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Leaving our site for the payment page is where buyers hesitate, so the
-// checkout says up front that it's coming, and that card buyers give their
-// address there.
-function CheckoutSteps({ isPayPal }) {
+// checkout says up front that it's coming, and that the address is asked
+// there.
+function CheckoutSteps() {
   // The middle step names whose page it is, so the hand-off is expected.
-  const steps = isPayPal
-    ? [{ label: "Shipping" }, { label: "Payment", note: "on PayPal" }, { label: "Confirmation" }]
-    : [
-        { label: "Email" },
-        { label: "Shipping & payment", note: "on Western Bid" },
-        { label: "Confirmation" },
-      ];
+  const steps = [
+    { label: "Email" },
+    { label: "Shipping & payment", note: "on Western Bid" },
+    { label: "Confirmation" },
+  ];
   return (
     <ol className="checkout-steps" aria-label="Checkout steps">
       {steps.map(({ label, note }, i) => (
@@ -62,39 +52,6 @@ function CheckoutSteps({ isPayPal }) {
         </li>
       ))}
     </ol>
-  );
-}
-
-// PayPal ships to the address saved in the buyer's PayPal account and
-// doesn't let them pick another, so a buyer who sends it elsewhere (a gift)
-// gives that address here.
-const EMPTY_ADDRESS = {
-  fullName: "",
-  address1: "",
-  address2: "",
-  city: "",
-  state: "",
-  zip: "",
-};
-
-function Field({ label, name, values, onChange, optional, ...props }) {
-  const id = `checkout-${name}`;
-  return (
-    <div className="checkout-field">
-      <label htmlFor={id}>
-        {label}
-        {optional && <span className="checkout-optional"> (optional)</span>}
-      </label>
-      <input
-        id={id}
-        className="checkout-input"
-        name={name}
-        value={values[name]}
-        onChange={onChange}
-        required={!optional}
-        {...props}
-      />
-    </div>
   );
 }
 
@@ -175,28 +132,20 @@ function CheckoutUnavailable({ title, children }) {
   );
 }
 
-// Card checkout asks us for the email only: Western Bid passes it on to
-// Stripe, whose page then asks for the shipping address and the card.
-// PayPal checkout (?pay=paypal) asks for nothing, unless the buyer ships to
-// an address other than their PayPal one. Shipping is free everywhere, so
-// the country isn't asked; the backend guesses it from the IP.
+// The card checkout: it asks us for the email only, since Western Bid passes
+// it on to Stripe, whose page then asks for the shipping address and the
+// card. PayPal needs nothing from us, so "Pay with PayPal" goes straight to
+// PayPal, where the buyer picks the shipping address. Shipping is free
+// everywhere, so the country isn't asked; the backend guesses it from the IP.
 function CheckoutPage() {
   const { slug } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
   const { product, isLoading, error } = useProduct(slug);
   const [config, setConfig] = useState(null);
   const [configError, setConfigError] = useState(false);
   // Back from the payment page: the email and quantity are still there.
   const [draft] = useState(() => readCheckoutDraft(slug));
   const [email, setEmail] = useState(draft?.email ?? "");
-  const [address, setAddress] = useState(() => ({ ...EMPTY_ADDRESS, ...draft?.address }));
-  // PayPal: "home" ships to the address saved in PayPal, "other" to the
-  // address typed here.
-  const [shipToAddress, setShipToAddress] = useState(draft?.shipToAddress ?? "home");
   const [quantity, setQuantity] = useState(draft?.quantity ?? 1);
-  // Where it ships, which sets the shipping price; null means the country
-  // the backend guessed from the visitor's IP.
-  const [country, setCountry] = useState(draft?.country ?? null);
   // Going to the payment page: null, or { method, error }.
   const [payment, setPayment] = useState(null);
   const checkoutVisit = useCheckoutVisit(product?.slug);
@@ -220,8 +169,7 @@ function CheckoutPage() {
     if (product) setQuantity((q) => Math.max(1, Math.min(q, product.stock)));
   }, [product]);
 
-  const shipCountry = country ?? config?.shipToCountry;
-  const shipTo = config?.countries.find((c) => c.code === shipCountry);
+  const shipTo = config?.countries.find((c) => c.code === config.shipToCountry);
   const shippingCents = shipTo?.shippingCents ?? 0;
 
   // Mirrors the backend's math, which is what actually gets charged.
@@ -274,28 +222,10 @@ function CheckoutPage() {
 
   const maxQuantity = Math.min(config.maxQuantity, product.stock);
   const isSoldOut = product.stock < 1;
+  // Where card payments aren't allowed (Ukraine) the page offers PayPal only.
   const cardAvailable = config.paymentMethods.includes("card");
-  const isPayPal = searchParams.get("pay") === "paypal" || !cardAvailable;
-  const regions = shipTo?.regions;
-
-  const switchTo = (method) => {
-    checkoutVisit.noteField("paymentMethod");
-    setSearchParams(method === "paypal" ? { pay: "paypal" } : {}, { replace: true });
-  };
-
-  const handleAddressChange = (event) => {
-    checkoutVisit.noteField(event.target.name);
-    setAddress((current) => ({ ...current, [event.target.name]: event.target.value }));
-  };
-
-  const handleCountryChange = (event) => {
-    checkoutVisit.noteField("country", { shipToCountry: event.target.value });
-    setCountry(event.target.value);
-    setAddress((current) => ({ ...current, state: "" }));
-  };
 
   const pay = async (method) => {
-    const isOtherAddress = method === "paypal" && shipToAddress === "other";
     setPayment({ method, error: null });
     checkoutVisit.flush();
     try {
@@ -304,34 +234,17 @@ function CheckoutPage() {
           productSlug: product.slug,
           quantity,
           paymentMethod: method,
-          express: !isOtherAddress,
-          customer: isOtherAddress
-            ? {
-                ...splitName(address.fullName),
-                address1: address.address1,
-                address2: address.address2,
-                city: address.city,
-                zip: address.zip,
-                country: shipCountry,
-                state: regions ? address.state : "",
-              }
-            : {
-                ...(method === "card" ? { email: email.trim() } : {}),
-                country: shipCountry,
-              },
+          express: true,
+          customer: {
+            ...(method === "card" ? { email: email.trim() } : {}),
+            country: config.shipToCountry,
+          },
           ...orderTrackingFields(),
           checkoutVisitId: checkoutVisit.visitId.current ?? undefined,
         }),
         wait(MIN_REDIRECT_NOTICE_MS),
       ]);
-      saveCheckoutDraft(product.slug, {
-        email,
-        quantity,
-        country: shipCountry,
-        address,
-        shipToAddress,
-        method,
-      });
+      saveCheckoutDraft(product.slug, { email, quantity, method });
       trackEvent("AddPaymentInfo", {
         content_ids: [product.id],
         content_name: product.name,
@@ -352,20 +265,18 @@ function CheckoutPage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    pay(isPayPal ? "paypal" : "card");
+    pay(cardAvailable ? "card" : "paypal");
   };
 
-  const chooseShipToAddress = (choice) => {
-    checkoutVisit.noteField("shipToAddress");
-    setShipToAddress(choice);
+  const payWithPayPal = () => {
+    checkoutVisit.noteField("paymentMethod");
+    pay("paypal");
   };
 
   const changeQuantity = (delta) => {
     checkoutVisit.noteField("quantity");
     setQuantity((q) => q + delta);
   };
-
-  const addressProps = { values: address, onChange: handleAddressChange };
 
   return (
     <>
@@ -375,7 +286,7 @@ function CheckoutPage() {
           <span aria-hidden="true">←</span> Back to {product.name}
         </Link>
         <h1 className="checkout-title">Checkout</h1>
-        <CheckoutSteps isPayPal={isPayPal} />
+        {cardAvailable && <CheckoutSteps />}
         {payment && (
           <RedirectNotice
             paymentMethod={payment.method}
@@ -387,138 +298,27 @@ function CheckoutPage() {
         <div className="checkout-layout">
           <div className="checkout-main">
             <form className="checkout-form" onSubmit={handleSubmit}>
-              {!cardAvailable && (
-                <p className="checkout-region-note">
-                  Card payments aren&apos;t available in your region — please pay
-                  with PayPal.
-                </p>
-              )}
-
-              {!isPayPal && (
-                <div className="checkout-field">
-                  <label htmlFor="checkout-email">Email</label>
-                  <input
-                    id="checkout-email"
-                    className="checkout-input"
-                    type="email"
-                    name="email"
-                    autoComplete="email"
-                    inputMode="email"
-                    maxLength={200}
-                    required
-                    placeholder="you@example.com"
-                    value={email}
-                    onChange={(event) => {
-                      checkoutVisit.noteField("email");
-                      setEmail(event.target.value);
-                    }}
-                  />
-                </div>
-              )}
-
-              {isPayPal && (
-                <fieldset className="checkout-choice">
-                  <legend>Where should we send it?</legend>
-                  <label className="checkout-choice-option">
-                    <input
-                      type="radio"
-                      name="shipToAddress"
-                      value="home"
-                      checked={shipToAddress === "home"}
-                      onChange={() => chooseShipToAddress("home")}
-                    />
-                    <span>
-                      <strong>My home address</strong>
-                      <span className="checkout-choice-hint">
-                        The one saved in PayPal. Nothing to fill in.
-                      </span>
-                    </span>
-                  </label>
-                  <label className="checkout-choice-option">
-                    <input
-                      type="radio"
-                      name="shipToAddress"
-                      value="other"
-                      checked={shipToAddress === "other"}
-                      onChange={() => chooseShipToAddress("other")}
-                    />
-                    <span>
-                      <strong>A different address</strong>
-                      <span className="checkout-choice-hint">For example, a gift.</span>
-                    </span>
-                  </label>
-                </fieldset>
-              )}
-
-              {isPayPal && shipToAddress === "other" && (
-                <Field label="Full name" name="fullName" autoComplete="name" maxLength={200} {...addressProps} />
-              )}
-
-              {isPayPal && shipToAddress === "other" && (
-                <div className="checkout-field">
-                  <label htmlFor="checkout-country">Country</label>
-                  <Select
-                    id="checkout-country"
-                    name="country"
-                    value={shipCountry}
-                    onChange={handleCountryChange}
-                    autoComplete="country"
-                    required
-                    options={config.countries.map((c) => ({ value: c.code, label: c.name }))}
-                  />
-                </div>
-              )}
-
-              {isPayPal && shipToAddress === "other" && (
+              {cardAvailable ? (
                 <>
-                  <Field label="Address" name="address1" autoComplete="address-line1" maxLength={200} {...addressProps} />
-                  <Field label="Apartment, suite, etc." name="address2" autoComplete="address-line2" maxLength={200} optional {...addressProps} />
-                  <div className="checkout-row">
-                    <Field label="City" name="city" autoComplete="address-level2" maxLength={100} {...addressProps} />
-                    <Field
-                      label={shipCountry === "US" ? "ZIP code" : "Postal code"}
-                      name="zip"
-                      autoComplete="postal-code"
-                      maxLength={20}
-                      {...addressProps}
+                  <div className="checkout-field">
+                    <label htmlFor="checkout-email">Email</label>
+                    <input
+                      id="checkout-email"
+                      className="checkout-input"
+                      type="email"
+                      name="email"
+                      autoComplete="email"
+                      inputMode="email"
+                      maxLength={200}
+                      required
+                      placeholder="you@example.com"
+                      value={email}
+                      onChange={(event) => {
+                        checkoutVisit.noteField("email");
+                        setEmail(event.target.value);
+                      }}
                     />
                   </div>
-                  {regions && (
-                    <div className="checkout-field">
-                      <label htmlFor="checkout-state">
-                        {shipCountry === "CA" ? "Province" : "State"}
-                      </label>
-                      <Select
-                        id="checkout-state"
-                        name="state"
-                        value={address.state}
-                        onChange={handleAddressChange}
-                        autoComplete="address-level1"
-                        required
-                        options={regions.map((r) => ({ value: r.code, label: r.name }))}
-                      />
-                    </div>
-                  )}
-                </>
-              )}
-
-              {isPayPal ? (
-                <button
-                  type="submit"
-                  className="checkout-paypal-button"
-                  disabled={Boolean(payment) || isSoldOut}
-                  aria-label={isSoldOut ? "Sold out" : `Continue to PayPal, ${money(totals.total)}`}>
-                  {isSoldOut ? (
-                    "Sold out"
-                  ) : (
-                    <>
-                      <span aria-hidden="true">Continue to</span> <PayPalLogo />
-                      <span aria-hidden="true">· {money(totals.total)}</span>
-                    </>
-                  )}
-                </button>
-              ) : (
-                <>
                   <SecureCheckoutLine className="checkout-secure" />
                   <button
                     type="submit"
@@ -527,55 +327,39 @@ function CheckoutPage() {
                     {isSoldOut ? "Sold out" : `Continue to payment · ${money(totals.total)}`}
                   </button>
                 </>
+              ) : (
+                <>
+                  <p className="checkout-region-note">
+                    Card payments aren&apos;t available in your region — please pay
+                    with PayPal.
+                  </p>
+                  <SecureCheckoutLine className="checkout-secure" />
+                  <button
+                    type="submit"
+                    className="checkout-paypal-button"
+                    disabled={Boolean(payment) || isSoldOut}
+                    aria-label={isSoldOut ? "Sold out" : `Pay with PayPal, ${money(totals.total)}`}>
+                    {isSoldOut ? (
+                      "Sold out"
+                    ) : (
+                      <>
+                        <span aria-hidden="true">Pay with</span> <PayPalLogo />
+                        <span aria-hidden="true">· {money(totals.total)}</span>
+                      </>
+                    )}
+                  </button>
+                </>
               )}
-              {isPayPal && <SecureCheckoutBox />}
             </form>
 
-            {isPayPal && (
-              <section className="checkout-next" aria-labelledby="checkout-next-title">
-                <h2 id="checkout-next-title" className="checkout-next-title">
-                  What happens next
-                </h2>
-                <ol className="checkout-next-list">
-                  <li>
-                    You log in to PayPal and pay. The payment goes to our partner{" "}
-                    <strong>Western Bid</strong>, the name you&apos;ll see in PayPal.
-                  </li>
-                  <li>
-                    We ship your candle to{" "}
-                    {shipToAddress === "home"
-                      ? "the home address saved in your PayPal account"
-                      : "the address above"}
-                    .
-                  </li>
-                  <li>
-                    We email your order confirmation. Delivery takes {DELIVERY_TIME}.
-                  </li>
-                </ol>
-              </section>
-            )}
-
-            {!isSoldOut && cardAvailable && isPayPal && (
-              <div className="checkout-paypal">
-                <p className="checkout-paypal-label">Prefer to pay by card?</p>
-                <button
-                  type="button"
-                  className="checkout-switch-button"
-                  disabled={Boolean(payment)}
-                  onClick={() => switchTo("card")}>
-                  Pay by card, Apple Pay or Google Pay
-                </button>
-              </div>
-            )}
-
-            {!isSoldOut && !isPayPal && (
+            {!isSoldOut && cardAvailable && (
               <p className="checkout-switch">
                 Prefer PayPal?{" "}
                 <button
                   type="button"
                   className="checkout-switch-link"
                   disabled={Boolean(payment)}
-                  onClick={() => switchTo("paypal")}>
+                  onClick={payWithPayPal}>
                   Pay with PayPal
                 </button>
               </p>

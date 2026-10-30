@@ -224,51 +224,12 @@
   gap: var(--spacing-md);
 }
 
-.checkout-field-note {
-  margin: 0;
-  font-size: 13px;
-  opacity: 0.8;
-}
-
 .checkout-region-note {
   margin: 0;
   padding: 12px 14px;
   border: 1px solid rgba(192, 69, 27, 0.35);
   background: rgba(192, 69, 27, 0.05);
   font-size: 14px;
-}
-
-.checkout-next {
-  margin-top: var(--spacing-lg);
-}
-
-.checkout-next-title {
-  margin: 0 0 var(--spacing-sm);
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.checkout-next-list {
-  margin: 0;
-  padding-left: 20px;
-  font-size: 15px;
-  line-height: 1.5;
-}
-
-.checkout-next-list li + li {
-  margin-top: 6px;
-}
-
-.checkout-paypal {
-  margin-top: var(--spacing-lg);
-  padding-top: var(--spacing-md);
-  border-top: 1px solid rgba(235, 124, 70, 0.35);
-}
-
-.checkout-paypal-label {
-  margin: 0 0 var(--spacing-sm);
-  font-size: 15px;
-  font-weight: 600;
 }
 
 .checkout-paypal-button {
@@ -299,87 +260,6 @@
 .checkout-paypal-button .paypal-logo {
   width: 70px;
   height: 19px;
-}
-
-/* ---- PayPal checkout: the shipping address is asked here ---- */
-
-.checkout-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--spacing-md);
-}
-
-.checkout-choice {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.checkout-choice legend {
-  margin-bottom: 6px;
-  padding: 0;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.checkout-choice-option {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 14px;
-  border: 1px solid rgba(235, 124, 70, 0.55);
-  background: #fff8f0;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.checkout-choice-option:has(input:checked) {
-  border-color: var(--color-accent-cobalt);
-  box-shadow: inset 0 0 0 1px var(--color-accent-cobalt);
-}
-
-.checkout-choice-option input {
-  width: 18px;
-  height: 18px;
-  margin: 2px 0 0;
-  flex-shrink: 0;
-  accent-color: var(--color-accent-cobalt);
-}
-
-.checkout-choice-hint {
-  display: block;
-  margin-top: 2px;
-  font-size: 13px;
-  opacity: 0.8;
-}
-
-.checkout-optional {
-  font-weight: 400;
-  opacity: 0.7;
-}
-
-.checkout-switch-button {
-  width: 100%;
-  min-height: 52px;
-  border: 1px solid var(--color-accent-cobalt);
-  background: transparent;
-  font: inherit;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--color-accent-cobalt);
-  cursor: pointer;
-}
-
-.checkout-switch-button:hover:not(:disabled) {
-  background: rgba(255, 98, 14, 0.06);
-}
-
-.checkout-switch-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
 }
 
 /* ---- steps: small dots joined by a line, labels underneath ---- */
@@ -485,9 +365,6 @@
   }
 
   .checkout-form > .checkout-field,
-  .checkout-form > .checkout-choice,
-  .checkout-form > .checkout-row,
-  .checkout-form > .checkout-field-note,
   .checkout-form > .checkout-region-note {
     order: 1;
   }

@@ -180,14 +180,18 @@ export function OrderCancelledPage() {
             the checkout page too.
           </p>
           <div className="order-result-actions">
-            {order && (
-              <Link
-                to={`/checkout/${order.productSlug}${
-                  readCheckoutDraft(order.productSlug)?.method === "paypal" ? "?pay=paypal" : ""
-                }`}>
-                Back to checkout — {order.productName}
-              </Link>
-            )}
+            {/* PayPal goes straight from the product page, so it leads back
+                there; card buyers go back to the checkout. */}
+            {order &&
+              (readCheckoutDraft(order.productSlug)?.method === "paypal" ? (
+                <Link to={`/products/${order.productSlug}`}>
+                  Back to {order.productName}
+                </Link>
+              ) : (
+                <Link to={`/checkout/${order.productSlug}`}>
+                  Back to checkout — {order.productName}
+                </Link>
+              ))}
             <Link to="/products">Browse all scents</Link>
           </div>
           <p>
