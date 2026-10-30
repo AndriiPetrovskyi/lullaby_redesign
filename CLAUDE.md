@@ -33,7 +33,8 @@ update it in the same change whenever something below stops being true.
 - `npm run build` also generates the sitemap and prerendered meta;
   `npm run lint` runs oxlint.
 - Public config is in `.env.production` (API URL, Meta Pixel, GA4, site URL).
-  `VITE_CHECKOUT_ENABLED` and `VITE_ORDERING_PAUSED` switch buying on and off
+  `VITE_CHECKOUT_ENABLED` and `VITE_ORDERING_PAUSED` (set in the Vercel
+  dashboard, not in that file) switch buying on and off
   (`src/config/ordering.js`).
 
 ## Buying flow
