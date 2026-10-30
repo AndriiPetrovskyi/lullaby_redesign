@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen.jsx";
 import { PayPalLogo, SecureCheckoutBox, SecureCheckoutLine } from "../components/PaymentMethods.jsx";
@@ -16,6 +16,8 @@ import {
   redirectToPayment,
   saveCheckoutDraft,
 } from "../services/orders.js";
+import { openCheckoutVisit, updateCheckoutVisit } from "../services/checkoutVisits.js";
+import { getTrafficSource } from "../utils/trafficSource.js";
 import { trackEvent } from "../utils/metaPixel.js";
 import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
 import { responsiveImage } from "../utils/images.js";
@@ -94,6 +96,71 @@ function Field({ label, name, values, onChange, optional, ...props }) {
   );
 }
 
+// Records this checkout visit in our own anonymous funnel (admin →
+// CheckoutVisit): opened, then the first keystroke, then the last field
+// touched. Field names only — never what was typed.
+const FIELD_REPORT_DELAY_MS = 1500;
+
+function useCheckoutVisit(productSlug) {
+  const visitId = useRef(null);
+  const hasStarted = useRef(false);
+  const pending = useRef({});
+  const timer = useRef(null);
+
+  useEffect(() => {
+    if (!productSlug) return undefined;
+    let cancelled = false;
+    // Deferred so React's dev-mode double mount doesn't open two visits.
+    const start = setTimeout(() => {
+      openCheckoutVisit({ productSlug, ...getTrafficSource() }).then((id) => {
+        if (!cancelled) visitId.current = id;
+      });
+    }, 0);
+    return () => {
+      cancelled = true;
+      clearTimeout(start);
+    };
+  }, [productSlug]);
+
+  const flush = useCallback(() => {
+    clearTimeout(timer.current);
+    if (visitId.current && Object.keys(pending.current).length > 0) {
+      updateCheckoutVisit(visitId.current, pending.current);
+      pending.current = {};
+    }
+  }, []);
+
+  useEffect(() => {
+    const onHide = () => document.visibilityState === "hidden" && flush();
+    document.addEventListener("visibilitychange", onHide);
+    // Leaving for another URL (reload, typed address) doesn't always hide the
+    // page first.
+    window.addEventListener("pagehide", flush);
+    return () => {
+      document.removeEventListener("visibilitychange", onHide);
+      window.removeEventListener("pagehide", flush);
+      flush();
+    };
+  }, [flush]);
+
+  const noteField = useCallback(
+    (field, extra = {}) => {
+      Object.assign(pending.current, { lastField: field }, extra);
+      if (!hasStarted.current) {
+        hasStarted.current = true;
+        pending.current.step = "STARTED";
+        flush();
+      } else {
+        clearTimeout(timer.current);
+        timer.current = setTimeout(flush, FIELD_REPORT_DELAY_MS);
+      }
+    },
+    [flush],
+  );
+
+  return { visitId, noteField, flush };
+}
+
 function CheckoutUnavailable({ title, children }) {
   return (
     <>
@@ -130,6 +197,7 @@ function CheckoutPage() {
   const [country, setCountry] = useState(draft?.country ?? null);
   // Going to the payment page: null, or { method, error }.
   const [payment, setPayment] = useState(null);
+  const checkoutVisit = useCheckoutVisit(product?.slug);
 
   useEffect(() => {
     getCheckoutConfig()
@@ -208,13 +276,18 @@ function CheckoutPage() {
   const isPayPal = searchParams.get("pay") === "paypal" || !cardAvailable;
   const regions = shipTo?.regions;
 
-  const switchTo = (method) =>
+  const switchTo = (method) => {
+    checkoutVisit.noteField("paymentMethod");
     setSearchParams(method === "paypal" ? { pay: "paypal" } : {}, { replace: true });
+  };
 
-  const handleAddressChange = (event) =>
+  const handleAddressChange = (event) => {
+    checkoutVisit.noteField(event.target.name);
     setAddress((current) => ({ ...current, [event.target.name]: event.target.value }));
+  };
 
   const handleCountryChange = (event) => {
+    checkoutVisit.noteField("country", { shipToCountry: event.target.value });
     setCountry(event.target.value);
     setAddress((current) => ({ ...current, state: "" }));
   };
@@ -222,6 +295,7 @@ function CheckoutPage() {
   const pay = async (method) => {
     const isOtherAddress = method === "paypal" && shipToAddress === "other";
     setPayment({ method, error: null });
+    checkoutVisit.flush();
     try {
       const [order] = await Promise.all([
         createOrder({
@@ -244,6 +318,7 @@ function CheckoutPage() {
                 country: shipCountry,
               },
           ...orderTrackingFields(),
+          checkoutVisitId: checkoutVisit.visitId.current ?? undefined,
         }),
         wait(MIN_REDIRECT_NOTICE_MS),
       ]);
@@ -276,6 +351,16 @@ function CheckoutPage() {
   const handleSubmit = (event) => {
     event.preventDefault();
     pay(isPayPal ? "paypal" : "card");
+  };
+
+  const chooseShipToAddress = (choice) => {
+    checkoutVisit.noteField("shipToAddress");
+    setShipToAddress(choice);
+  };
+
+  const changeQuantity = (delta) => {
+    checkoutVisit.noteField("quantity");
+    setQuantity((q) => q + delta);
   };
 
   const addressProps = { values: address, onChange: handleAddressChange };
@@ -321,7 +406,10 @@ function CheckoutPage() {
                     required
                     placeholder="you@example.com"
                     value={email}
-                    onChange={(event) => setEmail(event.target.value)}
+                    onChange={(event) => {
+                      checkoutVisit.noteField("email");
+                      setEmail(event.target.value);
+                    }}
                   />
                 </div>
               )}
@@ -335,7 +423,7 @@ function CheckoutPage() {
                       name="shipToAddress"
                       value="home"
                       checked={shipToAddress === "home"}
-                      onChange={() => setShipToAddress("home")}
+                      onChange={() => chooseShipToAddress("home")}
                     />
                     <span>
                       <strong>My home address</strong>
@@ -350,7 +438,7 @@ function CheckoutPage() {
                       name="shipToAddress"
                       value="other"
                       checked={shipToAddress === "other"}
-                      onChange={() => setShipToAddress("other")}
+                      onChange={() => chooseShipToAddress("other")}
                     />
                     <span>
                       <strong>A different address</strong>
@@ -513,7 +601,7 @@ function CheckoutPage() {
                     type="button"
                     aria-label="Decrease quantity"
                     disabled={quantity <= 1}
-                    onClick={() => setQuantity((q) => q - 1)}>
+                    onClick={() => changeQuantity(-1)}>
                     −
                   </button>
                   <output aria-live="polite">{quantity}</output>
@@ -521,7 +609,7 @@ function CheckoutPage() {
                     type="button"
                     aria-label="Increase quantity"
                     disabled={quantity >= maxQuantity}
-                    onClick={() => setQuantity((q) => q + 1)}>
+                    onClick={() => changeQuantity(1)}>
                     +
                   </button>
                 </div>
