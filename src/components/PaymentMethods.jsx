@@ -51,16 +51,32 @@ export function PayPalLogo() {
 
 // Shown under the buy buttons on product pages, so buyers know before they
 // click that Western Bid runs the payment page and appears on statements.
+function LockIcon() {
+  return (
+    <svg className="secure-checkout-box-lock" viewBox="0 0 16 16" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M8 1a3.5 3.5 0 0 0-3.5 3.5V6H4a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 15h8a1.5 1.5 0 0 0 1.5-1.5v-6A1.5 1.5 0 0 0 12 6h-.5V4.5A3.5 3.5 0 0 0 8 1zm2 5H6V4.5a2 2 0 1 1 4 0V6z"
+      />
+    </svg>
+  );
+}
+
+// One line under the card checkout's button, where the full box is too much.
+export function SecureCheckoutLine() {
+  return (
+    <p className="secure-checkout-line">
+      <LockIcon />
+      Secure payment by Western Bid
+    </p>
+  );
+}
+
 export function SecureCheckoutBox() {
   return (
     <div className="secure-checkout-box">
       <p className="secure-checkout-box-title">
-        <svg className="secure-checkout-box-lock" viewBox="0 0 16 16" aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M8 1a3.5 3.5 0 0 0-3.5 3.5V6H4a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 15h8a1.5 1.5 0 0 0 1.5-1.5v-6A1.5 1.5 0 0 0 12 6h-.5V4.5A3.5 3.5 0 0 0 8 1zm2 5H6V4.5a2 2 0 1 1 4 0V6z"
-          />
-        </svg>
+        <LockIcon />
         Secure checkout by Western Bid
       </p>
       <p className="secure-checkout-box-text">

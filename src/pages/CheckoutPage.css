@@ -1,4 +1,5 @@
 .checkout {
+  width: 100%;
   max-width: var(--container-max-width);
   margin-inline: auto;
   padding: var(--spacing-lg) var(--spacing-md) 96px;
@@ -435,6 +436,37 @@
   background: var(--color-accent-cobalt);
 }
 
+/* ---- Card checkout: the email, a country line and the button ---- */
+
+.checkout-shipto {
+  margin: 0;
+  font-size: 14px;
+}
+
+.checkout-shipto-change,
+.checkout-switch-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  color: var(--color-accent-cobalt);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.checkout-switch-link:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.checkout-switch {
+  margin: var(--spacing-lg) 0 0;
+  font-size: 14px;
+  text-align: center;
+}
+
 /* On phones: the email right under the steps, then the compact order
    summary, then the pay button and the rest. The wrappers step aside
    (display: contents) so all of these can be ordered in one column. */
@@ -454,6 +486,7 @@
   }
 
   .checkout-form > .checkout-field,
+  .checkout-form > .checkout-shipto,
   .checkout-form > .checkout-choice,
   .checkout-form > .checkout-row,
   .checkout-form > .checkout-field-note,

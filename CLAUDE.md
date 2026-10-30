@@ -35,8 +35,8 @@ update it in the same change whenever something below stops being true.
 ## Buying flow
 
 - Product page "Buy now":
-  - card: goes to `/checkout/:slug`, which asks only for the email and the
-    "Ship to" country; Stripe asks for the address;
+  - card: goes to `/checkout/:slug`, which asks only for the email (the
+    country is a changeable line); Stripe asks for the address;
   - PayPal button, or card unavailable in the buyer's region (e.g. Ukraine):
     goes to `/checkout/:slug?pay=paypal` (no email, no phone). PayPal only
     ships to the address saved on the buyer's PayPal account (Western Bid
@@ -44,12 +44,16 @@ update it in the same change whenever something below stops being true.
     "My home address" (default, the one saved in PayPal, nothing to fill in,
     express order) or "A different address" (full name, address, apartment,
     city, ZIP, state for US/CA; sent as a regular non-express order).
-- Checkout page (`src/pages/CheckoutPage.jsx`): dot stepper (card: Email,
-  then "Shipping & payment" with the note "on Western Bid", then
-  Confirmation; PayPal: Shipping, Payment "on PayPal", Confirmation),
-  email field, "Ship to" country (sets shipping price), "Continue to secure
-  payment · $X", the Western Bid trust box, "What happens next", "Prefer
-  PayPal?", and the order summary with a quantity stepper. On mobile the CSS
+- Checkout page (`src/pages/CheckoutPage.jsx`), card: deliberately minimal
+  (Andrii's ask): the email field (required), a "Shipping to <country> ·
+  Change" line (country guessed from IP; Change opens the "Ship to" select,
+  which sets the shipping price), "Continue to secure payment · $X", one
+  "Secure payment by Western Bid" line and a small "Prefer PayPal? Pay with
+  PayPal" link. No stepper, no "What happens next".
+- PayPal checkout: dot stepper (Shipping, Payment "on PayPal",
+  Confirmation), the address choice, country, the PayPal button, the Western
+  Bid trust box, "What happens next" and "Prefer to pay by card?".
+- Both have the order summary with a quantity stepper. On mobile the CSS
   reorders blocks with `display: contents`; the mobile media block must stay at
   the end of the CSS file.
 - `SecureCheckoutBox` (`src/components/PaymentMethods.jsx`): "Secure checkout

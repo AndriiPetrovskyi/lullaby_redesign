@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import LoadingScreen from "../components/LoadingScreen.jsx";
-import { PayPalLogo, SecureCheckoutBox } from "../components/PaymentMethods.jsx";
+import { PayPalLogo, SecureCheckoutBox, SecureCheckoutLine } from "../components/PaymentMethods.jsx";
 import RedirectNotice from "../components/RedirectNotice.jsx";
 import Seo from "../components/Seo.jsx";
 import Select from "../components/ui/Select.jsx";
@@ -35,17 +35,16 @@ const splitName = (fullName) => {
 const MIN_REDIRECT_NOTICE_MS = 900;
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// Leaving our site for a page with another company's name on it is where
-// buyers hesitate, so the checkout says up front that it's coming.
-function CheckoutSteps({ isPayPal }) {
+// Leaving our site for PayPal is where buyers hesitate, so the PayPal
+// checkout says up front that it's coming. The card checkout is only the
+// email, so it has no steps.
+function CheckoutSteps() {
   // The middle step names whose page it is, so the hand-off is expected.
-  const steps = isPayPal
-    ? [{ label: "Shipping" }, { label: "Payment", note: "on PayPal" }, { label: "Confirmation" }]
-    : [
-        { label: "Email" },
-        { label: "Shipping & payment", note: "on Western Bid" },
-        { label: "Confirmation" },
-      ];
+  const steps = [
+    { label: "Shipping" },
+    { label: "Payment", note: "on PayPal" },
+    { label: "Confirmation" },
+  ];
   return (
     <ol className="checkout-steps" aria-label="Checkout steps">
       {steps.map(({ label, note }, i) => (
@@ -108,7 +107,9 @@ function CheckoutUnavailable({ title, children }) {
 }
 
 // Card checkout asks us for the email only: Western Bid passes it on to
-// Stripe, whose page then asks for the shipping address and the card.
+// Stripe, whose page then asks for the shipping address and the card. The
+// country (which prices the shipping) is guessed from the IP and shown as one
+// line the buyer can change.
 // PayPal checkout (?pay=paypal) needs nothing but the country to price the
 // shipping, unless the buyer ships to an address other than their PayPal one.
 function CheckoutPage() {
@@ -128,6 +129,8 @@ function CheckoutPage() {
   // Where it ships, which sets the shipping price; null means the country
   // the backend guessed from the visitor's IP.
   const [country, setCountry] = useState(draft?.country ?? null);
+  // Card checkout shows the country as a line until the buyer opens it.
+  const [isChangingCountry, setIsChangingCountry] = useState(false);
   // Going to the payment page: null, or { method, error }.
   const [payment, setPayment] = useState(null);
 
@@ -288,7 +291,7 @@ function CheckoutPage() {
           <span aria-hidden="true">←</span> Back to {product.name}
         </Link>
         <h1 className="checkout-title">Checkout</h1>
-        <CheckoutSteps isPayPal={isPayPal} />
+        {isPayPal && <CheckoutSteps />}
         {payment && (
           <RedirectNotice
             paymentMethod={payment.method}
@@ -323,10 +326,20 @@ function CheckoutPage() {
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
                   />
-                  <p className="checkout-field-note">
-                    For your order confirmation and delivery updates.
-                  </p>
                 </div>
+              )}
+
+              {!isPayPal && !isChangingCountry && (
+                <p className="checkout-shipto">
+                  Shipping to {shipTo?.name} ·{" "}
+                  <button
+                    type="button"
+                    className="checkout-shipto-change"
+                    aria-label={`Change shipping country (${shipTo?.name})`}
+                    onClick={() => setIsChangingCountry(true)}>
+                    Change
+                  </button>
+                </p>
               )}
 
               {isPayPal && (
@@ -367,20 +380,22 @@ function CheckoutPage() {
                 <Field label="Full name" name="fullName" autoComplete="name" maxLength={200} {...addressProps} />
               )}
 
-              <div className="checkout-field">
-                <label htmlFor="checkout-country">
-                  {isPayPal && shipToAddress === "home" ? "Country" : "Ship to"}
-                </label>
-                <Select
-                  id="checkout-country"
-                  name="country"
-                  value={shipCountry}
-                  onChange={handleCountryChange}
-                  autoComplete="country"
-                  required
-                  options={config.countries.map((c) => ({ value: c.code, label: c.name }))}
-                />
-              </div>
+              {(isPayPal || isChangingCountry) && (
+                <div className="checkout-field">
+                  <label htmlFor="checkout-country">
+                    {isPayPal && shipToAddress === "home" ? "Country" : "Ship to"}
+                  </label>
+                  <Select
+                    id="checkout-country"
+                    name="country"
+                    value={shipCountry}
+                    onChange={handleCountryChange}
+                    autoComplete="country"
+                    required
+                    options={config.countries.map((c) => ({ value: c.code, label: c.name }))}
+                  />
+                </div>
+              )}
 
               {isPayPal && shipToAddress === "other" && (
                 <>
@@ -440,14 +455,14 @@ function CheckoutPage() {
                     : `Continue to secure payment · ${money(totals.total)}`}
                 </button>
               )}
-              <SecureCheckoutBox />
+              {isPayPal ? <SecureCheckoutBox /> : <SecureCheckoutLine />}
             </form>
 
-            <section className="checkout-next" aria-labelledby="checkout-next-title">
-              <h2 id="checkout-next-title" className="checkout-next-title">
-                What happens next
-              </h2>
-              {isPayPal ? (
+            {isPayPal && (
+              <section className="checkout-next" aria-labelledby="checkout-next-title">
+                <h2 id="checkout-next-title" className="checkout-next-title">
+                  What happens next
+                </h2>
                 <ol className="checkout-next-list">
                   <li>
                     You log in to PayPal and pay. The payment goes to our partner{" "}
@@ -464,50 +479,33 @@ function CheckoutPage() {
                     We email your order confirmation. Delivery takes {DELIVERY_TIME}.
                   </li>
                 </ol>
-              ) : (
-                <ol className="checkout-next-list">
-                  <li>
-                    On the secure payment page, enter your shipping address (in the
-                    country you picked) and pay by card, Apple Pay or Google Pay. We
-                    never see your card details.
-                  </li>
-                  <li>
-                    The payment page is run by our partner <strong>Western Bid</strong>{" "}
-                    through Stripe. It&apos;s the name you&apos;ll see there and on
-                    your statement.
-                  </li>
-                  <li>
-                    We email your order confirmation, then ship your candle.
-                    Delivery takes {DELIVERY_TIME}.
-                  </li>
-                </ol>
-              )}
-            </section>
+              </section>
+            )}
 
-            {!isSoldOut && cardAvailable && (
+            {!isSoldOut && cardAvailable && isPayPal && (
               <div className="checkout-paypal">
-                <p className="checkout-paypal-label">
-                  {isPayPal ? "Prefer to pay by card?" : "Prefer PayPal?"}
-                </p>
-                {isPayPal ? (
-                  <button
-                    type="button"
-                    className="checkout-switch-button"
-                    disabled={Boolean(payment)}
-                    onClick={() => switchTo("card")}>
-                    Pay by card, Apple Pay or Google Pay
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="checkout-paypal-button"
-                    disabled={Boolean(payment)}
-                    onClick={() => switchTo("paypal")}
-                    aria-label="Pay with PayPal">
-                    <span aria-hidden="true">Pay with</span> <PayPalLogo />
-                  </button>
-                )}
+                <p className="checkout-paypal-label">Prefer to pay by card?</p>
+                <button
+                  type="button"
+                  className="checkout-switch-button"
+                  disabled={Boolean(payment)}
+                  onClick={() => switchTo("card")}>
+                  Pay by card, Apple Pay or Google Pay
+                </button>
               </div>
+            )}
+
+            {!isSoldOut && !isPayPal && (
+              <p className="checkout-switch">
+                Prefer PayPal?{" "}
+                <button
+                  type="button"
+                  className="checkout-switch-link"
+                  disabled={Boolean(payment)}
+                  onClick={() => switchTo("paypal")}>
+                  Pay with PayPal
+                </button>
+              </p>
             )}
           </div>
 
