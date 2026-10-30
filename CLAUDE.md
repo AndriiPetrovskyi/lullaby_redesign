@@ -38,12 +38,12 @@ update it in the same change whenever something below stops being true.
 ## Buying flow
 
 - Product page "Buy now":
-  - card: goes to `/checkout/:slug`, which asks only for the email; Stripe
-    asks for the address. Shipping is free everywhere, so no country is
-    asked; the backend guesses it from the IP.
-  - PayPal button, or card unavailable in the buyer's region (e.g. Ukraine,
-    which is why Andrii sees the PayPal page from both buttons):
-    goes to `/checkout/:slug?pay=paypal` (no email, no phone). PayPal only
+  - "Buy now" ALWAYS goes to `/checkout/:slug`, the email-only page
+    (Andrii's explicit ask; he tests from Ukraine). Stripe asks for the
+    address. Shipping is free everywhere, so no country is asked; the backend
+    guesses it from the IP. Where cards aren't taken (`cardUnavailableInRegion`,
+    e.g. Ukraine) the same page pays via PayPal (express, email kept).
+  - PayPal button: goes to `/checkout/:slug?pay=paypal` (no email, no phone). PayPal only
     ships to the address saved on the buyer's PayPal account (Western Bid
     turns its address step off), so the page asks "Where should we send it?":
     "My home address" (default, the one saved in PayPal, nothing to fill in,

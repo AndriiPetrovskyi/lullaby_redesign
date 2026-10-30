@@ -205,7 +205,9 @@ function CheckoutPage() {
   const maxQuantity = Math.min(config.maxQuantity, product.stock);
   const isSoldOut = product.stock < 1;
   const cardAvailable = config.paymentMethods.includes("card");
-  const isPayPal = searchParams.get("pay") === "paypal" || !cardAvailable;
+  // The PayPal page (?pay=paypal) or the email-only page. Where cards aren't
+  // taken (e.g. Ukraine) the email-only page still shows and pays via PayPal.
+  const isPayPal = searchParams.get("pay") === "paypal";
   const regions = shipTo?.regions;
 
   const switchTo = (method) =>
@@ -220,7 +222,7 @@ function CheckoutPage() {
   };
 
   const pay = async (method) => {
-    const isOtherAddress = method === "paypal" && shipToAddress === "other";
+    const isOtherAddress = isPayPal && shipToAddress === "other";
     setPayment({ method, error: null });
     try {
       const [order] = await Promise.all([
@@ -240,7 +242,7 @@ function CheckoutPage() {
                 state: regions ? address.state : "",
               }
             : {
-                ...(method === "card" ? { email: email.trim() } : {}),
+                ...(isPayPal ? {} : { email: email.trim() }),
                 country: shipCountry,
               },
           ...orderTrackingFields(),
@@ -253,7 +255,7 @@ function CheckoutPage() {
         country: shipCountry,
         address,
         shipToAddress,
-        method,
+        method: isPayPal ? "paypal" : "card",
       });
       trackEvent("AddPaymentInfo", {
         content_ids: [product.id],
@@ -275,7 +277,7 @@ function CheckoutPage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    pay(isPayPal ? "paypal" : "card");
+    pay(isPayPal || !cardAvailable ? "paypal" : "card");
   };
 
   const addressProps = { values: address, onChange: handleAddressChange };
@@ -300,7 +302,7 @@ function CheckoutPage() {
         <div className="checkout-layout">
           <div className="checkout-main">
             <form className="checkout-form" onSubmit={handleSubmit}>
-              {!cardAvailable && (
+              {isPayPal && !cardAvailable && (
                 <p className="checkout-region-note">
                   Card payments aren&apos;t available in your region — please pay
                   with PayPal.

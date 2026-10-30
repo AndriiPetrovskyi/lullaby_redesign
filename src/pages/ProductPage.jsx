@@ -21,7 +21,6 @@ import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
 import { trackCustomEvent, trackEvent } from "../utils/metaPixel.js";
 import { CHECKOUT_ENABLED, ORDERING_PAUSED } from "../config/ordering.js";
 import { PayPalLogo, SecureCheckoutBox } from "../components/PaymentMethods.jsx";
-import { getCheckoutConfig } from "../services/orders.js";
 import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
 import { responsiveImage, uniquePhotos, withPhotoFirst } from "../utils/images.js";
 import {
@@ -103,16 +102,6 @@ function ProductPage() {
   const [openInfoSections, setOpenInfoSections] = useState(() => new Set());
   const [isDirectOrderModalOpen, setIsDirectOrderModalOpen] = useState(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
-  // Visitors where card payments aren't allowed (Ukraine) pay with PayPal.
-  const [cardAvailable, setCardAvailable] = useState(true);
-
-  useEffect(() => {
-    if (!CHECKOUT_ENABLED) return;
-    getCheckoutConfig()
-      .then((config) => setCardAvailable(!config.cardUnavailableInRegion))
-      .catch(() => {});
-  }, []);
-
   const [activeImage, setActiveImage] = useState(0);
 
   useEffect(() => {
@@ -190,9 +179,10 @@ function ProductPage() {
       ? "Sold out"
       : "Buy now";
 
-  // Both go to our checkout first: card buyers give only the email there,
-  // PayPal buyers the email and shipping address (PayPal itself would only
-  // ship to the address on their PayPal account).
+  // Both go to our checkout first. "Buy now" always opens the email-only
+  // page (Andrii's ask), even where cards aren't taken: that page then
+  // sends the buyer on to PayPal. The PayPal button opens the PayPal page,
+  // which lets the buyer ship somewhere other than their PayPal address.
   const canPayWithPayPal = CHECKOUT_ENABLED && canBuy;
 
   const handleBuyClick = (paymentMethod) => {
@@ -205,8 +195,7 @@ function ProductPage() {
     });
     trackGaEvent("begin_checkout", gaItem(product));
     if (CHECKOUT_ENABLED) {
-      const isPayPal = paymentMethod === "paypal" || !cardAvailable;
-      navigate(`/checkout/${product.slug}${isPayPal ? "?pay=paypal" : ""}`);
+      navigate(`/checkout/${product.slug}${paymentMethod === "paypal" ? "?pay=paypal" : ""}`);
     } else {
       setIsCheckoutModalOpen(true);
     }
