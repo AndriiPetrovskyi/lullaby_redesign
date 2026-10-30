@@ -1,0 +1,53 @@
+# Lullaby Rituals — storefront
+
+Frontend of lullaby-rituals.com (scented candles shop). Owner: Andrii. Talk to
+him in Ukrainian, short and to the point.
+
+The project is two repos:
+- `lullaby_redesign` (this one): Vite + React, hosted on Vercel.
+- `lullaby_backend`: Express + Prisma + AdminJS on Railway, Neon Postgres. Its
+  CLAUDE.md describes payments (Western Bid), orders and deploying the API.
+
+Andrii works on it from more than one computer. This file is the shared memory:
+update it in the same change whenever something below stops being true.
+
+## Rules from Andrii
+
+- Never merge into `main` or deploy without his explicit go-ahead. Work on a
+  branch, test, show him, then merge when he says so.
+- After every change, verify every detail yourself, on desktop and on a phone
+  width: that it works and that nothing else broke (no horizontal scroll, no
+  console errors).
+- Don't propose asking Western Bid anything; work with what their gateway does.
+- He checks designs on his phone, so mobile layout matters first.
+
+## Deploy
+
+- Vercel deploys `main` automatically on push. Branches get preview URLs.
+- `npm run build` also generates the sitemap and prerendered meta;
+  `npm run lint` runs oxlint.
+- Public config is in `.env.production` (API URL, Meta Pixel, GA4, site URL).
+  `VITE_CHECKOUT_ENABLED` and `VITE_ORDERING_PAUSED` switch buying on and off
+  (`src/config/ordering.js`).
+
+## Buying flow
+
+- Product page "Buy now":
+  - card available: goes to `/checkout/:slug`, an email-only page;
+  - PayPal button, or card unavailable in the buyer's region (e.g. Ukraine):
+    creates the order and goes straight to PayPal.
+- Checkout page (`src/pages/CheckoutPage.jsx`): dot stepper (Email, then
+  "Shipping & payment" with the note "on Western Bid", then Confirmation),
+  email field, "Ship to" country (sets shipping price), "Continue to secure
+  payment · $X", the Western Bid trust box, "What happens next", "Prefer
+  PayPal?", and the order summary with a quantity stepper. On mobile the CSS
+  reorders blocks with `display: contents`; the mobile media block must stay at
+  the end of the CSS file.
+- `SecureCheckoutBox` (`src/components/PaymentMethods.jsx`): "Secure checkout
+  by Western Bid", shown under the buy buttons and on checkout.
+- The checkout draft (product, email, quantity, country) is kept in
+  sessionStorage `checkout-draft`, so the cancel page can link back to it.
+- Prices show in USD; the payment page also shows the local currency, which is
+  fine. Don't add currency hints.
+- Reviews: `REVIEWS` in `src/data/reviews.js` is empty in production, so the
+  rating is hidden there.
