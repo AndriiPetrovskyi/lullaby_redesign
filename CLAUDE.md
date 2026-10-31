@@ -116,17 +116,13 @@ it's required (`src/utils/consent.js`).
 
 ## Where things stand (update or delete as it changes)
 
-As of Oct 30, 2026:
-- Branch `paypal-address-choice` (both repos, pushed, not merged): "Pay with
-  PayPal" goes straight to PayPal from the product page, the PayPal checkout
-  page and its address form are gone, the backend stops sending
-  `no_shipping=2`.
-- Before merging: one real PayPal payment where the buyer changes the
-  address on PayPal, then check (read only) that the order in the
-  production database got that address from the IPN, not the one the
-  account was registered with. Andrii refunds it. Then merge both repos,
-  push, and Andrii runs `railway up`.
-- Next, in the same branch: split analytics and the admin by payment method
+As of Oct 31, 2026:
+- Merged into `main` (both repos): "Pay with PayPal" goes straight to
+  PayPal from the product page, the PayPal checkout page and its address
+  form are gone, the backend stops sending `no_shipping=2`. Proven with a
+  real payment (order #1091): the address picked on PayPal arrives in the
+  IPN and lands on the order.
+- Next, in a new branch: split analytics and the admin by payment method
   (card "Buy now" vs PayPal): a payment method on `begin_checkout`,
   without breaking InitiateCheckout for the ads; record PayPal clicks in
   CheckoutVisit too; show and filter orders by `paymentGate` in the admin.
