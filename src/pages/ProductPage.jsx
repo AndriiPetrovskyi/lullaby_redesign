@@ -30,7 +30,9 @@ import {
   redirectToPayment,
   saveCheckoutDraft,
 } from "../services/orders.js";
+import { openCheckoutVisit } from "../services/checkoutVisits.js";
 import { gaItem, trackGaEvent } from "../utils/googleAnalytics.js";
+import { getTrafficSource } from "../utils/trafficSource.js";
 import { responsiveImage, uniquePhotos, withPhotoFirst } from "../utils/images.js";
 import {
   CONTACT_EMAIL,
@@ -57,6 +59,10 @@ import "./ProductPage.css";
 // Shown after every candle's own photos: the Message in a Vial that ships
 // with it.
 const VIAL_GALLERY_PHOTOS = [notesAndVialImage, vialImage, penWritingImage];
+
+// How long "Pay with PayPal" waits to record the click in our funnel before
+// going on without it.
+const VISIT_TIMEOUT_MS = 1500;
 
 const MOBILE_GALLERY_WIDTHS = [600, 800, 1200];
 const DESKTOP_GALLERY_WIDTHS = [800, 1200, 1600];
@@ -217,12 +223,23 @@ function ProductPage() {
   const payWithPayPal = async () => {
     setPayment({ method: "paypal", error: null });
     try {
+      // Recorded in our own funnel (admin → CheckoutVisit) next to the card
+      // checkout visits; the order then moves it along.
+      const checkoutVisitId = await Promise.race([
+        openCheckoutVisit({
+          productSlug: product.slug,
+          paymentMethod: "paypal",
+          ...getTrafficSource(),
+        }),
+        new Promise((resolve) => setTimeout(resolve, VISIT_TIMEOUT_MS, null)),
+      ]);
       const order = await createOrder({
         productSlug: product.slug,
         quantity: 1,
         paymentMethod: "paypal",
         express: true,
         ...orderTrackingFields(),
+        checkoutVisitId: checkoutVisitId ?? undefined,
       });
       // The cancel page links back here, not to the card checkout.
       saveCheckoutDraft(product.slug, { ...readCheckoutDraft(product.slug), method: "paypal" });

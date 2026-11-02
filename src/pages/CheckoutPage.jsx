@@ -71,7 +71,9 @@ function useCheckoutVisit(productSlug) {
     let cancelled = false;
     // Deferred so React's dev-mode double mount doesn't open two visits.
     const start = setTimeout(() => {
-      openCheckoutVisit({ productSlug, ...getTrafficSource() }).then((id) => {
+      // "card": this page is the card checkout; "Prefer PayPal?" switches the
+      // visit to PayPal when its order is created.
+      openCheckoutVisit({ productSlug, paymentMethod: "card", ...getTrafficSource() }).then((id) => {
         if (!cancelled) visitId.current = id;
       });
     }, 0);

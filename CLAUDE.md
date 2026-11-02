@@ -107,9 +107,12 @@ it's required (`src/utils/consent.js`).
   `SecureCheckoutLine` (same file): one "Secure payment by Western Bid" line
   in the footer of every page (desktop and mobile footers) and above the card
   checkout button.
-- The checkout page records an anonymous funnel (admin → CheckoutVisit):
-  opened, first keystroke, last field touched (names only), then the order
-  and payment steps from the backend (`checkoutVisitId` on the order).
+- An anonymous funnel (admin → CheckoutVisit, filterable by payment
+  method): the card checkout page records opened, first keystroke, last
+  field touched (names only); "Pay with PayPal" on the product page records
+  a click (waiting at most 1.5 s for it). The backend adds the order and
+  payment steps (`checkoutVisitId` on the order) and the method actually
+  used, so "Prefer PayPal?" turns a card visit into a PayPal one.
 - The checkout draft (product, email, quantity, method) is kept in
   sessionStorage `checkout-draft`, so the cancel page can link back: to the
   checkout after a card attempt, to the product page after PayPal.
@@ -126,10 +129,11 @@ As of Oct 31, 2026:
   form are gone, the backend stops sending `no_shipping=2`. Proven with a
   real payment (order #1091): the address picked on PayPal arrives in the
   IPN and lands on the order.
-- Next, in a new branch: split analytics and the admin by payment method
-  (card "Buy now" vs PayPal): a payment method on `begin_checkout`,
-  without breaking InitiateCheckout for the ads; record PayPal clicks in
-  CheckoutVisit too; show and filter orders by `paymentGate` in the admin.
+- In branch `analytics-payment-split` (both repos, not merged yet): the
+  card / PayPal split in GA4 (`button`, `payment_type` on
+  `begin_checkout`) and in the admin (PayPal clicks in CheckoutVisit,
+  payment method column and filter on orders and visits). Andrii is to
+  add the two GA4 custom dimensions; the backend needs `railway up`.
 - After that, in its own branch: some design changes Andrii will describe.
 - The ordered list is also in his Google Calendar on Oct 31, 2026
   ("Lullaby: PayPal одразу на PayPal — тест і запуск").
