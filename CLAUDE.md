@@ -67,7 +67,11 @@ Meta Pixel and GA4 run only on the deployed site, after cookie consent where
 it's required (`src/utils/consent.js`).
 - Product page: `ViewContent` / `view_item`; any buy button:
   `InitiateCheckout` / `begin_checkout` (the Meta ad campaign optimizes for
-  InitiateCheckout, so don't change its payload); "Order directly":
+  InitiateCheckout, so don't change its payload). `begin_checkout` also has
+  `button` (`buy_now` or `paypal`, the button pressed) and `payment_type`
+  (`card` or `paypal`, where it leads: "Buy now" goes to PayPal where cards
+  aren't accepted); both need custom dimensions in GA4 to show in reports.
+  "Order directly":
   `Contact` / `generate_lead`.
 - Leaving for the payment page: `AddPaymentInfo` / `add_payment_info` with
   `payment_type` card or paypal. For PayPal it fires on the product page,

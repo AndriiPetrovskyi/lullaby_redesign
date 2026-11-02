@@ -247,8 +247,15 @@ function ProductPage() {
       value: product.price,
       currency: "USD",
     });
-    trackGaEvent("begin_checkout", gaItem(product));
-    if (CHECKOUT_ENABLED && (paymentMethod === "paypal" || !cardAvailable)) {
+    // GA4 splits clicks by the button pressed and by where it leads: "Buy
+    // now" goes to PayPal too where cards aren't accepted (e.g. Ukraine).
+    const goesToPayPal = CHECKOUT_ENABLED && (paymentMethod === "paypal" || !cardAvailable);
+    trackGaEvent("begin_checkout", {
+      ...gaItem(product),
+      button: paymentMethod === "paypal" ? "paypal" : "buy_now",
+      payment_type: !CHECKOUT_ENABLED ? "etsy" : goesToPayPal ? "paypal" : "card",
+    });
+    if (goesToPayPal) {
       payWithPayPal();
     } else if (CHECKOUT_ENABLED) {
       navigate(`/checkout/${product.slug}`);
