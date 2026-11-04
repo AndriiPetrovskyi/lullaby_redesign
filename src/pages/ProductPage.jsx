@@ -3,13 +3,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import { useProduct } from "../hooks/useProducts.js";
+import { useProductReviews } from "../hooks/useProductReviews.js";
 import LoadingScreen from "../components/LoadingScreen.jsx";
 import GuaranteesMarquee from "../components/GuaranteesMarquee.jsx";
 import MoreScents from "../components/MoreScents.jsx";
-import ProductReviews, {
-  ReviewsSummaryLink,
-} from "../components/ProductReviews.jsx";
-import { getProductReviews } from "../data/reviews.js";
+import ProductReviews from "../components/ProductReviews.jsx";
 import MutableVideo from "../components/MutableVideo.jsx";
 import Modal from "../components/Modal.jsx";
 import Seo from "../components/Seo.jsx";
@@ -113,6 +111,7 @@ function ProductPage() {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const { product, isLoading, error } = useProduct(slug);
+  const reviews = useProductReviews(slug);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const [openInfoSections, setOpenInfoSections] = useState(() => new Set());
   const [isDirectOrderModalOpen, setIsDirectOrderModalOpen] = useState(false);
@@ -186,8 +185,6 @@ function ProductPage() {
       </>
     );
   }
-
-  const reviews = getProductReviews(product.slug);
 
   const productSeo = (
     <Seo
@@ -363,7 +360,6 @@ function ProductPage() {
           ))}
         />
         <div className="m-product-page-info">
-          <ReviewsSummaryLink reviews={reviews} className="product-page-rating-top" />
           <p className="m-product-page-name">{product.name}</p>
           <p className="m-product-page-price">${product.price}</p>
           <ul className="m-product-page-perks">
@@ -722,7 +718,6 @@ function ProductPage() {
         </div>
 
         <div className="d-product-page-info">
-          <ReviewsSummaryLink reviews={reviews} className="product-page-rating-top" />
           <h1 className="d-product-page-name">{product.name}</h1>
           <p className="d-product-page-price">${product.price}</p>
           <ul className="d-product-page-perks">

@@ -904,10 +904,6 @@
 }
 
 /* Rating sits above the product name as a small overline. */
-.reviews-summary-link.product-page-rating-top {
-  margin: 0 0 6px;
-}
-
 /* The buttons around it are centred on mobile and in the closing block, so
    the box follows; next to the left-aligned perks it stays left-aligned. */
 .m-product-page-cta-row .secure-checkout-box,

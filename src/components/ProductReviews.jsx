@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { responsiveImage } from "../utils/images.js";
 import "./ProductReviews.css";
 
 const INITIAL_COUNT = 3;
-export const REVIEWS_SECTION_ID = "reviews";
+const PHOTO_WIDTHS = [400, 800];
 
 function averageRating(reviews) {
   const total = reviews.reduce((sum, review) => sum + review.rating, 0);
@@ -28,30 +30,6 @@ function formatDate(isoDate) {
   });
 }
 
-export function ReviewsSummaryLink({ reviews, className = "" }) {
-  if (reviews.length === 0) return null;
-
-  const scrollToReviews = (event) => {
-    event.preventDefault();
-    document
-      .getElementById(REVIEWS_SECTION_ID)
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  return (
-    <a
-      href={`#${REVIEWS_SECTION_ID}`}
-      className={`reviews-summary-link ${className}`.trim()}
-      onClick={scrollToReviews}>
-      <Stars rating={averageRating(reviews)} />
-      <span>
-        {averageRating(reviews).toFixed(1)} · {reviews.length}{" "}
-        {reviews.length === 1 ? "review" : "reviews"}
-      </span>
-    </a>
-  );
-}
-
 function ProductReviews({ reviews }) {
   const [showAll, setShowAll] = useState(false);
   if (reviews.length === 0) return null;
@@ -60,9 +38,9 @@ function ProductReviews({ reviews }) {
   const average = averageRating(reviews);
 
   return (
-    <section className="reviews" id={REVIEWS_SECTION_ID}>
+    <section className="reviews" id="reviews">
       <div className="reviews-header">
-        <h2 className="reviews-title">Reviews</h2>
+        <h2 className="reviews-title">What our customers say</h2>
         <p className="reviews-average">
           <Stars rating={average} />
           <span>
@@ -75,8 +53,22 @@ function ProductReviews({ reviews }) {
       <ul className="reviews-list">
         {visible.map((review) => (
           <li className="reviews-card" key={review.id}>
+            {review.image && (
+              <img
+                className="reviews-photo"
+                {...responsiveImage(review.image, PHOTO_WIDTHS, "(max-width: 768px) 100vw, 400px")}
+                alt={`From ${review.name}`}
+                loading="lazy"
+              />
+            )}
             <Stars rating={review.rating} />
             <p className="reviews-text">{review.text}</p>
+            {review.productSlug && (
+              <p className="reviews-product">
+                Purchased:{" "}
+                <Link to={`/products/${review.productSlug}`}>{review.productName}</Link>
+              </p>
+            )}
             <p className="reviews-meta">
               <span className="reviews-name">{review.name}</span>
               {review.location && <>, {review.location}</>}

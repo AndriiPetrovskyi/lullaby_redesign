@@ -60,6 +60,13 @@
   border: 1px solid rgba(235, 124, 70, 0.3);
 }
 
+.reviews-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
 .reviews-text {
   flex: 1;
   margin: 0;
@@ -67,6 +74,18 @@
   font-size: 16px;
   line-height: 1.6;
   color: var(--color-text-dark);
+}
+
+.reviews-product {
+  margin: 0;
+  font-family: var(--font-family-body);
+  font-size: 14px;
+  color: var(--color-text-dark);
+}
+
+.reviews-product a {
+  color: inherit;
+  font-weight: 700;
 }
 
 .reviews-meta {
@@ -103,19 +122,4 @@
 .reviews-more:hover {
   background: var(--color-accent-cobalt);
   color: var(--color-bg-light);
-}
-
-.reviews-summary-link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  margin-top: 6px;
-  font-family: var(--font-family-body);
-  font-size: 14px;
-  color: var(--color-text-dark);
-  text-decoration: none;
-}
-
-.reviews-summary-link:hover span:last-child {
-  text-decoration: underline;
 }

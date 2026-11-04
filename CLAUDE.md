@@ -118,27 +118,48 @@ it's required (`src/utils/consent.js`).
   checkout after a card attempt, to the product page after PayPal.
 - Prices show in USD; the payment page also shows the local currency, which is
   fine. Don't add currency hints.
-- Reviews: `REVIEWS` in `src/data/reviews.js` is empty in production, so the
-  rating is hidden there.
+- Reviews come from the backend (`GET /api/reviews`, added in the admin, real
+  customer reviews only). Every candle shows all of them, its own first, and
+  each card says "Purchased: <candle>", so nobody takes a review of another
+  candle for this one's. There's no rating at the top of the page, only in
+  the reviews section. With none, or if the request fails, the section hides.
 
 ## Where things stand (update or delete as it changes)
 
-As of Oct 31, 2026:
-- Merged into `main` (both repos): "Pay with PayPal" goes straight to
-  PayPal from the product page, the PayPal checkout page and its address
-  form are gone, the backend stops sending `no_shipping=2`. Proven with a
-  real payment (order #1091): the address picked on PayPal arrives in the
-  IPN and lands on the order.
-- In branch `analytics-payment-split` (both repos, not merged yet): the
-  card / PayPal split in GA4 (`button`, `payment_type` on
-  `begin_checkout`) and in the admin (PayPal clicks in CheckoutVisit,
-  payment method column and filter on orders and visits). Andrii is to
-  add the two GA4 custom dimensions; the backend needs `railway up`.
-- After that, in its own branch: some design changes Andrii will describe.
-- The ordered list is also in his Google Calendar on Oct 31, 2026
-  ("Lullaby: PayPal одразу на PayPal — тест і запуск").
-- Idea from Andrii (not scheduled yet): tell buyers what to give each candle
-  with, as a gift pairing. His examples: the brown candle with a bottle of
-  whisky or brandy; Evening Garden with chocolates with a cherry filling.
-  One pairing per candle, probably on the product page; the pairings
-  themselves come from him.
+As of Nov 4, 2026:
+- Ads are live since Nov 2 (Meta, campaign `Candles_GiftGuide_Static_US_CA`,
+  US and Canada, $12/day, optimizes for InitiateCheckout). Don't edit the
+  campaign for now, so it doesn't relearn. First results: people press
+  "Buy now" and stop on the email page, none from ads has paid yet.
+- Merged and live: PayPal straight from the product page (the picked address
+  arrives, order #1091); the card / PayPal split in GA4 and the admin.
+  Andrii was to add the GA4 custom dimensions `button` and `payment_type`:
+  not confirmed.
+- Still unproven: that a real card payment returns the shipping address. A
+  friend abroad is to test it. The $2 candle `test-paypal-2usd` is hidden
+  (`is_active`; it has paid orders, so it isn't deleted): switch it on for the
+  test, then off.
+- Branch `reviews-frontend` (not merged, Andrii said not to show reviews on
+  the live site yet): reviews from the backend on every candle. Next: the
+  design of the reviews block, from examples he is collecting.
+- Backend branch `fix-local-run` (not merged) belongs to it: see the backend's
+  CLAUDE.md.
+- On hold until Andrii looks at the orders on Fri Nov 6 or Sat Nov 7, 2026
+  (in his Google Calendar, Nov 6 at 9:00), then he decides: three copy changes
+  on the card checkout. They are only in a `git stash` on his Mac, on no
+  branch, so here they are in full:
+  1. Email field label: "Email for your receipt and tracking".
+  2. Stepper: remove the "on Western Bid" note under "Shipping & payment", and
+     its unused `.checkout-steps-note` style.
+  3. Line above the button: "Secure Stripe payment by our partner Western Bid",
+     which `SecureCheckoutLine` takes as children; the footer keeps its wording.
+- Later, after the reviews: running the backend locally must never email
+  buyers, with no flag to remember. Until then always
+  `PAYMENT_REMINDERS=false`.
+- Andrii's to do: refund order #1091 ($2), delete the unpaid test order #1090
+  in the admin.
+- Ideas, not scheduled: "what to give it with" gift pairing, one per candle,
+  on the product page (the brown candle with whisky or brandy, Evening Garden
+  with cherry-filled chocolates; the pairings come from him). Design changes
+  he may do in Figma; the Figma MCP needs a paid Dev seat for real use. Next.js
+  was only a question for the future.
