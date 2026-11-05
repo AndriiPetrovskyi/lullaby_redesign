@@ -63,7 +63,7 @@ function generateEventId() {
 // silently blocked. `fetch` defaults to NOT sending credentials
 // cross-origin, so it's the transport that actually works here.
 // `keepalive: true` gives it the same "survives page unload" guarantee
-// sendBeacon is normally used for (e.g. the click that navigates to Etsy).
+// sendBeacon is normally used for (e.g. the click that leaves for the payment page).
 function sendToConversionsApi(eventName, eventId, customData) {
   const apiBase = import.meta.env.VITE_API_BASE_URL;
   if (!apiBase) return;
@@ -97,20 +97,6 @@ export function trackEvent(eventName, customData = {}, { eventId: fixedEventId }
   whenTrackingAllowed(() => {
     loadMetaPixel();
     window.fbq("track", eventName, customData, { eventID: eventId });
-    sendToConversionsApi(eventName, eventId, customData);
-  });
-}
-
-// Same as trackEvent, for event names outside Meta's standard set — these
-// must go through fbq('trackCustom') or the pixel ignores them.
-export function trackCustomEvent(eventName, customData = {}) {
-  if (!isTrackingEnabled) return;
-
-  const eventId = generateEventId();
-
-  whenTrackingAllowed(() => {
-    loadMetaPixel();
-    window.fbq("trackCustom", eventName, customData, { eventID: eventId });
     sendToConversionsApi(eventName, eventId, customData);
   });
 }

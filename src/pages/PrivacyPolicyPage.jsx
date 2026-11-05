@@ -60,12 +60,6 @@ function PrivacyPolicyPage() {
               username, shipping address, and the content of your messages.
             </li>
             <li>
-              <strong>Etsy orders.</strong> If you buy from our Etsy shop, your
-              purchase is handled by Etsy under Etsy&apos;s privacy policy.
-              Etsy shares with us the details needed to fulfil your order,
-              such as your name and shipping address.
-            </li>
-            <li>
               <strong>Usage information.</strong> When you browse the Site, we
               and our analytics and advertising partners automatically collect
               information such as the pages you view, the buttons you click,
@@ -151,7 +145,7 @@ function PrivacyPolicyPage() {
           <h2>4. Who we share it with</h2>
           <p>
             Only with the services we need to run the business: Western Bid,
-            Stripe, PayPal, and Payoneer (payments), Etsy (for Etsy orders),
+            Stripe, PayPal, and Payoneer (payments),
             postal and courier services (your name, address, and phone number,
             to deliver your order and contact you about delivery), Google and
             Meta (analytics and advertising, as described above), and our

@@ -75,11 +75,6 @@ function TermsPage() {
               and send a payment request via PayPal or Payoneer. Your order is
               confirmed once payment is received.
             </li>
-            <li>
-              <strong>Through Etsy.</strong> Some of our candles are also
-              available in our Etsy shop. Purchases made there are subject to
-              Etsy&apos;s terms, policies, and purchase protection.
-            </li>
           </ul>
           <p>
             Card payments aren&apos;t available in every region; where they
@@ -136,10 +131,6 @@ function TermsPage() {
               Refunds are issued to the original payment method (card or
               PayPal) once we receive and check the returned item. Your bank
               or PayPal may take a few days to show it.
-            </li>
-            <li>
-              For orders placed on Etsy, please start a return through Etsy
-              messages so it follows Etsy&apos;s process.
             </li>
           </ul>
 

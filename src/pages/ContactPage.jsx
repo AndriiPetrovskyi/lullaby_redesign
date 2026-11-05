@@ -9,7 +9,6 @@ import {
   SELLER_NAME,
   SELLER_STATUS,
   DISPATCH_TIME,
-  ETSY_SHOP_URL,
   INSTAGRAM_HANDLE,
   INSTAGRAM_URL,
   FREE_SHIPPING_REGIONS,
@@ -49,16 +48,6 @@ function ContactPage() {
                 target="_blank"
                 rel="noreferrer">
                 {INSTAGRAM_HANDLE}
-              </a>
-            </li>
-            <li>
-              <span className="contact-method-label">Etsy shop</span>
-              <a
-                className="contact-method-link"
-                href={ETSY_SHOP_URL}
-                target="_blank"
-                rel="noreferrer">
-                workshoplullaby.etsy.com
               </a>
             </li>
           </ul>

@@ -11,7 +11,6 @@ const KNOWN_SITES = [
   [/(^|\.)google\./, "google"],
   [/(^|\.)tiktok\.com$/, "tiktok"],
   [/(^|\.)pinterest\./, "pinterest"],
-  [/(^|\.)etsy\.com$/, "etsy"],
   [/(^|\.)bing\.com$/, "bing"],
 ];
 

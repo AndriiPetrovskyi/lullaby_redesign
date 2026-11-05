@@ -18,7 +18,6 @@ export const CONTACT_EMAIL = "lullaby.rituals@gmail.com";
 export const CONTACT_EMAIL_HANDLE = "lullaby.rituals";
 export const INSTAGRAM_HANDLE = "@lullaby.rituals";
 export const INSTAGRAM_URL = "https://www.instagram.com/lullaby.rituals";
-export const ETSY_SHOP_URL = "https://workshoplullaby.etsy.com";
 
 // Orders so far, shown next to the rating. Set by hand: only the real number.
 export const ORDERS_COUNT = 286;

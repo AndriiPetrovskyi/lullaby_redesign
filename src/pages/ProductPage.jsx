@@ -16,7 +16,7 @@ import Slider from "../mobile/components/Slider.jsx";
 import BuyBar from "../mobile/components/BuyBar.jsx";
 import { DEFAULT_OG_IMAGE, absoluteUrl } from "../config/seo.js";
 import { buildProductJsonLd, toMetaDescription } from "../utils/seo.js";
-import { trackCustomEvent, trackEvent } from "../utils/metaPixel.js";
+import { trackEvent } from "../utils/metaPixel.js";
 import { CHECKOUT_ENABLED, ORDERING_PAUSED } from "../config/ordering.js";
 import { PayPalLogo, SecureCheckoutBox } from "../components/PaymentMethods.jsx";
 import RedirectNotice from "../components/RedirectNotice.jsx";
@@ -115,7 +115,6 @@ function ProductPage() {
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
   const [openInfoSections, setOpenInfoSections] = useState(() => new Set());
   const [isDirectOrderModalOpen, setIsDirectOrderModalOpen] = useState(false);
-  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
   // Visitors where card payments aren't allowed (Ukraine) pay with PayPal.
   const [cardAvailable, setCardAvailable] = useState(true);
   // Going straight to PayPal: null, or { method, error } while the order is
@@ -201,12 +200,11 @@ function ProductPage() {
   );
 
   // "Buy now" records purchase intent (InitiateCheckout — the ad campaign
-  // optimizes for it, so its payload is unchanged), then goes to the site's
-  // own checkout, or — until that is switched on — to the Etsy step.
-  // Stock only gates the site's own checkout; Etsy keeps its own count.
-  const isSoldOut = CHECKOUT_ENABLED && product.stock < 1;
-  const canBuy = !ORDERING_PAUSED && !isSoldOut;
-  const buyLabel = ORDERING_PAUSED
+  // optimizes for it, so its payload is unchanged), then goes to the checkout.
+  const isSoldOut = product.stock < 1;
+  const isUnavailable = ORDERING_PAUSED || !CHECKOUT_ENABLED;
+  const canBuy = !isUnavailable && !isSoldOut;
+  const buyLabel = isUnavailable
     ? "Currently unavailable"
     : isSoldOut
       ? "Sold out"
@@ -215,7 +213,7 @@ function ProductPage() {
   // Card buyers go to our checkout, which asks only for the email (Stripe
   // needs it). PayPal needs nothing from us, so its button goes straight to
   // PayPal, where the buyer picks the shipping address.
-  const canPayWithPayPal = CHECKOUT_ENABLED && canBuy;
+  const canPayWithPayPal = canBuy;
 
   const payWithPayPal = async () => {
     setPayment({ method: "paypal", error: null });
@@ -263,31 +261,17 @@ function ProductPage() {
     });
     // GA4 splits clicks by the button pressed and by where it leads: "Buy
     // now" goes to PayPal too where cards aren't accepted (e.g. Ukraine).
-    const goesToPayPal = CHECKOUT_ENABLED && (paymentMethod === "paypal" || !cardAvailable);
+    const goesToPayPal = paymentMethod === "paypal" || !cardAvailable;
     trackGaEvent("begin_checkout", {
       ...gaItem(product),
       button: paymentMethod === "paypal" ? "paypal" : "buy_now",
-      payment_type: !CHECKOUT_ENABLED ? "etsy" : goesToPayPal ? "paypal" : "card",
+      payment_type: goesToPayPal ? "paypal" : "card",
     });
     if (goesToPayPal) {
       payWithPayPal();
-    } else if (CHECKOUT_ENABLED) {
-      navigate(`/checkout/${product.slug}`);
     } else {
-      setIsCheckoutModalOpen(true);
+      navigate(`/checkout/${product.slug}`);
     }
-  };
-
-  // Fires on click of a real link that opens Etsy in a new tab (as the old
-  // button did), so this page stays open and the events aren't cut off —
-  // no navigation delay needed, and no popup blocker trouble.
-  const handleContinueToEtsy = () => {
-    trackCustomEvent("ContinueToEtsy", {
-      content_name: product.name,
-      value: product.price,
-      currency: "USD",
-    });
-    trackGaEvent("continue_to_etsy", gaItem(product));
   };
 
   const redirectNotice = payment && (
@@ -296,30 +280,6 @@ function ProductPage() {
       error={payment.error}
       onClose={() => setPayment(null)}
     />
-  );
-
-  const checkoutModal = (
-    <Modal
-      isOpen={isCheckoutModalOpen}
-      onClose={() => setIsCheckoutModalOpen(false)}
-      labelledBy="checkout-modal-title">
-      <p id="checkout-modal-title" className="modal-title">
-        Almost there!
-      </p>
-      <p className="body-text modal-text">
-        We use Etsy for secure checkout — your payment and order are protected
-        by Etsy Purchase Protection.
-      </p>
-      <a
-        href={product.etsyUrl}
-        target="_blank"
-        rel="noreferrer"
-        onClick={handleContinueToEtsy}
-        className="modal-checkout-button">
-        Continue to checkout →
-      </a>
-      <p className="modal-checkout-note">Free shipping · {DELIVERY_TIME}</p>
-    </Modal>
   );
 
   const handleDirectOrderClick = () => {
@@ -376,7 +336,7 @@ function ProductPage() {
               type="button"
               onClick={() => handleBuyClick()}
               disabled={!canBuy || Boolean(payment)}
-              className="m-product-page-buy-etsy">
+              className="m-product-page-buy">
               {buyLabel}
             </button>
             {canPayWithPayPal && (
@@ -563,7 +523,7 @@ function ProductPage() {
               type="button"
               onClick={() => handleBuyClick()}
               disabled={!canBuy || Boolean(payment)}
-              className="m-product-page-buy-etsy">
+              className="m-product-page-buy">
               {buyLabel}
             </button>
               {canPayWithPayPal && (
@@ -608,7 +568,6 @@ function ProductPage() {
           />
         )}
 
-        {checkoutModal}
         {redirectNotice}
 
         <Modal
@@ -732,7 +691,7 @@ function ProductPage() {
               type="button"
               onClick={() => handleBuyClick()}
               disabled={!canBuy || Boolean(payment)}
-              className="d-product-page-buy-etsy">
+              className="d-product-page-buy">
               {buyLabel}
             </button>
             {canPayWithPayPal && (
@@ -929,7 +888,7 @@ function ProductPage() {
               type="button"
               onClick={() => handleBuyClick()}
               disabled={!canBuy || Boolean(payment)}
-              className="d-product-page-buy-etsy">
+              className="d-product-page-buy">
               {buyLabel}
             </button>
             {canPayWithPayPal && (
@@ -974,7 +933,6 @@ function ProductPage() {
         />
       )}
 
-      {checkoutModal}
       {redirectNotice}
 
       <Modal
