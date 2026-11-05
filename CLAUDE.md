@@ -140,14 +140,9 @@ As of Nov 4, 2026:
   friend abroad is to test it. The $2 candle `test-paypal-2usd` is hidden
   (`is_active`; it has paid orders, so it isn't deleted): switch it on for the
   test, then off.
-- Merged into local `main`, not pushed yet (Andrii said not to show reviews
-  on the live site until he says so): reviews from the backend on every
-  candle, with the block's design done with him. The live API already serves
-  them. Backend branch `fix-local-run` (not merged, but it is what's deployed):
-  see the backend's CLAUDE.md.
-- Before reviews go live: the photos of Kristina V and Michael K were uploaded
-  through a local admin, so they aren't on the volume. Upload them again in the
-  live admin.
+- Live since Nov 5: reviews from the backend on every candle, the rating and
+  "(N orders)" above the candle's name (`ORDERS_COUNT`, set by Andrii), all
+  review photos on the volume.
 - On hold until Andrii looks at the orders on Fri Nov 6 or Sat Nov 7, 2026
   (in his Google Calendar, Nov 6 at 9:00), then he decides: three copy changes
   on the card checkout. They are only in a `git stash` on his Mac, on no
