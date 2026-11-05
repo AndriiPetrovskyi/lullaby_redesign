@@ -120,9 +120,10 @@ it's required (`src/utils/consent.js`).
   fine. Don't add currency hints.
 - Reviews come from the backend (`GET /api/reviews`, added in the admin, real
   customer reviews only). Every candle shows all of them, its own first, and
-  each card says "Purchased: <candle>", so nobody takes a review of another
-  candle for this one's. There's no rating at the top of the page, only in
-  the reviews section. With none, or if the request fails, the section hides.
+  each card names its candle under the stars, so nobody takes a review of
+  another candle for this one's. Above the candle's name: the stars, the average and "(N orders)",
+  with N set by hand in `ORDERS_COUNT` (`src/config/contact.js`), only the
+  real number. With no reviews, or if the request fails, both hide.
 
 ## Where things stand (update or delete as it changes)
 
@@ -139,11 +140,14 @@ As of Nov 4, 2026:
   friend abroad is to test it. The $2 candle `test-paypal-2usd` is hidden
   (`is_active`; it has paid orders, so it isn't deleted): switch it on for the
   test, then off.
-- Branch `reviews-frontend` (not merged, Andrii said not to show reviews on
-  the live site yet): reviews from the backend on every candle. Next: the
-  design of the reviews block, from examples he is collecting.
-- Backend branch `fix-local-run` (not merged) belongs to it: see the backend's
-  CLAUDE.md.
+- Merged into local `main`, not pushed yet (Andrii said not to show reviews
+  on the live site until he says so): reviews from the backend on every
+  candle, with the block's design done with him. The live API already serves
+  them. Backend branch `fix-local-run` (not merged, but it is what's deployed):
+  see the backend's CLAUDE.md.
+- Before reviews go live: the photos of Kristina V and Michael K were uploaded
+  through a local admin, so they aren't on the volume. Upload them again in the
+  live admin.
 - On hold until Andrii looks at the orders on Fri Nov 6 or Sat Nov 7, 2026
   (in his Google Calendar, Nov 6 at 9:00), then he decides: three copy changes
   on the card checkout. They are only in a `git stash` on his Mac, on no
@@ -158,6 +162,10 @@ As of Nov 4, 2026:
   `PAYMENT_REMINDERS=false`.
 - Andrii's to do: refund order #1091 ($2), delete the unpaid test order #1090
   in the admin.
+- Idea for later, once there are 6-8 reviews and the product page block is
+  live: a small reviews block on the home page near the bottom, 3-4 in a row,
+  picked by Andrii with a new "show on home page" switch in the admin. Product
+  pages keep showing all reviews, critical ones too.
 - Ideas, not scheduled: "what to give it with" gift pairing, one per candle,
   on the product page (the brown candle with whisky or brandy, Evening Garden
   with cherry-filled chocolates; the pairings come from him). Design changes

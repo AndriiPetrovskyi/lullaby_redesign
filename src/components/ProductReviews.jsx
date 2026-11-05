@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ORDERS_COUNT } from "../config/contact.js";
+import { useIsMobile } from "../hooks/useIsMobile.js";
 import { responsiveImage } from "../utils/images.js";
 import "./ProductReviews.css";
 
 const INITIAL_COUNT = 3;
-const PHOTO_WIDTHS = [400, 800];
+const INITIAL_COUNT_DESKTOP = 4;
+const REVIEWS_SECTION_ID = "reviews";
+// Shown at 40px; 200 is the smallest size the image server makes.
+const PHOTO_WIDTHS = [200];
 
 function averageRating(reviews) {
   const total = reviews.reduce((sum, review) => sum + review.rating, 0);
@@ -30,15 +35,44 @@ function formatDate(isoDate) {
   });
 }
 
-function ProductReviews({ reviews }) {
-  const [showAll, setShowAll] = useState(false);
+// Above the candle's name: the store's rating, and how many orders it's had.
+// The count says "orders", so nobody reads it as the number of ratings.
+export function ReviewsSummaryLink({ reviews }) {
   if (reviews.length === 0) return null;
 
-  const visible = showAll ? reviews : reviews.slice(0, INITIAL_COUNT);
+  const scrollToReviews = (event) => {
+    event.preventDefault();
+    document
+      .getElementById(REVIEWS_SECTION_ID)
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  return (
+    <a
+      href={`#${REVIEWS_SECTION_ID}`}
+      className="reviews-summary-link"
+      onClick={scrollToReviews}>
+      <Stars rating={averageRating(reviews)} />
+      <span>
+        {averageRating(reviews).toFixed(1)} ({ORDERS_COUNT}{" "}
+        {ORDERS_COUNT === 286 ? "orders" : "orders"})
+      </span>
+    </a>
+  );
+}
+
+function ProductReviews({ reviews }) {
+  const [showAll, setShowAll] = useState(false);
+  const isMobile = useIsMobile();
+  if (reviews.length === 0) return null;
+
+  // One full row on desktop.
+  const initialCount = isMobile ? INITIAL_COUNT : INITIAL_COUNT_DESKTOP;
+  const visible = showAll ? reviews : reviews.slice(0, initialCount);
   const average = averageRating(reviews);
 
   return (
-    <section className="reviews" id="reviews">
+    <section className="reviews" id={REVIEWS_SECTION_ID}>
       <div className="reviews-header">
         <h2 className="reviews-title">What our customers say</h2>
         <p className="reviews-average">
@@ -53,35 +87,38 @@ function ProductReviews({ reviews }) {
       <ul className="reviews-list">
         {visible.map((review) => (
           <li className="reviews-card" key={review.id}>
-            {review.image && (
-              <img
-                className="reviews-photo"
-                {...responsiveImage(review.image, PHOTO_WIDTHS, "(max-width: 768px) 100vw, 400px")}
-                alt={`From ${review.name}`}
-                loading="lazy"
-              />
-            )}
+            <div className="reviews-author">
+              {review.image && (
+                <img
+                  className="reviews-photo"
+                  {...responsiveImage(review.image, PHOTO_WIDTHS, "40px")}
+                  alt=""
+                  width="40"
+                  height="40"
+                  loading="lazy"
+                />
+              )}
+              <div>
+                <p className="reviews-name">{review.name}</p>
+                {review.location && <p className="reviews-location">{review.location}</p>}
+              </div>
+            </div>
             <Stars rating={review.rating} />
-            <p className="reviews-text">{review.text}</p>
             {review.productSlug && (
               <p className="reviews-product">
-                Purchased:{" "}
                 <Link to={`/products/${review.productSlug}`}>{review.productName}</Link>
               </p>
             )}
-            <p className="reviews-meta">
-              <span className="reviews-name">{review.name}</span>
-              {review.location && <>, {review.location}</>}
-              <span className="reviews-source">
-                {formatDate(review.date)}
-                {review.source && <> · via {review.source}</>}
-              </span>
+            <p className="reviews-text">{review.text}</p>
+            <p className="reviews-source">
+              {formatDate(review.date)}
+              {review.source && <> · via {review.source}</>}
             </p>
           </li>
         ))}
       </ul>
 
-      {reviews.length > INITIAL_COUNT && (
+      {reviews.length > initialCount && (
         <button
           type="button"
           className="reviews-more"

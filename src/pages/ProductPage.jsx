@@ -7,7 +7,7 @@ import { useProductReviews } from "../hooks/useProductReviews.js";
 import LoadingScreen from "../components/LoadingScreen.jsx";
 import GuaranteesMarquee from "../components/GuaranteesMarquee.jsx";
 import MoreScents from "../components/MoreScents.jsx";
-import ProductReviews from "../components/ProductReviews.jsx";
+import ProductReviews, { ReviewsSummaryLink } from "../components/ProductReviews.jsx";
 import MutableVideo from "../components/MutableVideo.jsx";
 import Modal from "../components/Modal.jsx";
 import Seo from "../components/Seo.jsx";
@@ -360,6 +360,7 @@ function ProductPage() {
           ))}
         />
         <div className="m-product-page-info">
+          <ReviewsSummaryLink reviews={reviews} />
           <p className="m-product-page-name">{product.name}</p>
           <p className="m-product-page-price">${product.price}</p>
           <ul className="m-product-page-perks">
@@ -718,6 +719,7 @@ function ProductPage() {
         </div>
 
         <div className="d-product-page-info">
+          <ReviewsSummaryLink reviews={reviews} />
           <h1 className="d-product-page-name">{product.name}</h1>
           <p className="d-product-page-price">${product.price}</p>
           <ul className="d-product-page-perks">

@@ -20,6 +20,9 @@ export const INSTAGRAM_HANDLE = "@lullaby.rituals";
 export const INSTAGRAM_URL = "https://www.instagram.com/lullaby.rituals";
 export const ETSY_SHOP_URL = "https://workshoplullaby.etsy.com";
 
+// Orders so far, shown next to the rating. Set by hand: only the real number.
+export const ORDERS_COUNT = 286;
+
 export const RETURN_WINDOW_DAYS = 14;
 export const DAMAGE_REPORT_HOURS = 48;
 export const DISPATCH_TIME = "2–3 business days";
