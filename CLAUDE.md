@@ -123,7 +123,8 @@ it's required (`src/utils/consent.js`).
   each card names its candle under the stars, so nobody takes a review of
   another candle for this one's. Above the candle's name: the stars, the average and "(N orders)",
   with N set by hand in `ORDERS_COUNT` (`src/config/contact.js`), only the
-  real number. With no reviews, or if the request fails, both hide.
+  real number. With no reviews, or if the request fails, both hide. Long
+  reviews show 4 lines and "Read more", which opens them in place.
 
 ## Where things stand (update or delete as it changes)
 
@@ -161,6 +162,9 @@ As of Nov 4, 2026:
   live: a small reviews block on the home page near the bottom, 3-4 in a row,
   picked by Andrii with a new "show on home page" switch in the admin. Product
   pages keep showing all reviews, critical ones too.
+- Cart: not started, the plan is in `docs/cart-plan.md`.
+- Idea for later: a shared to-do place for ideas that both Andrii and Claude
+  can reach. Until then ideas go here.
 - Ideas, not scheduled: "what to give it with" gift pairing, one per candle,
   on the product page (the brown candle with whisky or brandy, Evening Garden
   with cherry-filled chocolates; the pairings come from him). Design changes
