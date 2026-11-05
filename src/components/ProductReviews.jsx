@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ORDERS_COUNT } from "../config/contact.js";
 import { useIsMobile } from "../hooks/useIsMobile.js";
@@ -25,6 +25,44 @@ function Stars({ rating }) {
         <span className="reviews-stars-empty">{"★".repeat(5 - filled)}</span>
       </span>
     </span>
+  );
+}
+
+// Long reviews start at a few lines (`.reviews-text--clamped`) with a "Read
+// more" that opens them in place. How much fits depends on the width and the
+// font, so it's measured rather than guessed from the number of characters.
+function ReviewText({ text }) {
+  const textRef = useRef(null);
+  const [isLong, setIsLong] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const element = textRef.current;
+    if (!element || isOpen) return undefined;
+    const measure = () => setIsLong(element.scrollHeight > element.clientHeight + 1);
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    document.fonts?.ready.then(measure);
+    return () => observer.disconnect();
+  }, [isOpen, text]);
+
+  return (
+    <div className="reviews-body">
+      <p
+        ref={textRef}
+        className={`reviews-text${isOpen ? "" : " reviews-text--clamped"}`}>
+        {text}
+      </p>
+      {(isLong || isOpen) && (
+        <button
+          type="button"
+          className="reviews-read-more"
+          aria-expanded={isOpen}
+          onClick={() => setIsOpen((value) => !value)}>
+          {isOpen ? "Read less" : "Read more"}
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -109,7 +147,7 @@ function ProductReviews({ reviews }) {
                 <Link to={`/products/${review.productSlug}`}>{review.productName}</Link>
               </p>
             )}
-            <p className="reviews-text">{review.text}</p>
+            <ReviewText text={review.text} />
             <p className="reviews-source">
               {formatDate(review.date)}
               {review.source && <> · via {review.source}</>}
