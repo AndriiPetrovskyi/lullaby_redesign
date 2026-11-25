@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import Seo from "../components/Seo.jsx";
 import { CONTACT_EMAIL, DISPATCH_TIME, DELIVERY_TIME } from "../config/contact.js";
 import { getOrderStatus, readCheckoutDraft } from "../services/orders.js";
@@ -82,7 +83,7 @@ function useOrder(orderId, { poll }) {
 }
 
 export function OrderSuccessPage() {
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const { order, state } = useOrder(searchParams.get("order"), { poll: true });
 
   useEffect(() => {
@@ -127,7 +128,7 @@ export function OrderSuccessPage() {
                 your order number.
               </p>
               <div className="order-result-actions">
-                <Link to="/products">Continue shopping</Link>
+                <Link href="/products">Continue shopping</Link>
               </div>
             </div>
           </>
@@ -163,7 +164,7 @@ export function OrderSuccessPage() {
 }
 
 export function OrderCancelledPage() {
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const { order } = useOrder(searchParams.get("order"), { poll: false });
 
   return (
@@ -184,15 +185,15 @@ export function OrderCancelledPage() {
                 there; card buyers go back to the checkout. */}
             {order &&
               (readCheckoutDraft(order.productSlug)?.method === "paypal" ? (
-                <Link to={`/products/${order.productSlug}`}>
+                <Link href={`/products/${order.productSlug}`}>
                   Back to {order.productName}
                 </Link>
               ) : (
-                <Link to={`/checkout/${order.productSlug}`}>
+                <Link href={`/checkout/${order.productSlug}`}>
                   Back to checkout — {order.productName}
                 </Link>
               ))}
-            <Link to="/products">Browse all scents</Link>
+            <Link href="/products">Browse all scents</Link>
           </div>
           <p>
             Something not working? Write to{" "}

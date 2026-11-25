@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useProducts } from "../../../hooks/useProducts.js";
 import { responsiveImage } from "../../../utils/images.js";
 import "./Slide.css";
@@ -18,7 +18,7 @@ function BestsellersSlide() {
         {bestsellers.map((product) => (
           <Link
             key={product.id}
-            to={`/products/${product.slug}`}
+            href={`/products/${product.slug}`}
             className="m-bestsellers-slide-item">
             <img
               {...responsiveImage(product.image, [400, 600, 800], "50vw")}
@@ -30,7 +30,7 @@ function BestsellersSlide() {
           </Link>
         ))}
       </div>
-      <Link to="/products" className="m-bestsellers-slide-more">
+      <Link href="/products" className="m-bestsellers-slide-more">
         Show more
       </Link>
     </div>

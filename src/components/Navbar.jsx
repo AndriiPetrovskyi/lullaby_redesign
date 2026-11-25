@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { NavLink } from "react-router-dom";
+import NavLink from "./NavLink.jsx";
 import navLinks from "../data/navLinks.js";
 import "./Navbar.css";
 

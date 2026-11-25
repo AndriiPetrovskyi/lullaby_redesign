@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import Seo from "../components/Seo.jsx";
 import {
   BUSINESS_COUNTRY,
@@ -67,7 +67,7 @@ function ContactPage() {
             For an existing order, include your order number or the name the
             order was placed under so we can find it quickly. Shipping times,
             returns, and damaged items are covered in our{" "}
-            <Link to="/terms">Terms &amp; Conditions</Link>.
+            <Link href="/terms">Terms &amp; Conditions</Link>.
           </p>
 
           <h2>Seller information</h2>

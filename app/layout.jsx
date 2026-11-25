@@ -1,9 +1,10 @@
 import "../src/styles/index.css";
+import ClientShell from "../src/components/ClientShell.jsx";
 import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL } from "../src/config/seo.js";
 
 const DEFAULT_TITLE = `${SITE_NAME} — Handmade Scented Candles`;
 
-// Defaults for every page; app/[[...slug]]/page.jsx fills in each route's own.
+// Defaults for every page; each page fills in its own.
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: DEFAULT_TITLE,
@@ -45,7 +46,9 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <noscript>This site needs JavaScript enabled to work.</noscript>
-        <div id="root">{children}</div>
+        <div id="root">
+          <ClientShell>{children}</ClientShell>
+        </div>
       </body>
     </html>
   );

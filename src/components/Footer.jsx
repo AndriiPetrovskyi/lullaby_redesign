@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import NavLink from "./NavLink.jsx";
 import navLinks from "../data/navLinks.js";
 import { FacebookIcon, InstagramIcon, TikTokIcon } from "./icons/SocialIcons.jsx";
 import { INSTAGRAM_URL } from "../config/contact.js";

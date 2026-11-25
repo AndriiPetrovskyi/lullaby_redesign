@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import Seo from "../components/Seo.jsx";
 import boxImage from "../assets/box.webp";
 import makerWritingImage from "../assets/notes/maker-writing.webp";
@@ -85,7 +85,7 @@ function AboutPage() {
         <div className="about-page-inner">
           <section className="about-page-closing">
             <p className="about-page-closing-text">Light it. Make a wish.</p>
-            <Link to="/products" className="about-page-cta">
+            <Link href="/products" className="about-page-cta">
               Shop the Collection
             </Link>
           </section>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import ProductCard from "../ProductCard.jsx";
 import { useProducts } from "../../hooks/useProducts.js";
 import "./BestsellersSlide.css";
@@ -17,7 +17,7 @@ function BestsellersSlide() {
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
-      <Link to="/products" className="bestsellers-slide-more">
+      <Link href="/products" className="bestsellers-slide-more">
         Show more
       </Link>
     </div>

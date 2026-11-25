@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import {
   isBannerVisible,
   setConsent,
@@ -19,7 +19,7 @@ function CookieBanner() {
       <p id="cookie-banner-text" className="cookie-banner-text">
         We use cookies to see how the shop is used and to measure our ads
         (Google Analytics, Meta). The shop works the same either way.{" "}
-        <Link to="/privacy-policy" className="cookie-banner-link">
+        <Link href="/privacy-policy" className="cookie-banner-link">
           Privacy Policy
         </Link>
       </p>

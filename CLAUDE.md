@@ -35,12 +35,15 @@ update it in the same change whenever something below stops being true.
 - Next.js 16.4: its docs for this exact version are in
   `node_modules/next/dist/docs/`; read the relevant guide there before writing
   Next code, since APIs changed after most training data.
-- Every URL goes to `app/[[...slug]]`: its server part gives each page its own
-  title, description and preview tags (product data fetched, cached 5 min),
-  and its client part renders the storefront in `src/` (`src/ClientRoot.jsx`,
-  React Router), as in Next's guide for moving off Vite. The redesign moves
-  pages out into their own Next routes one by one. `app/sitemap.js` and
-  `app/robots.js` replace the old build scripts.
+- Each page is its own Next route in `app/` (metadata there: title,
+  description, preview tags; product data fetched on the server, cached 5
+  min). For now each route renders the existing page from `src/views/` in the
+  browser only (`src/views/client.jsx`), inside a browser-only shell
+  (`src/components/SiteShell.jsx`: menu, footer, Pixel PageView, banners). The
+  redesign replaces these with server components page by page. Until the
+  shell renders on the server, a missing page answers 200 with `noindex`
+  rather than 404. `app/sitemap.js` and `app/robots.js` replace the old
+  build scripts.
 - The Vercel project's dashboard says Output Directory `dist` (from Vite);
   `vercel.json` overrides it with `.next` for the Next build.
 - The env variables keep their `VITE_*` names; `next.config.mjs` hands them to
@@ -62,7 +65,9 @@ update it in the same change whenever something below stops being true.
   --hostname 0.0.0.0 -p 5173`, then give him `http://<Mac's IP>:5173`
   (`ipconfig getifaddr en0`; it changes with the Wi-Fi). Orders placed this
   way are real: production database, real payment pages. (On `main`, still
-  Vite: `npx vite --host --port 5173` with a config proxying `/api`.)
+  Vite: `npx vite --host --port 5173` with a config proxying `/api`.) Port
+  3000 may be taken by his lullaby_ua dev server; then run the backend on
+  another port and point DEV_API_PROXY at it.
 - Your own tests must not write to the production database: run a second
   backend on port 3001 against a throwaway Postgres (see the backend's
   CLAUDE.md) and the storefront on 5174 with

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import Link from "next/link";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import { useProduct } from "../hooks/useProducts.js";
 import { useProductReviews } from "../hooks/useProductReviews.js";
@@ -106,10 +107,10 @@ function ProductInfoContent({ section, className }) {
 
 function ProductPage() {
   const { slug } = useParams();
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const adPhoto = searchParams.get("photo");
   const isMobile = useIsMobile();
-  const navigate = useNavigate();
+  const router = useRouter();
   const { product, isLoading, error } = useProduct(slug);
   const reviews = useProductReviews(slug);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
@@ -270,7 +271,7 @@ function ProductPage() {
     if (goesToPayPal) {
       payWithPayPal();
     } else {
-      navigate(`/checkout/${product.slug}`);
+      router.push(`/checkout/${product.slug}`);
     }
   };
 
@@ -290,7 +291,7 @@ function ProductPage() {
   };
 
   const backLink = (
-    <Link to="/products" className="product-back-link">
+    <Link href="/products" className="product-back-link">
       <span aria-hidden="true">←</span> All scents
     </Link>
   );

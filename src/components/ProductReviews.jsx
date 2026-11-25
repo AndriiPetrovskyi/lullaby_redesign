@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { ORDERS_COUNT } from "../config/contact.js";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 import { responsiveImage } from "../utils/images.js";
@@ -144,7 +144,7 @@ function ProductReviews({ reviews }) {
             <Stars rating={review.rating} />
             {review.productSlug && (
               <p className="reviews-product">
-                <Link to={`/products/${review.productSlug}`}>{review.productName}</Link>
+                <Link href={`/products/${review.productSlug}`}>{review.productName}</Link>
               </p>
             )}
             <ReviewText text={review.text} />

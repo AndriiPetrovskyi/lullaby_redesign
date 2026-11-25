@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import LoadingScreen from "../components/LoadingScreen.jsx";
 import { PayPalLogo, SecureCheckoutLine } from "../components/PaymentMethods.jsx";
 import RedirectNotice from "../components/RedirectNotice.jsx";
@@ -205,7 +206,7 @@ function CheckoutPage() {
     return (
       <CheckoutUnavailable title="Candle not found">
         <p>
-          This candle isn&apos;t available. <Link to="/products">See all scents</Link>.
+          This candle isn&apos;t available. <Link href="/products">See all scents</Link>.
         </p>
       </CheckoutUnavailable>
     );
@@ -284,7 +285,7 @@ function CheckoutPage() {
     <>
       <Seo title="Checkout" path={`/checkout/${product.slug}`} noindex />
       <main className="checkout">
-        <Link to={`/products/${product.slug}`} className="checkout-back">
+        <Link href={`/products/${product.slug}`} className="checkout-back">
           <span aria-hidden="true">←</span> Back to {product.name}
         </Link>
         <h1 className="checkout-title">Checkout</h1>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { CHECKOUT_ENABLED } from "../config/ordering.js";
 import { photoKey, responsiveImage } from "../utils/images.js";
 import "./ProductCard.css";
@@ -25,7 +25,7 @@ function ProductCard({ product }) {
   const isSoldOut = CHECKOUT_ENABLED && product.stock < 1;
 
   return (
-    <Link to={`/products/${product.slug}`} className="product-card">
+    <Link href={`/products/${product.slug}`} className="product-card">
       <div className="product-card-image">
         <img
           className="product-card-image-primary"

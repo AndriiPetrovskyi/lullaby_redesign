@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import NavLink from "../../components/NavLink.jsx";
 import navLinks from "../../data/navLinks.js";
 import {
   FacebookIcon,

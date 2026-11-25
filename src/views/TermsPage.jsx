@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import Seo from "../components/Seo.jsx";
 import {
   BUSINESS_COUNTRY,
@@ -71,7 +71,7 @@ function TermsPage() {
             </li>
             <li>
               <strong>Direct order.</strong> Contact us by email or Instagram
-              (see <Link to="/contact">Contact</Link>). We confirm the details
+              (see <Link href="/contact">Contact</Link>). We confirm the details
               and send a payment request via PayPal or Payoneer. Your order is
               confirmed once payment is received.
             </li>

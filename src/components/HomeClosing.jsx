@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import GuaranteesMarquee from "./GuaranteesMarquee.jsx";
 import "./HomeClosing.css";
 
@@ -13,7 +13,7 @@ function HomeClosing() {
           <span className="home-cta-title-script">Find your</span>
           <span className="home-cta-title-bold">scent</span>
         </h2>
-        <Link to="/products" className="home-cta-button">
+        <Link href="/products" className="home-cta-button">
           Shop all scents
         </Link>
       </div>
