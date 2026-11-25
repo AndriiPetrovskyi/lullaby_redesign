@@ -12,6 +12,8 @@ const nextConfig = {
     VITE_GA_MEASUREMENT_ID: process.env.VITE_GA_MEASUREMENT_ID,
     VITE_ORDERING_PAUSED: process.env.VITE_ORDERING_PAUSED,
     VITE_CHECKOUT_ENABLED: process.env.VITE_CHECKOUT_ENABLED,
+    // Set by Vercel: "production" or "preview". Analytics stay off on previews.
+    VITE_VERCEL_ENV: process.env.VERCEL_ENV,
   },
   // Local runs only: with DEV_API_PROXY=http://localhost:3000/api and
   // VITE_API_BASE_URL=/api, the browser calls /api on this server and the

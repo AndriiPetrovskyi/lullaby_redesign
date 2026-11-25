@@ -12,14 +12,17 @@ const LOCAL_HOSTNAME =
 const isLocalHost =
   typeof window !== "undefined" && LOCAL_HOSTNAME.test(window.location.hostname);
 
+// Vercel previews of a branch aren't real visits either. VERCEL_ENV is
+// "preview" there, "production" on the live site, unset in local builds.
+const isVercelPreview = process.env.VITE_VERCEL_ENV === "preview";
+const isRealSite = process.env.NODE_ENV === "production" && !isLocalHost && !isVercelPreview;
+
 // Tracking only runs in production builds with a configured pixel ID, on the
-// deployed site — keeps `npm run dev`, local preview builds, and any build
-// missing the ID from sending real events.
-export const isTrackingEnabled =
-  Boolean(META_PIXEL_ID) && process.env.NODE_ENV === "production" && !isLocalHost;
+// live site — keeps `npm run dev`, local builds, Vercel previews and any
+// build missing the ID from sending real events.
+export const isTrackingEnabled = Boolean(META_PIXEL_ID) && isRealSite;
 
 // Google Analytics 4 — same rules as the pixel: public ID from env, and only
 // production builds on the deployed site send anything.
 export const GA_MEASUREMENT_ID = process.env.VITE_GA_MEASUREMENT_ID;
-export const isGaEnabled =
-  Boolean(GA_MEASUREMENT_ID) && process.env.NODE_ENV === "production" && !isLocalHost;
+export const isGaEnabled = Boolean(GA_MEASUREMENT_ID) && isRealSite;
