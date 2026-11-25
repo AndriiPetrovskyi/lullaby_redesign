@@ -1,0 +1,12 @@
+.box {
+  position: relative;
+  display: block;
+}
+
+.image {
+  transition: opacity 0.5s ease;
+}
+
+.hidden {
+  opacity: 0;
+}

@@ -1,10 +1,13 @@
 // Reads from the backend on the server (metadata, sitemap). Pages pick up
 // changes made in the admin within five minutes.
-const API_BASE_URL = process.env.VITE_API_BASE_URL;
+// The browser's API address; in the local phone setup it's the relative
+// /api, and the server goes straight to the backend behind it instead.
+const API_BASE_URL = process.env.VITE_API_BASE_URL?.startsWith("http")
+  ? process.env.VITE_API_BASE_URL
+  : process.env.DEV_API_PROXY;
 export const REVALIDATE_SECONDS = 300;
 
-// Relative in the local phone setup (/api through the dev proxy): no server fetch.
-const canFetch = () => API_BASE_URL?.startsWith("http");
+const canFetch = () => Boolean(API_BASE_URL);
 
 // The product, null when there is none, undefined when the backend can't say.
 export async function fetchProduct(slug) {
@@ -29,4 +32,12 @@ export async function fetchProducts() {
   } catch {
     return [];
   }
+}
+
+// The candles marked as bestsellers in the admin (`isBestseller`). Until the
+// backend has that switch, the first three.
+export async function fetchBestsellers() {
+  const products = await fetchProducts();
+  const picked = products.filter((product) => product.isBestseller);
+  return (picked.length > 0 ? picked : products).slice(0, 3);
 }

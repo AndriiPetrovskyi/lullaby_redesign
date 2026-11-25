@@ -1,0 +1,15 @@
+.frame {
+  position: relative;
+  overflow: hidden;
+  width: var(--frame-width);
+  height: var(--frame-height);
+  aspect-ratio: var(--frame-ratio);
+}
+
+@media (max-width: 767px) {
+  .frame {
+    width: var(--frame-mobile-width, var(--frame-width));
+    height: var(--frame-mobile-height, var(--frame-height));
+    aspect-ratio: var(--frame-mobile-ratio, var(--frame-ratio));
+  }
+}

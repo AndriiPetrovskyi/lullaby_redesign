@@ -16,7 +16,8 @@
   "overrides": [
     {
       "files": [
-        "app/**"
+        "app/**",
+        "src/views/client.jsx"
       ],
       "rules": {
         "react/only-export-components": "off"

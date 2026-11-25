@@ -23,6 +23,10 @@ const nextConfig = {
     const target = process.env.DEV_API_PROXY;
     return target ? [{ source: "/api/:path*", destination: `${target}/:path*` }] : [];
   },
+  images: {
+    // Candle photos uploaded in the admin are served by the backend.
+    remotePatterns: [new URL("https://api-production-38d4.up.railway.app/uploads/**")],
+  },
   devIndicators: false,
   // No AGENTS.md written by `next dev`: CLAUDE.md is the project's notes.
   agentRules: false,

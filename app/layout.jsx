@@ -1,6 +1,6 @@
 import { Days_One, Manrope, Pattaya, Rubik } from "next/font/google";
 import "../src/styles/index.css";
-import ClientShell from "../src/components/ClientShell.jsx";
+import SiteShell from "../src/components/SiteShell.jsx";
 import OrderingPausedBanner from "../src/components/OrderingPausedBanner.jsx";
 import Footer from "../src/components/site/Footer.jsx";
 import Header from "../src/components/site/Header.jsx";
@@ -54,7 +54,7 @@ export default function RootLayout({ children }) {
         <noscript>This site needs JavaScript enabled to work.</noscript>
         <OrderingPausedBanner />
         <Header />
-        <ClientShell>{children}</ClientShell>
+        <SiteShell>{children}</SiteShell>
         <Footer />
       </body>
     </html>

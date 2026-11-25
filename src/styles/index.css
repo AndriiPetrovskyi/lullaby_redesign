@@ -60,6 +60,11 @@ h3 {
   line-height: 1.05;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 /* Pages not yet redesigned: room for the header, which lies over the page.
    Remove with the last of them. */
 .legacy-page {
