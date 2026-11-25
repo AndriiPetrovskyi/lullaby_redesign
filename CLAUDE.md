@@ -164,6 +164,10 @@ As of Nov 4, 2026:
   live: a small reviews block on the home page near the bottom, 3-4 in a row,
   picked by Andrii with a new "show on home page" switch in the admin. Product
   pages keep showing all reviews, critical ones too.
+- Redesign in progress (from Nov 25, 2026): the design of lullaby_ua and a move
+  from Vite to Next.js, in branches `redesign-next` and `redesign-backend`.
+  The plan, Andrii's decisions and what must not change are in
+  `docs/redesign-plan.md`. Not to go live before ~Dec 10, 2026.
 - Cart: not started, the plan is in `docs/cart-plan.md`.
 - Idea for later: a shared to-do place for ideas that both Andrii and Claude
   can reach. Until then ideas go here.
