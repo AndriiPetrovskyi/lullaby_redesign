@@ -29,6 +29,11 @@ update it in the same change whenever something below stops being true.
 ## Deploy
 
 - Vercel deploys `main` automatically on push. Branches get preview URLs.
+- Visitors from Ukraine (Vercel's `x-vercel-ip-country: UA`) are sent to the
+  Ukrainian site https://lullaby-ua.vercel.app (temporary 307, `vercel.json`;
+  change the address when it gets its own domain). Andrii opens the site once
+  with `?stay=1`, which sets a `stay` cookie for a year and skips the redirect.
+  The redesign's `vercel.json` must keep this rule.
   It is the only host (the old GitHub Pages and Netlify setups are gone).
 - `npm run build` also generates the sitemap and prerendered meta;
   `npm run lint` runs oxlint.

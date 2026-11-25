@@ -1,4 +1,25 @@
 {
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "header", "key": "x-vercel-ip-country", "value": "UA" }],
+      "missing": [
+        { "type": "cookie", "key": "stay" },
+        { "type": "query", "key": "stay" }
+      ],
+      "destination": "https://lullaby-ua.vercel.app/",
+      "permanent": false
+    }
+  ],
+  "headers": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "query", "key": "stay" }],
+      "headers": [
+        { "key": "Set-Cookie", "value": "stay=1; Path=/; Max-Age=31536000; SameSite=Lax; Secure" }
+      ]
+    }
+  ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
