@@ -6,7 +6,7 @@ function GiftSlide() {
     <div className="home-row home-row--media-first">
       <figure className="home-row-media">
         <img
-          src={productImage}
+          src={productImage.src}
           alt="Two Lullaby candles in open black keepsake boxes, each with a corked note vial"
           width="1600"
           height="1600"

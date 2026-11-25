@@ -17,7 +17,7 @@ function HandmadeSlide() {
       </div>
       <figure className="home-row-media">
         <img
-          src={productImage}
+          src={productImage.src}
           alt="A Lullaby candle being finished by hand"
           width="960"
           height="1280"

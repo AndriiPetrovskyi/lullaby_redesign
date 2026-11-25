@@ -39,7 +39,7 @@ function setStatus(next) {
 
 async function detectRegion() {
   if (decision) return setStatus(decision);
-  const apiBase = import.meta.env.VITE_API_BASE_URL;
+  const apiBase = process.env.VITE_API_BASE_URL;
   try {
     const response = await fetch(`${apiBase}/geo`);
     const { consentRequired } = await response.json();

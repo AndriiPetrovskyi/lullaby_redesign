@@ -7,7 +7,7 @@ function HandmadeSlide() {
     <div className="m-slide-content m-handmade-slide">
       <img
         className="m-handmade-slide-image"
-        src={productImage}
+        src={productImage.src}
         alt="Handmade"
       />
 

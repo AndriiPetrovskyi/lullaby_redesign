@@ -4,7 +4,8 @@ Frontend of lullaby-rituals.com (scented candles shop). Owner: Andrii. Talk to
 him in Ukrainian, short and to the point.
 
 The project is two repos:
-- `lullaby_redesign` (this one): Vite + React, hosted on Vercel.
+- `lullaby_redesign` (this one): Next.js (App Router) + React, hosted on
+  Vercel. On `main` it is still Vite until the redesign is merged.
 - `lullaby_backend`: Express + Prisma + AdminJS on Railway, Neon Postgres. Its
   CLAUDE.md describes payments (Western Bid), orders and deploying the API.
 
@@ -30,8 +31,18 @@ update it in the same change whenever something below stops being true.
 
 - Vercel deploys `main` automatically on push. Branches get preview URLs.
   It is the only host (the old GitHub Pages and Netlify setups are gone).
-- `npm run build` also generates the sitemap and prerendered meta;
-  `npm run lint` runs oxlint.
+- `npm run build` is `next build`; `npm run lint` runs oxlint.
+- Next.js 16.4: its docs for this exact version are in
+  `node_modules/next/dist/docs/`; read the relevant guide there before writing
+  Next code, since APIs changed after most training data.
+- Every URL goes to `app/[[...slug]]`: its server part gives each page its own
+  title, description and preview tags (product data fetched, cached 5 min),
+  and its client part renders the storefront in `src/` (`src/ClientRoot.jsx`,
+  React Router), as in Next's guide for moving off Vite. The redesign moves
+  pages out into their own Next routes one by one. `app/sitemap.js` and
+  `app/robots.js` replace the old build scripts.
+- The env variables keep their `VITE_*` names; `next.config.mjs` hands them to
+  the browser code as `process.env.VITE_*`.
 - Public config is in `.env.production` (API URL, Meta Pixel, GA4, site URL).
   `VITE_CHECKOUT_ENABLED` and `VITE_ORDERING_PAUSED` (set in the Vercel
   dashboard, not in that file) switch buying on and off
@@ -41,23 +52,22 @@ update it in the same change whenever something below stops being true.
 
 - Andrii's own setup: the backend with `PAYMENT_REMINDERS=false railway run
   node src/server.js` on port 3000 (production database and the real
-  Western Bid), and Vite for his phone on the same Wi-Fi. That Vite needs a
-  config that proxies `/api` to the backend, so the backend sees a loopback
-  request (`isLocalRequest`: every payment method offered, no rate limits).
-  Keep it outside the repo, e.g. in the scratchpad:
-  ```js
-  import base from '<repo>/vite.config.js'
-  export default (env) => ({ ...base(env), root: '<repo>',
-    server: { proxy: { '/api': 'http://localhost:3000' } } })
-  ```
-  `VITE_API_BASE_URL=/api VITE_ORDERING_PAUSED=false VITE_CHECKOUT_ENABLED=true
-  npx vite --config <that file> --host --port 5173`, then give him
-  `http://<Mac's IP>:5173` (`ipconfig getifaddr en0`; it changes with the
-  Wi-Fi). Orders placed this way are real: production database, real
-  payment pages.
+  Western Bid), and the storefront for his phone on the same Wi-Fi, proxying
+  `/api` to that backend so it sees a loopback request (`isLocalRequest`:
+  every payment method offered, no rate limits):
+  `DEV_API_PROXY=http://localhost:3000/api VITE_API_BASE_URL=/api
+  VITE_ORDERING_PAUSED=false VITE_CHECKOUT_ENABLED=true npx next dev
+  --hostname 0.0.0.0 -p 5173`, then give him `http://<Mac's IP>:5173`
+  (`ipconfig getifaddr en0`; it changes with the Wi-Fi). Orders placed this
+  way are real: production database, real payment pages. (On `main`, still
+  Vite: `npx vite --host --port 5173` with a config proxying `/api`.)
 - Your own tests must not write to the production database: run a second
   backend on port 3001 against a throwaway Postgres (see the backend's
-  CLAUDE.md) and Vite on 5174 with `VITE_API_BASE_URL=http://localhost:3001/api`.
+  CLAUDE.md) and the storefront on 5174 with
+  `VITE_API_BASE_URL=http://localhost:3001/api`. To see the analytics, use a
+  production build (`next build` + `next start`) opened under a made-up host
+  (Chrome `--host-resolver-rules="MAP lullaby.test 127.0.0.1:<port>"`): Pixel
+  and GA4 stay off on localhost.
   Drive it with headless Chrome over CDP, and block requests to
   `*westernbid*` so nothing reaches the real gateway.
 
@@ -91,7 +101,7 @@ it's required (`src/utils/consent.js`).
     straight to PayPal, which lets them pick or add the shipping address
     (only because we don't send `no_shipping=2`, which locked it to the
     account's address).
-- Checkout page (`src/pages/CheckoutPage.jsx`), card: deliberately minimal
+- Checkout page (`src/views/CheckoutPage.jsx`), card: deliberately minimal
   (Andrii's ask): a dot stepper (Email, Shipping & payment "on Western Bid",
   Confirmation; it tells buyers the address is asked on the next page), the
   email field (required), a "🔒 Secure payment by Western Bid" line right

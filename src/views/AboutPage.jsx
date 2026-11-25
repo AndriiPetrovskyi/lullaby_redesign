@@ -10,7 +10,7 @@ import "./AboutPage.css";
 // these are existing brand images reused as thematically-fitting placeholders.
 const STORY_SECTIONS = [
   {
-    image: boxImage,
+    image: boxImage.src,
     alt: "A Lullaby candle nestled in its gift box",
     paragraphs: [
       "We have always believed that the best gifts are more than beautiful things. They are little reminders of love, care, and someone taking the time to think of you.",
@@ -18,7 +18,7 @@ const STORY_SECTIONS = [
     ],
   },
   {
-    image: makerWritingImage,
+    image: makerWritingImage.src,
     alt: "Writing a note by hand with an ink pen at the workshop table",
     paragraphs: [
       "We wanted to create a candle that feels special to give, beautiful to keep, and meaningful to light. Something with a little secret of its own.",
@@ -26,7 +26,7 @@ const STORY_SECTIONS = [
     ],
   },
   {
-    image: vesselImage,
+    image: vesselImage.src,
     alt: "A candle vessel planted with a flower, given a second life",
     paragraphs: [
       "And when the candle is finished, its vessel can have a second life. Fill it with soil, plant a little flower or succulent, and watch something living grow from what was once a simple gift.",
@@ -34,7 +34,7 @@ const STORY_SECTIONS = [
     ],
   },
   {
-    image: handmadeImage,
+    image: handmadeImage.src,
     alt: "A Lullaby candle being poured and finished by hand",
     paragraphs: [
       "Every Lullaby candle is made by hand, from the gypsum vessel to the final detail. And perhaps there is a little family tradition in that. Years ago, my grandfather made candles by hand and taught me the craft.",

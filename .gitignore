@@ -15,9 +15,9 @@ dist
 dist-ssr
 *.local
 
-# generated at build time by scripts/generate-sitemap.mjs (see package.json)
-/public/sitemap.xml
-/public/robots.txt
+# Next.js
+/.next/
+next-env.d.ts
 
 # Editor directories and files
 .vscode/*

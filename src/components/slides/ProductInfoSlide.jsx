@@ -9,8 +9,8 @@ function ProductInfoSlide() {
     <div className="home-hero">
       <img
         className="home-hero-image"
-        src={heroMedium}
-        srcSet={`${heroSmall} 1280w, ${heroMedium} 1920w, ${heroLarge} 2400w`}
+        src={heroMedium.src}
+        srcSet={`${heroSmall.src} 1280w, ${heroMedium.src} 1920w, ${heroLarge.src} 2400w`}
         sizes="100vw"
         alt="Lullaby candles in handmade gypsum vessels"
         width="2400"

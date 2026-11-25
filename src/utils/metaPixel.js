@@ -65,7 +65,7 @@ function generateEventId() {
 // `keepalive: true` gives it the same "survives page unload" guarantee
 // sendBeacon is normally used for (e.g. the click that leaves for the payment page).
 function sendToConversionsApi(eventName, eventId, customData) {
-  const apiBase = import.meta.env.VITE_API_BASE_URL;
+  const apiBase = process.env.VITE_API_BASE_URL;
   if (!apiBase) return;
 
   const payload = {

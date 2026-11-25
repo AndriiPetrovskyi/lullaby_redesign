@@ -12,7 +12,7 @@ function SeedsSlide() {
 
       <div className="m-slide-content-image m-seeds-slide-image">
         <img
-          src={notesImage}
+          src={notesImage.src}
           alt="Handwritten notes beside a small corked glass vial"
         />
       </div>

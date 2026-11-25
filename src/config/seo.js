@@ -1,7 +1,8 @@
 // Canonical production target for all SEO metadata (canonical links, Open
-// Graph/Twitter URLs), independent of which host served the bundle. Resolved
-// at build time from VITE_SITE_URL — see scripts/site-url.mjs.
-export const SITE_URL = import.meta.env.VITE_SITE_URL;
+// Graph/Twitter URLs), independent of which host served the page. Set at
+// build time from VITE_SITE_URL, with lullaby-rituals.com as the fallback
+// (next.config.mjs).
+export const SITE_URL = process.env.VITE_SITE_URL;
 
 export const SITE_NAME = "Lullaby";
 

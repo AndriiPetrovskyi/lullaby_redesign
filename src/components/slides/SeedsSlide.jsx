@@ -6,7 +6,7 @@ function SeedsSlide() {
     <div className="home-row home-row--media-last">
       <figure className="home-row-media">
         <img
-          src={notesImage}
+          src={notesImage.src}
           alt="Handwritten notes beside a small corked glass vial"
           width="1280"
           height="1280"

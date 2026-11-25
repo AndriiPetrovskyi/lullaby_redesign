@@ -44,8 +44,8 @@ import {
   MOR_DISCLAIMER,
   RETURN_WINDOW_DAYS,
 } from "../config/contact.js";
-import jarProcessVideo from "../assets/process.mp4";
-import boxProcessVideo from "../assets/video2.MP4";
+const jarProcessVideo = "/videos/process.mp4";
+const boxProcessVideo = "/videos/box.mp4";
 import jarProcessPoster from "../assets/process-poster.webp";
 import boxProcessPoster from "../assets/video2-poster.webp";
 import vesselPlanterImage from "../assets/fl3.jpeg";
@@ -56,7 +56,7 @@ import "./ProductPage.css";
 
 // Shown after every candle's own photos: the Message in a Vial that ships
 // with it.
-const VIAL_GALLERY_PHOTOS = [notesAndVialImage, vialImage, penWritingImage];
+const VIAL_GALLERY_PHOTOS = [notesAndVialImage.src, vialImage.src, penWritingImage.src];
 
 // How long "Pay with PayPal" waits to record the click in our funnel before
 // going on without it.
@@ -447,7 +447,7 @@ function ProductPage() {
               <MutableVideo
                 className="m-product-page-video"
                 src={boxProcessVideo}
-                poster={boxProcessPoster}></MutableVideo>
+                poster={boxProcessPoster.src}></MutableVideo>
             </div>
             <p className="m-product-page-gift-caption">
               Ready to gift, straight out of the box — no extra wrapping, no
@@ -460,7 +460,7 @@ function ProductPage() {
             <div className="m-product-page-video-frame">
               <img
                 className="m-product-page-video"
-                src={vialImage}
+                src={vialImage.src}
                 alt="A corked glass vial holding a rolled handwritten note, beside an ink pen"
                 loading="lazy"
                 decoding="async"
@@ -480,7 +480,7 @@ function ProductPage() {
               <MutableVideo
                 className="m-product-page-video"
                 src={jarProcessVideo}
-                poster={jarProcessPoster}></MutableVideo>
+                poster={jarProcessPoster.src}></MutableVideo>
             </div>
             <p className="m-product-page-video-caption">
               Poured by hand, one candle at a time — every pour a little
@@ -497,7 +497,7 @@ function ProductPage() {
             <div className="m-product-page-video-frame">
               <img
                 className="m-product-page-video"
-                src={vesselPlanterImage}
+                src={vesselPlanterImage.src}
                 alt="A Lullaby vessel reused as a planter"
                 loading="lazy"
                 decoding="async"
@@ -801,7 +801,7 @@ function ProductPage() {
           <MutableVideo
             className="d-product-page-video"
             src={boxProcessVideo}
-                poster={boxProcessPoster}></MutableVideo>
+                poster={boxProcessPoster.src}></MutableVideo>
         </div>
         <div className="d-product-page-story-text">
           <p className="d-product-page-story-title">
@@ -818,7 +818,7 @@ function ProductPage() {
         <div className="d-product-page-story-media">
           <img
             className="d-product-page-video"
-            src={vialImage}
+            src={vialImage.src}
             alt="A corked glass vial holding a rolled handwritten note, beside an ink pen"
             loading="lazy"
             decoding="async"
@@ -839,7 +839,7 @@ function ProductPage() {
           <MutableVideo
             className="d-product-page-video"
             src={jarProcessVideo}
-                poster={jarProcessPoster}></MutableVideo>
+                poster={jarProcessPoster.src}></MutableVideo>
         </div>
         <div className="d-product-page-story-text">
           <p className="d-product-page-story-title">
@@ -856,7 +856,7 @@ function ProductPage() {
         <div className="d-product-page-story-media">
           <img
             className="d-product-page-video"
-            src={vesselPlanterImage}
+            src={vesselPlanterImage.src}
             alt="A Lullaby vessel reused as a planter"
             loading="lazy"
             decoding="async"

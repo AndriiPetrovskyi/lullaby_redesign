@@ -2,7 +2,7 @@
 // ID is easy to rotate without touching code. Public-ish value (visible in
 // every page's network requests once live), unlike the Conversions API
 // access token, which stays server-side only (backend .env, never here).
-export const META_PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID;
+export const META_PIXEL_ID = process.env.VITE_META_PIXEL_ID;
 
 // A production build opened on this machine or the local network
 // (`npm run preview`, a test build, a phone on the same Wi-Fi) must not
@@ -16,10 +16,10 @@ const isLocalHost =
 // deployed site — keeps `npm run dev`, local preview builds, and any build
 // missing the ID from sending real events.
 export const isTrackingEnabled =
-  Boolean(META_PIXEL_ID) && import.meta.env.PROD && !isLocalHost;
+  Boolean(META_PIXEL_ID) && process.env.NODE_ENV === "production" && !isLocalHost;
 
 // Google Analytics 4 — same rules as the pixel: public ID from env, and only
 // production builds on the deployed site send anything.
-export const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
+export const GA_MEASUREMENT_ID = process.env.VITE_GA_MEASUREMENT_ID;
 export const isGaEnabled =
-  Boolean(GA_MEASUREMENT_ID) && import.meta.env.PROD && !isLocalHost;
+  Boolean(GA_MEASUREMENT_ID) && process.env.NODE_ENV === "production" && !isLocalHost;
