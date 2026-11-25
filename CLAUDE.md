@@ -41,6 +41,8 @@ update it in the same change whenever something below stops being true.
   React Router), as in Next's guide for moving off Vite. The redesign moves
   pages out into their own Next routes one by one. `app/sitemap.js` and
   `app/robots.js` replace the old build scripts.
+- The Vercel project's dashboard says Output Directory `dist` (from Vite);
+  `vercel.json` overrides it with `.next` for the Next build.
 - The env variables keep their `VITE_*` names; `next.config.mjs` hands them to
   the browser code as `process.env.VITE_*`.
 - Public config is in `.env.production` (API URL, Meta Pixel, GA4, site URL).
