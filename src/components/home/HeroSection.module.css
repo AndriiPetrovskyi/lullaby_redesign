@@ -1,7 +1,8 @@
 .section {
   display: flex;
   flex-direction: column;
-  height: 100svh;
+  /* At least one screen; taller when the content needs it (low laptops). */
+  min-height: 100svh;
   padding-top: 88px;
   padding-bottom: 40px;
 }

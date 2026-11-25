@@ -3,7 +3,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100svh;
+  /* At least one screen; taller when the content needs it (low laptops). */
+  min-height: 100svh;
   padding-top: 60px;
   padding-bottom: 40px;
   text-align: center;
