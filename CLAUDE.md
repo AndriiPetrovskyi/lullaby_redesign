@@ -44,6 +44,11 @@ update it in the same change whenever something below stops being true.
   shell renders on the server, a missing page answers 200 with `noindex`
   rather than 404. `app/sitemap.js` and `app/robots.js` replace the old
   build scripts.
+- Design (from lullaby_ua): tokens in `src/styles/tokens.css` (the old token
+  names point at the new palette until every page is redesigned), plaster
+  background and grain in `src/styles/index.css`, fonts via `next/font` in
+  `app/layout.jsx`, header and footer in `src/components/site/`. The header
+  lies over the page; a page leaves `--header-height` at the top itself.
 - The Vercel project's dashboard says Output Directory `dist` (from Vite);
   `vercel.json` overrides it with `.next` for the Next build.
 - The env variables keep their `VITE_*` names; `next.config.mjs` hands them to

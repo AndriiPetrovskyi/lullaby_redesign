@@ -1,6 +1,5 @@
 .h1-heading {
-  font-family: var(--font-family-heading-italic);
-  font-style: italic;
+  font-family: var(--font-family-heading);
   font-size: var(--scale-h1-size);
   line-height: var(--scale-h1-line-height);
   color: var(--color-accent-coral);
@@ -8,8 +7,7 @@
 }
 
 .h2-heading {
-  font-family: var(--font-family-heading-italic);
-  font-style: italic;
+  font-family: var(--font-family-heading);
   font-size: var(--scale-h2-size);
   line-height: var(--scale-h2-line-height);
   color: var(--color-accent-coral);

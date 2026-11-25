@@ -1,16 +1,39 @@
+/* Design tokens, from the lullaby_ua design. */
 :root {
-  /* Кольори */
-  --color-bg-light: #ffe8cf;
-  --color-accent-coral: #eb7c46;
-  --color-accent-cobalt: #ff620e;
-  --color-text-dark: #ff620e;
+  /* Brand palette */
+  --color-cream: #fff3e3; /* page background */
+  --color-mint: #d5e8e6; /* blocks and cards */
+  --color-lavender: #9fa0ff; /* secondary accent */
+  --color-coral: #ff7171; /* main accent: buttons, prices */
+  --color-dark: #272525; /* text */
 
-  /* Шрифти */
-  --font-family-logo-heavy: "Gotham Black", sans-serif;
-  --font-family-heading-italic: "Libre Caslon Text", serif;
-  --font-family-body: "Inter", sans-serif;
+  /* Roles: components use these */
+  --color-background: var(--color-cream);
+  --color-text: var(--color-dark);
+  --color-muted: #6b6461;
+  --color-border: #e8dccb;
+  --color-accent: var(--color-coral);
 
-  /* Масштаб типографіки */
+  /* Section titles and the line under them, the same on every page */
+  --title-size: 42px;
+  --title-letter-spacing: -0.04em;
+  --subtitle-size: 15px;
+  --subtitle-line-height: 1.6;
+
+  /* Fonts (set up in app/layout.jsx) */
+  --font-family-heading: var(--font-heading), Arial, sans-serif;
+  --font-family-body: var(--font-body), Arial, sans-serif;
+
+  /* The pages not yet redesigned use these older names; they now point at
+     the new palette and fonts. Remove once every page is redesigned. */
+  --color-bg-light: var(--color-cream);
+  --color-accent-coral: var(--color-coral);
+  --color-accent-cobalt: var(--color-coral);
+  --color-text-dark: var(--color-dark);
+  --font-family-logo-heavy: var(--font-logo), Arial, sans-serif;
+  --font-family-heading-italic: var(--font-heading), Arial, sans-serif;
+
+  /* Type scale */
   --scale-h1-size: 3rem;
   --scale-h1-line-height: 1.2;
   --scale-h2-size: 2.25rem;
@@ -19,15 +42,21 @@
   --scale-body-line-height: 1.6;
   --scale-nav-size: 0.875rem;
 
-  /* Відступи */
+  /* Spacing */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 32px;
 
-  /* Layout */
+  /* Layout. The header lies over the page (position: absolute), so a page
+     leaves this much room at the top itself. */
   --container-max-width: 1200px;
-  /* Sticky .navbar's own rendered height (padding + toggle icon) — kept in
-     sync manually since it's a fixed-size element, not measured at runtime. */
-  --navbar-height: calc(var(--spacing-md) * 2 + 22px);
+  --header-height: 56px;
+  --navbar-height: var(--header-height);
+}
+
+@media (max-width: 767px) {
+  :root {
+    --title-size: 32px;
+  }
 }

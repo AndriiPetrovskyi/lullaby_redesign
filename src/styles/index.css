@@ -7,29 +7,72 @@
 
 body {
   margin: 0;
-  background: var(--color-bg-light);
-  color: var(--color-text-dark);
+  background: var(--color-background); /* shown while the texture loads */
+  color: var(--color-text);
   font-family: var(--font-family-body);
   font-size: var(--scale-body-size);
-  line-height: var(--scale-body-line-height);
-}
+  line-height: 1.5;
 
-#root {
-  min-height: 100svh;
-  /* Lets <main> grow to fill the screen so the footer stays at the bottom
-     on short pages instead of floating halfway up with empty space below. */
+  /* Header, page, footer: the page grows, so the footer stays at the bottom
+     of the screen on short pages. */
   display: flex;
   flex-direction: column;
+  min-height: 100svh;
 }
 
-#root > main {
-  flex: 1 0 auto;
+main {
+  flex-grow: 1;
+  width: 100%;
+}
+
+/* The whole site's background: plaster. A fixed layer, so the texture
+   neither stretches down the page nor moves while scrolling
+   (background-attachment: fixed doesn't work on iPhone). */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    /* a soft darkening at the edges, like an old lens */
+    radial-gradient(ellipse at center, transparent 50%, rgba(40, 40, 40, 0.18) 100%),
+    url("/images/bg-plaster.webp") center / cover no-repeat;
+  /* a neutral plaster, without the photo's warm tint */
+  filter: saturate(0.3) contrast(0.6) brightness(1.3);
+}
+
+/* Film grain over the whole site, drawn by an SVG filter. Doesn't catch taps. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-family-heading);
+  font-weight: 400; /* Days One is bold by itself */
+  line-height: 1.05;
+}
+
+/* Pages not yet redesigned: room for the header, which lies over the page.
+   Remove with the last of them. */
+.legacy-page {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--header-height);
 }
 
 .container {
   max-width: var(--container-max-width);
-  margin-inline: auto;
-  /* padding-inline: var(--spacing-md); */
+  margin: 0 auto;
+  padding: 0 16px;
 }
 
 .mb-md {
@@ -38,4 +81,9 @@ body {
 
 .mb-lg {
   margin-bottom: var(--spacing-lg);
+}
+
+/* While a <dialog> is open, the page under it doesn't scroll */
+body:has(dialog[open]) {
+  overflow: hidden;
 }

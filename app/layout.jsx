@@ -1,6 +1,18 @@
+import { Days_One, Manrope, Pattaya, Rubik } from "next/font/google";
 import "../src/styles/index.css";
 import ClientShell from "../src/components/ClientShell.jsx";
+import OrderingPausedBanner from "../src/components/OrderingPausedBanner.jsx";
+import Footer from "../src/components/site/Footer.jsx";
+import Header from "../src/components/site/Header.jsx";
 import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, SITE_NAME, SITE_URL } from "../src/config/seo.js";
+
+// Fonts: Next downloads them at build time and serves them from this site.
+// In CSS: var(--font-heading), var(--font-body), var(--font-logo), var(--font-accent).
+const headingFont = Days_One({ weight: "400", subsets: ["latin"], variable: "--font-heading" });
+const bodyFont = Manrope({ subsets: ["latin"], variable: "--font-body" });
+const logoFont = Rubik({ weight: "600", subsets: ["latin"], variable: "--font-logo" });
+// Handwritten, for single accent words ("Rituals" in the logo)
+const accentFont = Pattaya({ weight: "400", subsets: ["latin"], variable: "--font-accent" });
 
 const DEFAULT_TITLE = `${SITE_NAME} — Handmade Scented Candles`;
 
@@ -30,25 +42,20 @@ export const metadata = {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#ffe8cf",
+  themeColor: "#fff3e3",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,700&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html
+      lang="en"
+      className={`${headingFont.variable} ${bodyFont.variable} ${logoFont.variable} ${accentFont.variable}`}>
       <body>
         <noscript>This site needs JavaScript enabled to work.</noscript>
-        <div id="root">
-          <ClientShell>{children}</ClientShell>
-        </div>
+        <OrderingPausedBanner />
+        <Header />
+        <ClientShell>{children}</ClientShell>
+        <Footer />
       </body>
     </html>
   );

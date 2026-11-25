@@ -1,0 +1,146 @@
+/* A full-width band: the plaster tinted cream. */
+.footer {
+  --footer-bg: var(--color-cream);
+  --footer-text: var(--color-text);
+  --footer-muted: var(--color-muted);
+
+  position: relative;
+  color: var(--footer-text);
+  margin-top: 40px;
+}
+
+/* The colour layer is blended into the plaster under it (multiply, as in
+   Photoshop), so the texture still shows through. */
+.footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--footer-bg);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* The content sits above the colour layer, so the text isn't blended */
+.footer > * {
+  position: relative;
+}
+
+.footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Four columns, the brand one wider */
+.columns {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding: 56px 0 32px;
+}
+
+.logo {
+  font-family: var(--font-logo), Arial, sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+
+.logoAccent {
+  font-family: var(--font-accent), cursive;
+  font-weight: 400;
+  letter-spacing: normal;
+  color: var(--color-accent);
+  font-size: 22px;
+}
+
+.text {
+  margin: 12px 0 0;
+  max-width: 260px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--footer-muted);
+}
+
+.heading {
+  margin: 0 0 16px;
+  font-size: 16px;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--footer-muted);
+}
+
+.list a:hover,
+.textButton:hover {
+  color: var(--footer-text);
+}
+
+/* "Cookie settings": a button that looks like the links around it */
+.textButton {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+/* "Secure payment by Western Bid" */
+.secure {
+  justify-content: flex-start;
+  margin: 0 0 20px;
+  color: var(--footer-muted);
+}
+
+/* Copyright left, signature right, a thin line above */
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 0 32px;
+  border-top: 1px solid var(--footer-muted);
+  font-size: 13px;
+  color: var(--footer-muted);
+}
+
+.bottom p {
+  margin: 0;
+}
+
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+
+.legal a:hover {
+  color: var(--color-text);
+}
+
+/* Phone: the brand full width, the other columns two to a row */
+@media (max-width: 767px) {
+  .columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 16px;
+    padding: 40px 0 32px;
+  }
+
+  .brand,
+  .contact {
+    grid-column: 1 / -1; /* full width: the email address stays on one line */
+  }
+
+  .bottom {
+    flex-direction: column;
+    gap: 4px;
+  }
+}

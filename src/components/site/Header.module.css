@@ -1,0 +1,49 @@
+/* The header lies over the page (position: absolute) and takes no room, so
+   the page under it leaves --header-height at the top itself. */
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  /* The hidden menu icons sit to the right and would make the page scroll
+     sideways; clip horizontally only, so their tooltips still show. */
+  overflow-x: clip;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 24px;
+}
+
+.logo {
+  font-family: var(--font-logo), Arial, sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 40px;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+/* "Rituals" in the handwritten Pattaya, in the accent colour */
+.logoAccent {
+  font-family: var(--font-accent), cursive;
+  font-weight: 400;
+  letter-spacing: normal;
+  color: var(--color-accent);
+  font-size: 20px;
+}
+
+@media (max-width: 767px) {
+  .header {
+    padding: 8px 16px;
+  }
+
+  /* Smaller, so the logo and the menu fit one line on a narrow screen */
+  .logo {
+    font-size: 16px;
+    letter-spacing: 0.04em;
+  }
+}
